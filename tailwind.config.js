@@ -24,6 +24,10 @@ export default {
       maxHeight: {
         100: "30rem",
       },
+      fontFamily: {
+        Gotham: ["Gotham", "sans-serif"],
+        Aquawax: ["Aquawax", "sans-serif"],
+      },
     },
   },
   plugins: [require("rippleui")],

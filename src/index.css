@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
+@font-face {
+    font-family: 'Gotham';
+    src: url('./src/fonts/Gotham-Light.otf') format('opentype');
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Aquawax';
+    src: url('./src/fonts/Aquawax-Light-Trial.ttf') format('truetype');
+    font-style: normal;
+  }
+  

@@ -1,4 +1,4 @@
-import logo from "../assets/archideco.png";
+import Logo from "../assets/archideco.png";
 import {
   Search,
   CircleHelp,
@@ -19,10 +19,10 @@ export default function Navbar() {
     console.log(open);
   }
   return (
-    <header>
+    <header className="font-Gotham">
       <nav className=" hidden lg:block w-screen min-h-14 h-auto pt-2 bg-white py-4 ">
         <section className="flex flex-row items-center justify-between px-2 pr-14">
-          <img src={logo} alt="Logo" />
+          <img src={Logo} alt="Logo" />
           <div className="flex flex-row items-center">
             <input
               type="text"
@@ -118,22 +118,21 @@ export default function Navbar() {
       {/* ////////mobile/////////// */}
       <nav className={`block lg:hidden bg-white`}>
         <section className="relative flex items-center gap-6 pl-4">
+          <img src={Logo} alt="Logo" className="relative " />
           <X
             size={28}
             onClick={openMenu}
-            className={`absolute transition-opacity duration-300 ease-in-out ${
+            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${
               open ? "opacity-100" : "opacity-0"
             }`}
           />
           <Menu
             size={28}
             onClick={openMenu}
-            className={`absolute transition-opacity duration-300 ease-in-out ${
+            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${
               open ? "opacity-0" : "opacity-100"
             }`}
           />
-
-          <img src={logo} alt="Logo" className="relative ml-8" />
         </section>
       </nav>
 
