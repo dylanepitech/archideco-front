@@ -15,7 +15,6 @@ import {
   ArrowRightLeft,
   PackageCheck,
   CircleAlert,
-  Slash,
   Zap,
 } from "lucide-react";
 import Carousel from "../components/Carousel";

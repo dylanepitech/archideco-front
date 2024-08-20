@@ -1,5 +1,6 @@
 import { Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import NewsletterPopup from "./NewsletterPopup";
 
 const Footer = () => {
   return (
@@ -38,7 +39,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/about"
+                  to="/about-us"
                   className=" text-gray-600 hover:text-gray-900"
                 >
                   Notre Histoire
@@ -87,7 +88,7 @@ const Footer = () => {
               </li>
               <li className="mb-6">
                 <Link
-                  to="/cgvcgu"
+                  to="/CGV-CGU"
                   className=" text-gray-600 hover:text-gray-900"
                 >
                   Conditions d'utilisation
@@ -95,7 +96,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/politique-confidentialite"
+                  to="/privaci-politique"
                   className=" text-gray-600 hover:text-gray-900"
                 >
                   Politique de confidentialité
@@ -110,27 +111,7 @@ const Footer = () => {
             <p className="text-sm text-gray-500 leading-6 mb-7">
               Recevez les dernières nouvelles de nous !
             </p>
-            <Link
-              to="/newsletter"
-              className="flex items-center justify-center gap-2 bg-[#639D87] rounded-full py-3 px-6 w-fit lg:mx-0  text-sm text-white font-semibold transition-all duration-500 hover:bg-[#1E4347] hover:text-white"
-            >
-              S'abonner
-              <svg
-                width="15"
-                height="12"
-                viewBox="0 0 15 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.25 6L13.25 6M9.5 10.5L13.4697 6.53033C13.7197 6.28033 13.8447 6.15533 13.8447 6C13.8447 5.84467 13.7197 5.71967 13.4697 5.46967L9.5 1.5"
-                  stroke="white"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
+            <NewsletterPopup />
           </div>
         </div>
         <div className="py-7 border-t border-gray-200">
