@@ -1,5 +1,4 @@
-import archideco from "../assets/archideco.png";
-import mobalpa from "../assets/mobalpa.png";
+import { Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -8,25 +7,20 @@ const Footer = () => {
       <div className="w-full h-1 bg-white"></div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 gap-y-8 md:gap-8 py-10 max-w-sm mx-auto sm:max-w-3xl lg:max-w-full">
-          <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
-            <Link to="/" className="flex">
-              <img
-                src={archideco}
-                alt="ArchiDeco"
-                className="w-auto object-cover object-center"
-              />
-            </Link>
-            <p className="py-4 text-md text-green-duck lg:max-w-xs text-center">
-              Fournisseur officiel de
+          <section className="w-full h-auto  col-span-full mb-10 lg:col-span-2 lg:mb-0">
+            <div className=" flex flex-row gap-2 items-center justify-center w-full pl-4">
+              <h2 className="text-2xl font-bold -translate-y-2 uppercase">
+                Archideco
+              </h2>
+              <Zap size={30} color="#639d87" className="rotate-40" />
+              <h2 className="text-2xl font-bold translate-y-2 uppercase">
+                Mobalpa
+              </h2>
+            </div>
+            <p className="text-center font-Gotham text-md py-2 tracking-widest">
+              -Fournisseur officiel Mobalpa -
             </p>
-            <Link to="#" className="flex justify-center ml-4">
-              <img
-                src={mobalpa}
-                alt="Mobalpa"
-                className="w-auto object-cover"
-              />
-            </Link>
-          </div>
+          </section>
           <div className="lg:mx-auto text-left ">
             <h4 className="text-lg text-gray-900 font-medium mb-7">
               Navigation
