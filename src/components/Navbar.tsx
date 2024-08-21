@@ -1,4 +1,5 @@
-import Logo from "../assets/archideco.png";
+import Logo from "../assets/LogoArchideco.png";
+import LogoMobile from "../assets/LogoMobile.png";
 import {
   Search,
   CircleHelp,
@@ -24,7 +25,7 @@ export default function Navbar() {
       <nav className=" hidden lg:block w-screen min-h-14 h-auto pt-2 bg-white py-4 ">
         <section className="flex flex-row items-center justify-between px-2 pr-14">
           <Link to="/">
-            <img src={Logo} alt="Logo" />
+            <img src={Logo} alt="Logo" height={100} width={100} />
           </Link>
           <div className="flex flex-row items-center">
             <input
@@ -39,12 +40,12 @@ export default function Navbar() {
           <p className="bg-black/20 w-0.5 h-8"></p>
           <div className="flex flex-col items-center">
             <CircleHelp color="#639d87" />
-            <a
+            <Link
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              href=""
+              to="/FAQ"
             >
               Foire au questions
-            </a>
+            </Link>
           </div>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
@@ -121,7 +122,15 @@ export default function Navbar() {
       {/* ////////mobile/////////// */}
       <nav className={`block lg:hidden bg-white`}>
         <section className="relative flex items-center gap-6 pl-4">
-          <img src={Logo} alt="Logo" className="relative " />
+          <Link to="/">
+            <img
+              src={Logo}
+              alt="Logo"
+              className="relative"
+              height={80}
+              width={80}
+            />
+          </Link>
           <X
             size={28}
             onClick={openMenu}
@@ -154,12 +163,12 @@ export default function Navbar() {
           <div className="h-auto grid grid-cols-2 grid-rows-2 sm:grid-cols-4 gap-4 pt-2 py-2 bg-white">
             <div className="flex flex-col items-center">
               <CircleHelp color="#639d87" />
-              <a
+              <Link
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
-                href=""
+                to="/FAQ"
               >
                 Foire au questions
-              </a>
+              </Link>
             </div>
             <div className="flex flex-col items-center">
               <MapPin color="#639d87" />
