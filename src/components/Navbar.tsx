@@ -97,7 +97,7 @@ export default function Navbar() {
           <p className="bg-black/10 w-0.8 h-6"></p>
           <Link
             className="font-medium text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            to="/products/interieur"
+            to="/meubles"
           >
             Aménagement intérieur
           </Link>
