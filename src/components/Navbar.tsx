@@ -50,12 +50,12 @@ export default function Navbar() {
 
           <div className="flex flex-col items-center">
             <MapPin color="#639d87" />
-            <a
+            <Link
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              href=""
+              to="/map"
             >
               Nous localiser
-            </a>
+            </Link>
           </div>
           <p className="bg-black/20 w-0.5 h-8"></p>
 

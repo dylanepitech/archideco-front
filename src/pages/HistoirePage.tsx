@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Star, Store, Link, MapPin, Globe } from "lucide-react";
-import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -50,8 +49,6 @@ const timelineEvents = [
 ];
 
 export default function HistoirePage() {
-  const [selectedTab, setSelectedTab] = useState("histoire");
-
   return (
     <div className="bg-slate-100 text-black">
       <Navbar />
