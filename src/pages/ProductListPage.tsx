@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
-import { getGem, getPem, getCuisine } from "../Requests/ProductsRequest";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Card from "../components/Card";
-import Aside from "../components/Aside";
+
+import { useEffect, useState, useContext } from 'react';
+import { getGem, getPem, getCuisine } from '../Requests/ProductsRequest';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import Card from '../components/Card';
+import Aside from '../components/Aside';
 import { AuthContext } from "../hooks/AuthContext";
 import { useToast } from "@chakra-ui/react";
 import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
@@ -70,10 +71,9 @@ export default function ProductListPage() {
             isClosable: true,
           });
         } else {
-          setCart(data);
-          const currentProduct = products.find(
-            (product) => product.id === idProduct
-          );
+          setCart(data.data);
+          const currentProduct = products.find(product => product.id === idProduct);
+
 
           toast({
             title: "Félicitations",
@@ -232,6 +232,9 @@ export default function ProductListPage() {
     }
   };
 
+  if(error){
+    console.log(error)
+}
   return (
     <div className="bg-white w-screen overflow-x-hidden min-h-dvh h-auto text-black">
       <Navbar />
