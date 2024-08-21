@@ -1,5 +1,4 @@
 import Logo from "../assets/LogoArchideco.png";
-import LogoMobile from "../assets/LogoMobile.png";
 import {
   Search,
   CircleHelp,
@@ -73,10 +72,7 @@ export default function Navbar() {
 
           <Link to="/cart" className="flex flex-col items-center">
             <ShoppingBasket color="#639d87" />
-            <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              
-            >
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Panier
             </div>
           </Link>
@@ -101,21 +97,7 @@ export default function Navbar() {
             className="font-medium text-md hover:underline-offset-4 hover:underline decoration-green-800"
             to="/products/cuisine"
           >
-            Cuisine
-          </Link>
-          <p className="bg-black/10 w-0.8 h-6"></p>
-          <Link
-            className="font-medium  text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            to="/products/salon"
-          >
-            Salon
-          </Link>
-          <p className="bg-black/10 w-0.8 h-6"></p>
-          <Link
-            className="font-medium  text-sm hover:underline-offset-4 hover:underline decoration-green-800"
-            to="/products/dressinf"
-          >
-            Dressing
+            Aménagement intérieur
           </Link>
         </section>
       </nav>
@@ -134,14 +116,16 @@ export default function Navbar() {
           <X
             size={28}
             onClick={openMenu}
-            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${
+              open ? "opacity-100" : "opacity-0"
+            }`}
           />
           <Menu
             size={28}
             onClick={openMenu}
-            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-0" : "opacity-100"
-              }`}
+            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${
+              open ? "opacity-0" : "opacity-100"
+            }`}
           />
         </section>
       </nav>
