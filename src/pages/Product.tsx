@@ -217,27 +217,18 @@ export default function Product() {
         <div className="bg-white w-screen min-h-screen text-black">
             <Navbar />
             <main className="flex  mt-6 px-4 gap-6">
-                <div className='flex flex-col items-center md:flex-row gap-4 w-full justify-center gap-6'>
+                <div className='flex flex-col items-center md:items-start md:flex-row gap-4 w-full justify-center gap-6'>
                     <div className="flex flex-col-reverse md:flex-row gap-2 items-start ">
                         <div className="flex flex-row flex-wrap md:flex-col items-center gap-2 md:gap-0  w-full md:w-1/4 space-y-4 md:space-y-2">
-                            {/* {images.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={img}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    className="cursor-pointer rounded-lg w-[50px] md:w-[70px]  border border-gray-300 hover:border-blue-500"
-                                    onClick={() => changeImage(img)}
-
-                                />
-                            ))} */}
+                          
                             {product?.images &&
                                 Object.values(product.images).flat().slice(0, 12).map((imageObj: any, index) => (
-                                    <div key={index} className="w-[100px] h-[100px] flex items-center justify-center flex-shrink-0">
+                                    <div key={index} className="w-[50px] h-[50px] md:w-[70px] md:h-[70px] flex items-center justify-center flex-shrink-0">
                                         <img
                                             key={index}
                                             src={removeBaseUrl(imageObj.image)}
                                             alt={`Thumbnail ${index + 1}`}
-                                            className="cursor-pointer rounded-lg w-[50px] md:w-[70px]  border border-gray-300 hover:border-blue-500"
+                                            className="cursor-pointer rounded-lg w-full h-full object-cover  border border-gray-300 hover:border-blue-500"
                                             onClick={() => changeImage(removeBaseUrl(imageObj.image))}
 
                                         />

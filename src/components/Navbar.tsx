@@ -20,8 +20,8 @@ export default function Navbar() {
     console.log(open);
   }
   return (
-    <header className="font-Gotham">
-      <nav className=" hidden lg:block w-screen min-h-14 h-auto pt-2 bg-white py-4 ">
+    <header className="font-Gotham overflow-x-hidden">
+      <nav className=" hidden overflow-x-hidden lg:block w-screen min-h-14 h-auto pt-2 bg-white py-4 ">
         <section className="flex flex-row items-center justify-between px-2 pr-14">
           <Link to="/">
             <img src={Logo} alt="Logo" height={100} width={100} />
@@ -95,7 +95,7 @@ export default function Navbar() {
           <p className="bg-black/10 w-0.8 h-6"></p>
           <Link
             className="font-medium text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            to="/products/cuisine"
+            to="/products/interieur"
           >
             Aménagement intérieur
           </Link>
