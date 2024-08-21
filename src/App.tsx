@@ -18,6 +18,7 @@ import Faq from "./pages/Faq";
 import CgvCgu from "./pages/CgvCgu";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import HistoirePage from "./pages/HistoirePage";
+import Map from "./pages/Map";
 
 const AppRoutes: React.FC = () => {
   const { isLoading } = useContext(AuthContext);
@@ -49,6 +50,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/CGV-CGU" Component={CgvCgu} />
         <Route path="/privaci-politique" Component={PolitiqueConfidentialite} />
         <Route path="/about-us" Component={HistoirePage} />
+        <Route path="/map" Component={Map} />
 
         {/* <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage/>} /> */}

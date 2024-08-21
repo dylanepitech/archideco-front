@@ -126,11 +126,13 @@ export default function HistoirePage() {
             </div>
             <div className="bg-white rounded-lg shadow-md p-6">
               <img
-                src="./src/assets/mobalpa-magasin-aubagne.png"
+                src="./src/assets/mobalpa-valentine.png"
                 alt="Réalisations 2"
                 className="w-full h-48 object-cover rounded-lg mb-4"
               />
-              <h3 className="text-xl font-semibold mb-2">Marseille</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Marseille - La valentine
+              </h3>
               <p className="text-gray-700">
                 Description des réalisations ou des projets marquants
                 d'Archideco.
@@ -138,11 +140,13 @@ export default function HistoirePage() {
             </div>
             <div className="bg-white rounded-lg shadow-md p-6">
               <img
-                src="./src/assets/mobalpa-magasin-aubagne.png"
+                src="./src/assets/mobalpa-paradis.png"
                 alt="Réalisations 3"
                 className="w-full h-48 object-cover rounded-lg mb-4"
               />
-              <h3 className="text-xl font-semibold mb-2">MArseille</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Marseille - Rue paradis
+              </h3>
               <p className="text-gray-700">
                 Description des réalisations ou des projets marquants
                 d'Archideco.
