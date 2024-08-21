@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Accordion from '../components/Accordion';
@@ -78,6 +78,10 @@ export default function Product() {
     useEffect(() => {
         handleGetMyCart()
     }, [cart]);
+
+    if(error){
+        console.log(error)
+    }
 
 
     const handleGetProduct = async (categoryId: number) => {
