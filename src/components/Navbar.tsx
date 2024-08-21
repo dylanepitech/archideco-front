@@ -62,61 +62,61 @@ export default function Navbar() {
 
           <div className="flex flex-col items-center">
             <User color="#639d87" />
-            <a
+            <Link
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              href=""
+              to="/login"
             >
               Connectez-vous!
-            </a>
+            </Link>
           </div>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          <div className="flex flex-col items-center">
+          <Link to="/cart" className="flex flex-col items-center">
             <ShoppingBasket color="#639d87" />
-            <a
+            <div
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              href=""
+              
             >
               Panier
-            </a>
-          </div>
+            </div>
+          </Link>
         </section>
         <section className="flex flex-row w-full items-center justify-start gap-10 px-8 pt-6">
           <LayoutGrid />
-          <a
+          <Link
             className="font-medium  text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            href=""
+            to="/products/pem"
           >
             Petit électroménager
-          </a>
+          </Link>
           <p className="bg-black/10 w-0.8 h-6"></p>
-          <a
+          <Link
             className="font-medium  text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            href=""
+            to="/products/gem"
           >
             Gros électroménager
-          </a>
+          </Link>
           <p className="bg-black/10 w-0.8 h-6"></p>
-          <a
+          <Link
             className="font-medium text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            href=""
+            to="/products/cuisine"
           >
             Cuisine
-          </a>
+          </Link>
           <p className="bg-black/10 w-0.8 h-6"></p>
-          <a
+          <Link
             className="font-medium  text-md hover:underline-offset-4 hover:underline decoration-green-800"
-            href=""
+            to="/products/salon"
           >
             Salon
-          </a>
+          </Link>
           <p className="bg-black/10 w-0.8 h-6"></p>
-          <a
+          <Link
             className="font-medium  text-sm hover:underline-offset-4 hover:underline decoration-green-800"
-            href=""
+            to="/products/dressinf"
           >
             Dressing
-          </a>
+          </Link>
         </section>
       </nav>
       {/* ////////mobile/////////// */}
@@ -134,16 +134,14 @@ export default function Navbar() {
           <X
             size={28}
             onClick={openMenu}
-            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${
-              open ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-100" : "opacity-0"
+              }`}
           />
           <Menu
             size={28}
             onClick={openMenu}
-            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${
-              open ? "opacity-0" : "opacity-100"
-            }`}
+            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-0" : "opacity-100"
+              }`}
           />
         </section>
       </nav>

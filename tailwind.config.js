@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from 'tailwindcss/plugin';
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -30,5 +32,19 @@ export default {
       },
     },
   },
-  plugins: [require("rippleui")],
+  plugins: [
+    require("rippleui"),
+    plugin(function({ addUtilities }) {
+      const newUtilities = {
+        '.scrollbar-none': {
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    })
+  ],
 };
+
