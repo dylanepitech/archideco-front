@@ -10,6 +10,9 @@ import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import { getCategories, getProductByCategoryId } from '../Requests/ProductsRequest';
 import { localhost } from "../constants/Localhost";
 import { CreateCartBody } from '../Types/cartCrud';
+import { Heart, ShoppingBasket } from "lucide-react"
+import { getMyWishlist, createWishlist, updateWishlist } from "../Requests/WishlistRequest";
+import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 
 export default function Product() {
 
@@ -22,6 +25,7 @@ export default function Product() {
     const [product, setProduct] = useState<any | null>(null);
     const [mainImage, setMainImage] = useState('');
     const [cart, setCart] = useState<any | null>(null);
+    const [wishlists, setWishlists] = useState<any | null>(null);
 
 
 
@@ -50,10 +54,16 @@ export default function Product() {
     }, [category]);
 
     useEffect(() => {
+        if (authToken && !wishlists) {
+            handleGetMyWishlist()
+        }
+    }, [authToken]);
+
+
+    useEffect(() => {
         if (product) {
-            // console.log(product);
+
             setMainImage(removeBaseUrl(product?.images[Object.keys(product?.images)[0]][0].image))
-            // console.log(removeBaseUrl(product?.images[Object.keys(product?.images)[0]][0].image))
 
         }
     }, [product]);
@@ -95,7 +105,6 @@ export default function Product() {
             console.error(err);
         }
     };
-
 
 
     const handleCreateCart = async (idProduct: number) => {
@@ -186,7 +195,6 @@ export default function Product() {
                 } else {
 
                     setCart(data.data)
-                    // console.log(data.data)
                 }
             }
         } catch (err) {
@@ -199,6 +207,102 @@ export default function Product() {
     const changeImage = (src: string) => {
         setMainImage(src);
     };
+
+
+    const handleCreateWishlist = async (idProduct: number) => {
+        try {
+            if (authToken) {
+                const wishlistData: CreateWishlistBody = {
+                    idProducts: [idProduct]
+                };
+                const data: any | string = await createWishlist(authToken, wishlistData);
+                if (typeof data === 'string') {
+                    setError(data);
+                } else {
+                    setWishlists(data.data);
+                    toast({
+                        title: "Felicitation",
+                        position: 'top',
+                        description: `${product?.title} ajouté au panier`,
+                        status: 'success',
+                        duration: 4000,
+                        isClosable: true,
+                    });
+                }
+                console.log(data.data)
+            }
+        } catch (err) {
+            setError("Erreur lors de la création de la liste de souhaits");
+            console.error("Erreur:", err);
+        }
+    };
+
+    const handleUpdateWishlist = async (idProduct: number) => {
+        try {
+            if (authToken) {
+                let newProducts = wishlists?.id_products
+                newProducts.push(idProduct)
+
+                const wishlistData: UpdateWishlistBody = {
+                    idProducts: newProducts
+                };
+                const id = wishlists?.id
+                const data: any | string = await updateWishlist(authToken, id, wishlistData);
+                if (typeof data === 'string') {
+                    setError(data);
+                } else {
+                    setWishlists(data.data);
+                    toast({
+                        title: "Felicitation",
+                        position: 'top',
+                        description: `${product?.title} ajouté au panier`,
+                        status: 'success',
+                        duration: 4000,
+                        isClosable: true,
+                    });
+                }
+            }
+        } catch (err) {
+            setError("Erreur lors de la mise à jour de la liste de souhaits");
+            console.error("Erreur:", err);
+        }
+    };
+
+    const handleGetMyWishlist = async () => {
+        try {
+            if (authToken) {
+                const data: any | string = await getMyWishlist(authToken);
+                if (typeof data === 'string') {
+                    setError(data);
+                    setWishlists(null);
+                } else {
+                    setWishlists(data.data);
+                    console.log("wishlist", data.data)
+                }
+            }
+        } catch (err) {
+            setError("Erreur lors de la recuperation de la liste de souhaits");
+            console.error("Erreur:", err);
+        }
+    };
+
+    const handleAddToWishlist = (idProduct: number) => {
+        if (!wishlists) {
+            handleCreateWishlist(idProduct);
+        } else {
+            handleUpdateWishlist(idProduct);
+        }
+    };
+
+    const handleAddToCart = (idProduct: number) => {
+        if (!cart) {
+            handleCreateCart(idProduct);
+        } else {
+            handleUpdateCart(idProduct);
+        }
+    };
+
+
 
     function removeBaseUrl(url: any) {
         if (localhost == "") {
@@ -220,7 +324,7 @@ export default function Product() {
                 <div className='flex flex-col items-center md:items-start md:flex-row gap-4 w-full justify-center gap-6'>
                     <div className="flex flex-col-reverse md:flex-row gap-2 items-start ">
                         <div className="flex flex-row flex-wrap md:flex-col items-center gap-2 md:gap-0  w-full md:w-1/4 space-y-4 md:space-y-2">
-                          
+
                             {product?.images &&
                                 Object.values(product.images).flat().slice(0, 12).map((imageObj: any, index) => (
                                     <div key={index} className="w-[50px] h-[50px] md:w-[70px] md:h-[70px] flex items-center justify-center flex-shrink-0">
@@ -274,10 +378,18 @@ export default function Product() {
                         </Accordion>
                         <div className="flex items-center space-x-2">
                             <button
-                                className="bg-green-emerald text-white hover:bg-green-duck rounded px-4 py-2"
-                                onClick={() => cart ? handleUpdateCart(product?.id) : handleCreateCart(product?.id)}
+                                className="flex gap-2 items-center bg-green-emerald text-white hover:bg-green-duck rounded px-4 py-2"
+                                onClick={() => handleAddToCart(product?.id)}
                             >
+                                <ShoppingBasket className="text-white" />
                                 Ajouter au panier
+                            </button>
+                            <button
+                                className="flex gap-2 items-center bg-sweet-pink hover:bg-funny-pink text-white rounded px-4 py-2"
+                                onClick={() => handleAddToWishlist(product?.id)}
+                            >
+                                <Heart className=" text-white" />
+                                Ajouter aux envies
                             </button>
                         </div>
                     </div>

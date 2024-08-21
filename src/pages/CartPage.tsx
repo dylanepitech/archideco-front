@@ -130,7 +130,6 @@ const CartPage: React.FC = () => {
             let idStr: any = id.toString()
             idCountMap[idStr] = (idCountMap[idStr] || 0) + 1;
           });
-          console.log("les data", data)
 
           let inCart: any = data
             .filter((product: any) => idCountMap[product.id])

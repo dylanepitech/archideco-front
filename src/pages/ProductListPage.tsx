@@ -66,7 +66,7 @@ export default function ProductListPage() {
             isClosable: true,
           });
         } else {
-          setCart(data);
+          setCart(data.data);
           const currentProduct = products.find(product => product.id === idProduct);
 
           toast({

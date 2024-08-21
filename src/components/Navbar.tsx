@@ -32,40 +32,38 @@ export default function Navbar() {
             <ModalSearch />
           </div>
           <p className="bg-black/20 w-0.5 h-8"></p>
-          <div className="flex flex-col items-center">
+          <Link to="/FAQ" className="flex flex-col items-center">
             <CircleHelp color="#639d87" />
-            <Link
+            <div
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              to="/FAQ"
             >
               Foire au questions
-            </Link>
-          </div>
+            </div>
+          </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          <div className="flex flex-col items-center">
+          <Link to="/map" className="flex flex-col items-center">
             <MapPin color="#639d87" />
-            <Link
+            <div
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              to="/map"
+              
             >
               Nous localiser
-            </Link>
-          </div>
+            </div>
+          </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          <div className="flex flex-col items-center">
+          <Link to="/login" className="flex flex-col items-center">
             <User color="#639d87" />
-            <Link
+            <div
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              to="/login"
             >
               Connectez-vous!
-            </Link>
-          </div>
+            </div>
+          </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          <Link to="/cart" className="flex flex-col items-center">
+          <Link to="/envies" className="flex flex-col items-center">
             <Heart color="#639d87" />
             <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Mes envies
