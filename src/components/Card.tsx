@@ -4,7 +4,7 @@ import { AuthContext } from "../hooks/AuthContext";
 import { useToast } from '@chakra-ui/react'
 import { Link } from 'react-router-dom';
 
-export default function Card({ id, title, price, reduction = 0, note = 9, product }: { id: number, title: string, price: string, reduction: number, note: number, product: any }) {
+export default function Card({ id, title, price, reduction = 0, note = 9, product, onAddToCart }: { id: number, title: string, price: string, reduction: number, note: number, product: any, onAddToCart:any }) {
 
 
 
@@ -56,7 +56,7 @@ export default function Card({ id, title, price, reduction = 0, note = 9, produc
             <div className="p-4">
                 <button
                     className="w-full bg-red-500 text-white font-bold py-2 text-sm rounded hover:bg-red-600"
-                    // onClick={() => cart ? handleUpdateCart(id) : handleCreateCart(id)}
+                    onClick={onAddToCart}
                 >
                     🛒 Ajouter au panier
                 </button>

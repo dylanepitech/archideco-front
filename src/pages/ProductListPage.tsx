@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { getGem, getPem, getCuisine } from '../Requests/ProductsRequest';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -12,7 +12,7 @@ import { CreateCartBody } from '../Types/cartCrud';
 
 export default function ProductListPage() {
   const { category } = useParams();
-  const allowedCategory = ["pem", "gem", "salon", "cuisine"];
+  const allowedCategory = ["pem", "gem", "interieur"];
   const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [filters, setFilters] = useState<{ categories: string[], price: string, weight: string }>({
@@ -35,6 +35,7 @@ export default function ProductListPage() {
     }
 
     handleGetProduct();
+    handleGetMyCart();
   }, [category]);
 
   useEffect(() => {
@@ -66,10 +67,12 @@ export default function ProductListPage() {
           });
         } else {
           setCart(data);
+          const currentProduct = products.find(product => product.id === idProduct);
+
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: 'top',
-            description: ` ajouté au panier`,
+            description: `${currentProduct?.title} ajouté au panier`, // Utilisez le titre du produit ici
             status: 'success',
             duration: 4000,
             isClosable: true,
@@ -106,11 +109,12 @@ export default function ProductListPage() {
           });
         } else {
           setCart(data);
+          const currentProduct = products.find(product => product.id === idProduct);
+
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: 'top',
-            // description: `${products?.title} ajouté au panier`,
-            description: ` ajouté au panier`,
+            description: `${currentProduct?.title} ajouté au panier`, // Utilisez le titre du produit ici
             status: 'success',
             duration: 4000,
             isClosable: true,
@@ -135,7 +139,7 @@ export default function ProductListPage() {
         } else {
 
           setCart(data.data)
-          // console.log(data.data)
+          console.log(data.data)
         }
       }
     } catch (err) {
@@ -154,7 +158,7 @@ export default function ProductListPage() {
         case "pem":
           data = await getPem();
           break;
-        case "cuisine":
+        case "interieur":
           data = await getCuisine();
           break;
         default:
@@ -208,8 +212,17 @@ export default function ProductListPage() {
     return <Navigate to='/sorry/notfound' />;
   }
 
+  const handleAddToCart = (idProduct: number) => {
+    if (!cart) {
+      handleCreateCart(idProduct);
+    } else {
+      handleUpdateCart(idProduct);
+    }
+  };
+
+
   return (
-    <div className="bg-white w-screen min-h-dvh h-auto text-black">
+    <div className="bg-white w-screen overflow-x-hidden min-h-dvh h-auto text-black">
       <Navbar />
       <main className="h-auto min-w-screen mt-6 px-4 flex gap-4">
         <Aside products={products} filters={filters} setFilters={setFilters} />
@@ -217,7 +230,7 @@ export default function ProductListPage() {
           <div className="p-4 grid justify-center items-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {currentProducts.map((product: any) => (
 
-              <Card key={product.id} id={product.id} title={product.title} price={product.price} note={9} reduction={0} product={product}  />
+              <Card key={product.id} id={product.id} title={product.title} price={product.price} note={9} reduction={0} product={product} onAddToCart={() => handleAddToCart(product.id)} />
             ))}
           </div>
           {filteredProducts.length > productsPerPage && (
