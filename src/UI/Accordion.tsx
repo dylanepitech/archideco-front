@@ -57,15 +57,7 @@ const Accordions: React.FC = () => {
       content: "Contenu de la section 2",
     },
     {
-      title: "Cuisine",
-      content: "Contenu de la section 3",
-    },
-    {
-      title: "Sallon",
-      content: "Contenu de la section 3",
-    },
-    {
-      title: "Dressing",
+      title: "Aménagement intérieur",
       content: "Contenu de la section 3",
     },
   ];
