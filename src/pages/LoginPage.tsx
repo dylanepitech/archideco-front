@@ -1,8 +1,7 @@
 import { ChangeEvent, useContext, useState } from "react";
 import Footer from "../components/Footer";
-import { useToast } from '@chakra-ui/react'
+import { useToast } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
-import famille from "../assets/picture/famille.jpg";
 import { AuthContext } from "../hooks/AuthContext";
 import { login } from "../Requests/AuthRequest";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,7 @@ const LoginPage = () => {
   const [messageErreur, setMessageErreur] = useState<string>("");
   const { setAuthToken } = useContext(AuthContext);
   const navigate = useNavigate();
-  const toast = useToast()
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setMessageErreur("");
@@ -29,31 +28,30 @@ const LoginPage = () => {
 
         toast({
           title: "Connexion réussie",
-          description: '',
-          status: 'success',
+          description: "",
+          status: "success",
           duration: 4000,
           isClosable: true,
-          position: 'top'
+          position: "top",
         });
       } else {
         toast({
           title: "Identifiants invalid",
-          description: '',
-          status: 'error',
+          description: "",
+          status: "error",
           duration: 4000,
           isClosable: true,
-          position: 'top'
+          position: "top",
         });
       }
-
     } catch (error) {
       toast({
         title: "Identifiants invalid",
-        description: '',
-        status: 'error',
+        description: "",
+        status: "error",
         duration: 4000,
         isClosable: true,
-        position: 'top'
+        position: "top",
       });
     }
   };
@@ -61,12 +59,12 @@ const LoginPage = () => {
   return (
     <div className="flex min-h-full flex-col justify-center">
       <Navbar />
-      <main className="flex justify-center items-center bg-gradient-to-b from-green-duck to-green-emerald">
+      <main className="flex justify-center items-center">
         {erreur && (
           <p className="text-center text-red-500/50 text-sm">{messageErreur}</p>
         )}
-        <div className="mt-10 mb-10 sm:mx-auto sm:w-full sm:max-w-sm bg-white p-10 rounded-lg max-md:p-5 relative">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-10 mb-10 sm:mx-auto sm:w-full h-[500px] sm:max-w-sm bg-gray-100 p-10 rounded-lg max-md:p-5 relative">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-16">
             <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white bg-[#639D87] rounded-t-lg absolute left-0 top-0 w-full py-2">
               Connexion
             </h2>
@@ -89,7 +87,7 @@ const LoginPage = () => {
                     setEmail(e.target.value)
                   }
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#639D87] outline-none"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm rounded-lg sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#1E4347]"
                 />
               </div>
             </div>
@@ -120,14 +118,14 @@ const LoginPage = () => {
                     setPassword(e.target.value)
                   }
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#1E4347] outline-none"
+                  className="block w-full py-1.5 text-black rounded-lg shadow-sm sm:text-sm sm:leading-6  focus:outline-none focus:border-[1px] focus:border-[#1E4347]"
                 />
               </div>
             </div>
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center border-2 rounded-md border-black bg-[#639D87] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1E4347] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#639D87]"
+                className="flex w-full justify-center rounded-md border-black bg-[#1E4347] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1E4347] focus-visible:outline mt-12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#639D87]"
               >
                 Se connecter
               </button>
@@ -137,15 +135,12 @@ const LoginPage = () => {
             Pas encore de compte ?
             <a
               href="/register"
-              className="font-semibold leading-6 text-[#1E4347]"
+              className="font-semibold leading-6 text-[#639D87] hover:text-[#1E4347]"
             >
               {" "}
               Créez-en un !
             </a>
           </p>
-        </div>
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg max-lg:hidden border-2">
-          <img src={famille} alt="famille" className="w-full h-auto rounded-lg" />
         </div>
       </main>
       <Footer />
