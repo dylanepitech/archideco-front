@@ -10,7 +10,7 @@ import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import { getCategories, getProductByCategoryId } from '../Requests/ProductsRequest';
 import { localhost } from "../constants/Localhost";
 import { CreateCartBody } from '../Types/cartCrud';
-import { Heart, ShoppingBasket } from "lucide-react"
+import { Heart, ShoppingBasket, HeartCrack } from "lucide-react"
 import { getMyWishlist, createWishlist, updateWishlist } from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 
@@ -79,7 +79,7 @@ export default function Product() {
         handleGetMyCart()
     }, [cart]);
 
-    if(error){
+    if (error) {
         console.log(error)
     }
 
@@ -245,25 +245,51 @@ export default function Product() {
         try {
             if (authToken) {
                 let newProducts = wishlists?.id_products
-                newProducts.push(idProduct)
+                let add: boolean = true
+                if (wishlists?.id_products.includes(idProduct)) {
+
+                    newProducts = newProducts.filter((item: any) => item !== idProduct);
+                    add = false
+
+                } else {
+
+                    newProducts.push(idProduct)
+                }
+
+                console.log(newProducts)
+
 
                 const wishlistData: UpdateWishlistBody = {
                     idProducts: newProducts
                 };
                 const id = wishlists?.id
+                console.log(idProduct, wishlists.id_products)
                 const data: any | string = await updateWishlist(authToken, id, wishlistData);
                 if (typeof data === 'string') {
                     setError(data);
                 } else {
                     setWishlists(data.data);
-                    toast({
-                        title: "Felicitation",
-                        position: 'top',
-                        description: `${product?.title} ajouté au panier`,
-                        status: 'success',
-                        duration: 4000,
-                        isClosable: true,
-                    });
+
+                    if (add) {
+                        toast({
+                            title: "Felicitation",
+                            position: 'top',
+                            description: `${product?.title} ajouté au panier`,
+                            status: 'success',
+                            duration: 2000,
+                            isClosable: true,
+                        });
+                    } else {
+                        toast({
+                            title: "Felicitation",
+                            position: 'top',
+                            description: `${product?.title} retiré a la wishlist`,
+                            status: 'warning',
+                            duration: 2000,
+                            isClosable: true,
+                        });
+                    }
+
                 }
             }
         } catch (err) {
@@ -281,7 +307,7 @@ export default function Product() {
                     setWishlists(null);
                 } else {
                     setWishlists(data.data);
-                    console.log("wishlist", data.data)
+                    // console.log("wishlist", data.data)
                 }
             }
         } catch (err) {
@@ -388,13 +414,27 @@ export default function Product() {
                                 <ShoppingBasket className="text-white" />
                                 Ajouter au panier
                             </button>
-                            <button
-                                className="flex gap-2 items-center bg-sweet-pink hover:bg-funny-pink text-white rounded px-4 py-2"
-                                onClick={() => handleAddToWishlist(product?.id)}
-                            >
-                                <Heart className=" text-white" />
-                                Ajouter aux envies
-                            </button>
+                            {
+                                wishlists?.id_products.includes(product?.id) ? (
+                                    <button
+                                        className="flex gap-2 items-center bg-slate-400 hover:bg-slate-500 text-white rounded px-4 py-2"
+                                        onClick={() => handleAddToWishlist(product?.id)}
+                                    >
+                                        <HeartCrack />
+                                        Retirer de vos envies
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="flex gap-2 items-center bg-sweet-pink hover:bg-funny-pink text-white rounded px-4 py-2"
+                                        onClick={() => handleAddToWishlist(product?.id)}
+                                    >
+                                        <Heart className="text-white" />
+                                        Ajouter aux envies
+                                    </button>
+                                )
+                            }
+
+
                         </div>
                     </div>
                 </div>
