@@ -36,7 +36,7 @@ const LoginPage = () => {
         });
       } else {
         toast({
-          title: "Identifiants invalid",
+          title: "Email ou mot de passe invalide",
           description: "",
           status: "error",
           duration: 4000,
@@ -46,7 +46,8 @@ const LoginPage = () => {
       }
     } catch (error) {
       toast({
-        title: "Identifiants invalid",
+
+        title: "Email ou mot de passe invalide",
         description: "",
         status: "error",
         duration: 4000,
@@ -141,6 +142,13 @@ const LoginPage = () => {
               Créez-en un !
             </a>
           </p>
+        </div>
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg max-lg:hidden border-2">
+          <img
+            src={famille}
+            alt="famille"
+            className="w-full h-auto rounded-lg"
+          />
         </div>
       </main>
       <Footer />

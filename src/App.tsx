@@ -19,6 +19,8 @@ import CgvCgu from "./pages/CgvCgu";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import HistoirePage from "./pages/HistoirePage";
 import IndoorFurniture from "./pages/indoorFurniture"; // Capitalized component name
+import Map from "./pages/Map";
+import WishlistPage from "./pages/WishListPage";
 
 const AppRoutes: React.FC = () => {
   const { isLoading } = useContext(AuthContext);
@@ -44,6 +46,7 @@ const AppRoutes: React.FC = () => {
           element={<Product />}
         />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/envies" element={<WishlistPage/>} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/" Component={Home} />
         <Route path="/FAQ" Component={Faq} />
@@ -51,6 +54,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/privaci-politique" Component={PolitiqueConfidentialite} />
         <Route path="/about-us" Component={HistoirePage} />
         <Route path="/meubles" element={<IndoorFurniture />} />
+        <Route path="/map" Component={Map} />
+
 
         {/* <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage/>} /> */}
