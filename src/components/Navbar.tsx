@@ -1,6 +1,5 @@
 import Logo from "../assets/LogoArchideco.png";
 import {
-  Search,
   CircleHelp,
   MapPin,
   ShoppingBasket,
@@ -33,9 +32,7 @@ export default function Navbar() {
           <p className="bg-black/20 w-0.5 h-8"></p>
           <Link to="/FAQ" className="flex flex-col items-center">
             <CircleHelp color="#639d87" />
-            <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-            >
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Foire au questions
             </div>
           </Link>
@@ -43,10 +40,7 @@ export default function Navbar() {
 
           <Link to="/map" className="flex flex-col items-center">
             <MapPin color="#639d87" />
-            <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              
-            >
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Nous localiser
             </div>
           </Link>
@@ -54,9 +48,7 @@ export default function Navbar() {
 
           <Link to="/login" className="flex flex-col items-center">
             <User color="#639d87" />
-            <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-            >
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Connectez-vous!
             </div>
           </Link>

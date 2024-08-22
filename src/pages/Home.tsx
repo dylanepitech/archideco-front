@@ -16,20 +16,61 @@ import {
   PackageCheck,
   CircleAlert,
   Zap,
+  Slash,
+  Siren,
 } from "lucide-react";
 import Carousel from "../components/Carousel";
+import Logo from "../assets/LogoArchideco.png";
+import { Link } from "react-router-dom";
+import Card from "../components/Card";
+import CardFixHomePage from "../components/CardFixHomePage";
 
 export default function Home() {
   return (
     <div className="bg-slate-100 w-screen min-h-dvh h-auto text-black">
       <Navbar />
       <main className=" h-auto min-w-screen mt-6 px-4 flex flex-col gap-14">
-        <section className="w-full h-auto rounded-md bg-green-emerald text-center flex flex-col md:flex-row gap-3 items-center justify-center py-1">
+        {/* <section className="w-full h-auto rounded-md bg-green-emerald text-center flex flex-col md:flex-row gap-3 items-center justify-center py-1">
           <CircleAlert />
           <h3 className="font-Gotham">
             Cette semaine profitez de -10% sur tout l'Électroménager avec le
             code <span className="font-semibold">Archideco10</span>
           </h3>
+        </section> */}
+        <section className="w-full h-auto py-4 rounded-md font-Aquawax relative">
+          <img
+            src="./src/assets/purete.png"
+            className="w-full h-auto brightness-25 rounded-md"
+          />
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center gap-20 items-center text-white">
+            {/* <img
+              src={Logo}
+              className="brightness-175"
+              height="300"
+              width="300"
+              alt=""
+            /> */}
+            <div className=" flex flex-row gap-2 items-center justify-center w-full pl-4">
+              <h2 className="text-4xl font-bold -translate-y-2 uppercase">
+                Archideco
+              </h2>
+              <Slash size={40} color="#639d87" className="rotate-40" />
+              <h2 className="text-4xl font-bold translate-y-2 uppercase">
+                Mobalpa
+              </h2>
+            </div>
+            <p className="text-xl font-semibold font-Gotham text-white">
+              RÉALISTE, RÉALISABLE & RÉALISÉ PAR DES ARCHITECTES D'INTÉRIEUR !
+            </p>
+            <div className="flex flex-row items-center justify-center gap-6">
+              <button className="btn btn-primary btn-lg">
+                Prendre rendez-vous{" "}
+              </button>
+              <Link to="/map" className="btn bg-white btn-lg">
+                Localisez nos magasins
+              </Link>
+            </div>
+          </div>
         </section>
         <section className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
           {[
@@ -146,6 +187,15 @@ export default function Home() {
             - Nos incontournables du moment -
           </h2>
           <Carousel type="items" />
+        </section>
+
+        <section className="w-full h-auto py-4 rounded-md">
+          <h2 className="text-red-500 text-2xl font-bold text-center font-Aquawax py-6">
+            Alerte bon plan !
+          </h2>
+          <div className="grid grid-cols-4 gap-4">
+            <CardFixHomePage />
+          </div>
         </section>
 
         <section className="w-full h-auto bg-white rounded-md py-6">
