@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useState } from "react";
 import Footer from "../components/Footer";
-import { useToast } from '@chakra-ui/react'
+import { useToast } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import famille from "../assets/picture/famille.jpg";
 import { AuthContext } from "../hooks/AuthContext";
@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [messageErreur, setMessageErreur] = useState<string>("");
   const { setAuthToken } = useContext(AuthContext);
   const navigate = useNavigate();
-  const toast = useToast()
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setMessageErreur("");
@@ -29,31 +29,30 @@ const LoginPage = () => {
 
         toast({
           title: "Connexion réussie",
-          description: '',
-          status: 'success',
+          description: "",
+          status: "success",
           duration: 4000,
           isClosable: true,
-          position: 'top'
+          position: "top",
         });
       } else {
         toast({
-          title: "Identifiants invalid",
-          description: '',
-          status: 'error',
+          title: "Email ou mot de passe invalide",
+          description: "",
+          status: "error",
           duration: 4000,
           isClosable: true,
-          position: 'top'
+          position: "top",
         });
       }
-
     } catch (error) {
       toast({
-        title: "Identifiants invalid",
-        description: '',
-        status: 'error',
+        title: "Email ou mot de passe invalide",
+        description: "",
+        status: "error",
         duration: 4000,
         isClosable: true,
-        position: 'top'
+        position: "top",
       });
     }
   };
@@ -145,7 +144,11 @@ const LoginPage = () => {
           </p>
         </div>
         <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg max-lg:hidden border-2">
-          <img src={famille} alt="famille" className="w-full h-auto rounded-lg" />
+          <img
+            src={famille}
+            alt="famille"
+            className="w-full h-auto rounded-lg"
+          />
         </div>
       </main>
       <Footer />

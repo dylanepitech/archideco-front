@@ -8,6 +8,8 @@ export default {
       colors: {
         "green-emerald": "#639d87",
         "green-duck": "#1E4347",
+        "sweet-pink":"#F9429E",
+        "funny-pink":"#FF2A8E"
       },
       width: {
         100: "20rem", // 400px
