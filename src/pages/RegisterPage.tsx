@@ -77,6 +77,7 @@ const RegisterPage = () => {
       <Navbar />
       <main className="flex justify-center items-center">
         <div className="mb-10 mt-10  sm:mx-auto sm:w-full sm:max-w-lg px-10 pb-5 rounded-lg max-md:mx-5 relative">
+
           <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
             <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-black  absolute left-0 w-full py-2">
               Créer un compte

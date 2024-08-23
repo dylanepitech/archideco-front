@@ -8,16 +8,14 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   authToken: null,
-  setAuthToken: () => { },
+  setAuthToken: () => {},
   isLoading: true,
-  logout: () => { },
+  logout: () => {},
 });
 
 interface AuthProviderProps {
   children: ReactNode;
 }
-
-
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | null>(null);
@@ -26,9 +24,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("authToken");
     setAuthToken(null);
-   
   };
-
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -39,7 +35,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authToken, setAuthToken, isLoading, logout }}>
+    <AuthContext.Provider
+      value={{ authToken, setAuthToken, isLoading, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import picture1 from "../assets/pictureColorMatérieaux/Déco cuisine belle (1).jpg";
+import picture1 from "../assets/pictureColorMatérieaux/Déco cuisine belle (1).jpg";
 import picture2 from "../assets/pictureColorMatérieaux/Petite salle de bain moderne (1).jpg";
 import picture3 from "../assets/pictureColorMatérieaux/Salle à manger moderne avec canapé vert.jpg";
 import picture4 from "../assets/pictureColorMatérieaux/Dressing bois scandinave.jpg";
@@ -31,6 +31,7 @@ import color7 from "../assets/pictureColorMatérieaux/Agua Marina Verni Brillan
 import color8 from "../assets/pictureColorMatérieaux/Indigo Brillant C100.webp";
 import color9 from "../assets/pictureColorMatérieaux/Pumpkin mat c100.webp";
 import color10 from "../assets/pictureColorMatérieaux/Laque Praline Brillant.webp";
+import { Link } from "react-router-dom";
 
 export default function IndoorFurniture() {
   const sliderSettings = {
@@ -73,12 +74,12 @@ export default function IndoorFurniture() {
               <span className="absolute top-[200px] left-8 text-l">
                 du 22/08/24 au 02/09/24
               </span>
-              <a
-                href=""
+              <Link
+                to="/map"
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
                 VISITEZ NOS MAGASIN
-              </a>
+              </Link>
             </div>
           </div>
           <div className="relative w-full h-[600px]">
