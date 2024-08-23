@@ -24,6 +24,7 @@ export default {
       },
       minHeight: {
         100: "30rem",
+        "2/3": "75vh",
       },
       maxHeight: {
         100: "30rem",

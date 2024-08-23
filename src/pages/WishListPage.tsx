@@ -324,7 +324,7 @@ const WishlistPage = () => {
           )}
         </main>
       ) : (
-        <main className="flex flex-col container mx-auto px-4 py-8 items-center w-full justify-center">
+        <main className="flex flex-col container mx-auto min-h-2/3 h-auto px-4 py-8 items-center w-full justify-center">
           <h1 className="text-3xl font-bold mb-6 text-center">
             Vous n'êtes pas connectez
           </h1>
@@ -332,8 +332,8 @@ const WishlistPage = () => {
             to={"/login"}
             className="text-black font-semibold text-md text-center"
           >
-            Profitez de tous nos services en vous connectant rapidement{" "}
-            <span className="text-blue-500">ici</span>
+            Profitez de tous nos services en vous connectant rapidement
+            <span className="text-blue-500"> ici</span>
           </Link>
         </main>
       )}

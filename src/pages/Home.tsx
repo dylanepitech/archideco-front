@@ -254,9 +254,13 @@ export default function Home() {
               RÉALISTE, RÉALISABLE & RÉALISÉ PAR DES ARCHITECTES D'INTÉRIEUR !
             </p>
             <div className="flex flex-row items-center justify-center gap-6">
-              <button className="btn btn-primary btn-lg">
+              <a
+                href="https://www.mobalpa.fr/me-rendre-en-magasin"
+                target="_blank"
+                className="btn btn-primary btn-lg"
+              >
                 Prendre rendez-vous{" "}
-              </button>
+              </a>
               <Link to="/map" className="btn bg-white btn-lg">
                 Localisez nos magasins
               </Link>
