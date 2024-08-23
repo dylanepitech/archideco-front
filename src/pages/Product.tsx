@@ -12,104 +12,42 @@ import {
   getProductByCategoryId,
 } from "../Requests/ProductsRequest";
 import { localhost } from "../constants/Localhost";
-import { CreateCartBody } from '../Types/cartCrud';
-import { Heart, ShoppingBasket, HeartCrack } from "lucide-react"
-import { getMyWishlist, createWishlist, updateWishlist } from "../Requests/WishlistRequest";
+import { CreateCartBody } from "../Types/cartCrud";
+import { Heart, ShoppingBasket, HeartCrack } from "lucide-react";
+import {
+  getMyWishlist,
+  createWishlist,
+  updateWishlist,
+} from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
+
 export default function Product() {
+  const { category, productTitle, id } = useParams();
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { authToken } = useContext(AuthContext);
+  const toast = useToast();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState<any | null>(null);
+  const [mainImage, setMainImage] = useState("");
+  const [cart, setCart] = useState<any | null>(null);
+  const [wishlists, setWishlists] = useState<any | null>(null);
 
-    const { category, productTitle, id } = useParams();
-    const [categoryId, setCategoryId] = useState<number | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const { authToken } = useContext(AuthContext);
-    const toast = useToast()
-    const navigate = useNavigate();
-    const [product, setProduct] = useState<any | null>(null);
-    const [mainImage, setMainImage] = useState('');
-    const [cart, setCart] = useState<any | null>(null);
-    const [wishlists, setWishlists] = useState<any | null>(null);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getCategories();
+        // setCategories(categoriesData);
 
+        const titleSearched = category?.toLowerCase();
+        const data = categoriesData
+          .filter((c) => c.title.toLowerCase() === titleSearched)
+          .map((c) => c.id);
 
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const categoriesData = await getCategories();
-                // setCategories(categoriesData);
-
-                const titleSearched = category?.toLowerCase();
-                const data = categoriesData
-                    .filter(c => c.title.toLowerCase() === titleSearched)
-                    .map(c => c.id);
-
-                if (data.length > 0) {
-                    setCategoryId(data[0]);
-                } else {
-                    setCategoryId(null);
-                }
-            } catch (err: any) {
-                setError(err.message);
-            }
-        };
-
-        fetchCategories();
-    }, [category]);
-
-    useEffect(() => {
-        if (authToken && !wishlists) {
-            handleGetMyWishlist()
-        }
-    }, [authToken]);
-
-
-    useEffect(() => {
-        if (product) {
-
-            setMainImage(removeBaseUrl(product?.images[Object.keys(product?.images)[0]][0].image))
-
-        }
-    }, [product]);
-
-    useEffect(() => {
-        if (categoryId !== null) {
-            handleGetProduct(categoryId);
-        }
-    }, [categoryId]);
-
-
-    useEffect(() => {
-        handleGetMyCart()
-    }, [cart]);
-
-    if (error) {
-        console.log(error)
-    }
-
-
-    const handleGetProduct = async (categoryId: number) => {
-        try {
-            const data: any[] = await getProductByCategoryId(categoryId);
-            const productId = id;
-            const expectedTitle: any = productTitle;
-
-            const specificProduct = data.find(
-                (product: any) => product.id == productId && product.title.toLowerCase() == expectedTitle.toLowerCase()
-            );
-
-
-
-
-
-            if (specificProduct) {
-                setProduct(specificProduct);
-            } else {
-                navigate('/sorry/not-found');
-
-            }
-        } catch (err: any) {
-            setError(err.message);
-            console.error(err);
-
+        if (data.length > 0) {
+          setCategoryId(data[0]);
+        } else {
+          setCategoryId(null);
         }
       } catch (err: any) {
         setError(err.message);
@@ -239,62 +177,22 @@ export default function Product() {
           });
           console.log(cart);
         }
-    };
+      }
+    } catch (err) {
+      setError("Erreur lors de la mise à jour du panier");
+      console.error("Erreur:", err);
+    }
+  };
 
-    const handleUpdateWishlist = async (idProduct: number) => {
-        try {
-            if (authToken) {
-                let newProducts = wishlists?.id_products
-                let add: boolean = true
-                if (wishlists?.id_products.includes(idProduct)) {
-
-                    newProducts = newProducts.filter((item: any) => item !== idProduct);
-                    add = false
-
-                } else {
-
-                    newProducts.push(idProduct)
-                }
-
-                console.log(newProducts)
-
-
-                const wishlistData: UpdateWishlistBody = {
-                    idProducts: newProducts
-                };
-                const id = wishlists?.id
-                console.log(idProduct, wishlists.id_products)
-                const data: any | string = await updateWishlist(authToken, id, wishlistData);
-                if (typeof data === 'string') {
-                    setError(data);
-                } else {
-                    setWishlists(data.data);
-
-                    if (add) {
-                        toast({
-                            title: "Felicitation",
-                            position: 'top',
-                            description: `${product?.title} ajouté au panier`,
-                            status: 'success',
-                            duration: 2000,
-                            isClosable: true,
-                        });
-                    } else {
-                        toast({
-                            title: "Felicitation",
-                            position: 'top',
-                            description: `${product?.title} retiré a la wishlist`,
-                            status: 'warning',
-                            duration: 2000,
-                            isClosable: true,
-                        });
-                    }
-
-                }
-            }
-        } catch (err) {
-            setError("Erreur lors de la mise à jour de la liste de souhaits");
-            console.error("Erreur:", err);
+  const handleGetMyCart = async () => {
+    try {
+      if (authToken) {
+        const data: any | string = await getMyCart(authToken);
+        if (typeof data === "string") {
+          setCart(null);
+          setError(data);
+        } else {
+          setCart(data.data);
         }
       }
     } catch (err) {
@@ -303,23 +201,9 @@ export default function Product() {
     }
   };
 
-    const handleGetMyWishlist = async () => {
-        try {
-            if (authToken) {
-                const data: any | string = await getMyWishlist(authToken);
-                if (typeof data === 'string') {
-                    setError(data);
-                    setWishlists(null);
-                } else {
-                    setWishlists(data.data);
-                    // console.log("wishlist", data.data)
-                }
-            }
-        } catch (err) {
-            setError("Erreur lors de la recuperation de la liste de souhaits");
-            console.error("Erreur:", err);
-        }
-    };
+  const changeImage = (src: string) => {
+    setMainImage(src);
+  };
 
   const handleCreateWishlist = async (idProduct: number) => {
     try {
@@ -356,12 +240,21 @@ export default function Product() {
     try {
       if (authToken) {
         let newProducts = wishlists?.id_products;
-        newProducts.push(idProduct);
+        let add: boolean = true;
+        if (wishlists?.id_products.includes(idProduct)) {
+          newProducts = newProducts.filter((item: any) => item !== idProduct);
+          add = false;
+        } else {
+          newProducts.push(idProduct);
+        }
+
+        console.log(newProducts);
 
         const wishlistData: UpdateWishlistBody = {
           idProducts: newProducts,
         };
         const id = wishlists?.id;
+        console.log(idProduct, wishlists.id_products);
         const data: any | string = await updateWishlist(
           authToken,
           id,
@@ -371,14 +264,26 @@ export default function Product() {
           setError(data);
         } else {
           setWishlists(data.data);
-          toast({
-            title: "Felicitation",
-            position: "top",
-            description: `${product?.title} ajouté au panier`,
-            status: "success",
-            duration: 4000,
-            isClosable: true,
-          });
+
+          if (add) {
+            toast({
+              title: "Felicitation",
+              position: "top",
+              description: `${product?.title} ajouté au panier`,
+              status: "success",
+              duration: 2000,
+              isClosable: true,
+            });
+          } else {
+            toast({
+              title: "Felicitation",
+              position: "top",
+              description: `${product?.title} retiré a la wishlist`,
+              status: "warning",
+              duration: 2000,
+              isClosable: true,
+            });
+          }
         }
       }
     } catch (err) {
@@ -396,7 +301,7 @@ export default function Product() {
           setWishlists(null);
         } else {
           setWishlists(data.data);
-          console.log("wishlist", data.data);
+          // console.log("wishlist", data.data)
         }
       }
     } catch (err) {
@@ -413,38 +318,50 @@ export default function Product() {
     }
   };
 
-                        </Accordion>
-                        <div className="flex items-center space-x-2">
-                            <button
-                                className="flex gap-2 items-center bg-green-emerald text-white hover:bg-green-duck rounded px-4 py-2"
-                                onClick={() => handleAddToCart(product?.id)}
-                            >
-                                <ShoppingBasket className="text-white" />
-                                Ajouter au panier
-                            </button>
-                            {
-                                wishlists?.id_products.includes(product?.id) ? (
-                                    <button
-                                        className="flex gap-2 items-center bg-slate-400 hover:bg-slate-500 text-white rounded px-4 py-2"
-                                        onClick={() => handleAddToWishlist(product?.id)}
-                                    >
-                                        <HeartCrack />
-                                        Retirer de vos envies
-                                    </button>
-                                ) : (
-                                    <button
-                                        className="flex gap-2 items-center bg-sweet-pink hover:bg-funny-pink text-white rounded px-4 py-2"
-                                        onClick={() => handleAddToWishlist(product?.id)}
-                                    >
-                                        <Heart className="text-white" />
-                                        Ajouter aux envies
-                                    </button>
-                                )
-                            }
+  const handleAddToCart = (idProduct: number) => {
+    if (!cart) {
+      handleCreateCart(idProduct);
+    } else {
+      handleUpdateCart(idProduct);
+    }
+  };
 
+  function removeBaseUrl(url: any) {
+    if (localhost == "") {
+      if (typeof url == "string") {
+        const baseUrl = "http://localhost:8000";
+        return url.replace(baseUrl, "");
+      }
+    } else {
+      return url;
+    }
+  }
 
-                        </div>
-
+  return (
+    <div className="bg-white w-screen min-h-screen text-black">
+      <Navbar />
+      <main className="flex  mt-6 px-4 gap-6">
+        <div className="flex flex-col items-center md:items-start md:flex-row  w-full justify-center gap-6">
+          <div className="flex flex-col-reverse md:flex-row gap-2 items-start ">
+            <div className="flex flex-row flex-wrap md:flex-col items-center gap-2 md:gap-0  w-full md:w-1/4 space-y-4 md:space-y-2">
+              {product?.images &&
+                Object.values(product.images)
+                  .flat()
+                  .slice(0, 12)
+                  .map((imageObj: any, index) => (
+                    <div
+                      key={index}
+                      className="w-[50px] h-[50px] md:w-[70px] md:h-[70px] flex items-center justify-center flex-shrink-0"
+                    >
+                      <img
+                        key={index}
+                        src={removeBaseUrl(imageObj.image)}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="cursor-pointer rounded-lg w-full h-full object-cover  border border-gray-300 hover:border-blue-500"
+                        onClick={() =>
+                          changeImage(removeBaseUrl(imageObj.image))
+                        }
+                      />
                     </div>
                   ))}
             </div>
@@ -470,10 +387,8 @@ export default function Product() {
             <h2 className="text-xl font-bold text-gray-900 mb-2">
               {product?.title}
             </h2>
-            <p className="text-lg text-green-emerald font-bold mb-4">
-              {product?.price}
-            </p>
             <p className="text-lg text-gray-700 mb-2">{product?.description}</p>
+            <p className="text-lg text-green-500 mb-4">{product?.price}</p>
             <div className="flex flex-wrap items-center space-x-2 mb-4">
               <span className="bg-green-500 text-white px-2 py-1 rounded">
                 G
@@ -484,14 +399,12 @@ export default function Product() {
               <span className="bg-red-500 text-white px-2 py-1 rounded">T</span>
             </div>
 
-            <p className="text-gray-600 mb-2">Modalitées d'achat:</p>
+            <p className="text-gray-600 mb-2">Comment obtenir:</p>
             <p className="text-gray-600 mb-2">
-              <span className="font-semibold">Livraison :</span> Vérifier la
-              disponibilité pour une livraison
+              Livraison: Vérifier la disponibilité pour une livraison
             </p>
             <p className="text-gray-600 mb-4">
-              <span className="font-semibold">En magasin : </span> Vérifier le
-              stock en magasin
+              En magasin: Vérifier le stock en magasin
             </p>
             <Accordion title="Carateristiques">
               <ul className="list-disc pl-5">
@@ -517,13 +430,23 @@ export default function Product() {
                 <ShoppingBasket className="text-white" />
                 Ajouter au panier
               </button>
-              <button
-                className="flex gap-2 items-center bg-red-500/50 hover:bg-red-500/70 text-white rounded px-4 py-2"
-                onClick={() => handleAddToWishlist(product?.id)}
-              >
-                <Heart color="white" />
-                Ajouter aux envies
-              </button>
+              {wishlists?.id_products.includes(product?.id) ? (
+                <button
+                  className="flex gap-2 items-center bg-slate-400 hover:bg-slate-500 text-white rounded px-4 py-2"
+                  onClick={() => handleAddToWishlist(product?.id)}
+                >
+                  <HeartCrack />
+                  Retirer de vos envies
+                </button>
+              ) : (
+                <button
+                  className="flex gap-2 items-center bg-sweet-pink hover:bg-funny-pink text-white rounded px-4 py-2"
+                  onClick={() => handleAddToWishlist(product?.id)}
+                >
+                  <Heart className="text-white" />
+                  Ajouter aux envies
+                </button>
+              )}
             </div>
           </div>
         </div>
