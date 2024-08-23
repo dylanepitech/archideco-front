@@ -152,7 +152,7 @@ export default function IndoorFurniture() {
       <div className="w-full bg-gray-100 mt-6 py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">
-            Personnalisez Vos Meubles
+            Personnalisez vos intérieurs
           </h2>
           <p className="text-lg mb-8 text-center">
             Découvrez notre gamme de meubles pour cuisine, salon, dressing, et
@@ -179,7 +179,7 @@ export default function IndoorFurniture() {
                 </p>
                 <a
                   href="/cuisine"
-                  className="inline-block bg-[#1E4347] text-white p-3 rounded-md hover:bg-white hover:text-[#1E4347]"
+                  className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#1E4347] hover:text-white"
                 >
                   Explorer
                 </a>
@@ -202,7 +202,7 @@ export default function IndoorFurniture() {
                 </p>
                 <a
                   href="/salon"
-                  className="inline-block bg-[#639D87] text-white p-3 rounded-md hover:bg-white hover:text-[#639D87]"
+                  className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#639D87] hover:text-white"
                 >
                   Explorer
                 </a>
@@ -225,7 +225,7 @@ export default function IndoorFurniture() {
                 </p>
                 <a
                   href="/dressing"
-                  className="inline-block bg-[#1E4347] text-white p-3 rounded-md hover:bg-white hover:text-[#1E4347]"
+                  className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#1E4347] hover:text-white"
                 >
                   Explorer
                 </a>
@@ -248,7 +248,7 @@ export default function IndoorFurniture() {
                 </p>
                 <a
                   href="/salle-de-bain"
-                  className="inline-block bg-[#639D87] text-white p-3 rounded-md hover:bg-white hover:text-[#639D87]"
+                  className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#639D87] hover:text-white"
                 >
                   Explorer
                 </a>
