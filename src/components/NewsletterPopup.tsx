@@ -50,7 +50,7 @@ const NewsletterPopup = () => {
             </button>
             <h2
               className={`text-xl font-bold text-green-emerald mb-4 ${
-                validate ? "text-red-500 font-semibold" : ""
+                validate ? "text-red-500 font-semiboldj" : ""
               }`}
             >
               {validate ? "Merci !" : "Suivez la tendance !"}
