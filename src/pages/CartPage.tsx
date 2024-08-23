@@ -271,7 +271,7 @@ const CartPage: React.FC = () => {
                     <span>{total} €</span>
                   </div>
                 </div>
-                <button className="w-full mt-4 bg-green-light text-white px-6 py-2 rounded hover:bg-custom-bg">
+                <button className="w-full mt-4 bg-green-emerald text-white px-6 py-2 rounded hover:bg-custom-bg">
                   Valider mon panier
                 </button>
                 <form onSubmit={handlePromoCodeSubmit} className="mt-4">
@@ -285,7 +285,7 @@ const CartPage: React.FC = () => {
                     />
                     <button
                       type="submit"
-                      className="bg-green-light text-white px-4 py-2 rounded-r-md hover:bg-custom-bg"
+                      className="bg-green-emerald text-white px-4 py-2 rounded-r-md hover:bg-custom-bg"
                     >
                       Appliquer
                     </button>
