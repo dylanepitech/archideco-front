@@ -75,9 +75,11 @@ export default function Card({
             <span className="ml-2 text-xs text-zinc-500">{note} / 10</span>
           </div>
           {reduction ? (
-            <div className="mt-2 flex flex-row items-center gap-1 justify-center">
-              <span className="text-red-600 font-bold text-xl">{price}</span>
-              <span className="line-through text-zinc-500 text-sm">
+            <div className="mt-2 grid  place-items-center justify-items-center">
+              <span className="text-red-600 font-bold text-xl col-span-6">
+                {price}
+              </span>
+              <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
                 {reduction}
               </span>
               <DiscountCalculator price={price} reduction={reduction} />
@@ -139,7 +141,7 @@ const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
   }, [price, reduction]);
 
   return (
-    <span className="bg-red-500 text-white text-xs font-bold uppercase px-2 rounded mt-2 inline-block">
+    <span className="bg-red-500 text-white text-md font-bold uppercase px-2 rounded mt-2 inline-block col-span-12">
       BON PLAN {pourcentage.toFixed()}%
     </span>
   );
