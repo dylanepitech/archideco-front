@@ -31,7 +31,6 @@ const CartPage: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [cart, setCart] = useState<any | null>(null);
-  const toast = useToast()
 
 
   useEffect(() => {

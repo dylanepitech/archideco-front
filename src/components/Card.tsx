@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
 import { localhost } from "../constants/Localhost";
-import { AuthContext } from "../hooks/AuthContext";
-import { useToast } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 export default function Card({
