@@ -309,7 +309,7 @@ export default function Product() {
 
 
     function removeBaseUrl(url: any) {
-        if (localhost == "") {
+        if (localhost == "http://localhost:8000") {
 
             if (typeof url == "string") {
                 const baseUrl = "http://localhost:8000";
