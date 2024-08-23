@@ -76,10 +76,11 @@ const RegisterPage = () => {
     <div className="flex min-h-full flex-col justify-center">
       <Navbar />
       <main className="flex justify-center items-center">
-        <div className="mb-10 mt-10 bg-gray-100 sm:mx-auto sm:w-full sm:max-w-lg px-10 pb-5 rounded-lg max-md:mx-5 relative">
+        <div className="mb-10 mt-10  sm:mx-auto sm:w-full sm:max-w-lg px-10 pb-5 rounded-lg max-md:mx-5 relative">
+
           <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
-            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white bg-[#1E4347] rounded-t-lg absolute left-0 w-full py-2">
-              Inscription
+            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-black  absolute left-0 w-full py-2">
+              Créer un compte
             </h2>
           </div>
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -100,7 +101,7 @@ const RegisterPage = () => {
                       setFirstname(e.target.value)
                     }
                     type="text"
-                    className="block w-full py-1.5 text-black rounded-md shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87]"
+                    className="block w-full py-1.5 text-black rounded-md shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] border-[1px] border-[#639D87]"
                   />
                 </div>
               </div>
@@ -120,7 +121,7 @@ const RegisterPage = () => {
                       setLastname(e.target.value)
                     }
                     type="text"
-                    className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md "
+                    className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md border-[1px] border-[#639D87] "
                   />
                 </div>
               </div>
@@ -142,7 +143,7 @@ const RegisterPage = () => {
                   }
                   type="email"
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md border-[1px] border-[#639D87]"
                 ></input>
               </div>
             </div>
@@ -165,7 +166,7 @@ const RegisterPage = () => {
                   }
                   type="password"
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md border-[1px] border-[#639D87]"
                 ></input>
               </div>
             </div>
@@ -188,7 +189,7 @@ const RegisterPage = () => {
                   }
                   type="password"
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md border-[1px] border-[#639D87]"
                 ></input>
               </div>
             </div>
@@ -202,7 +203,7 @@ const RegisterPage = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setCgvChecked(e.target.checked)
                   }
-                  className="h-4 w-4 text-[#639D87] focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
+                  className="h-4 w-4 text-[#639D87] focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md border-[1px] border-[#639D87]"
                 />
                 <label
                   htmlFor="cgv"
