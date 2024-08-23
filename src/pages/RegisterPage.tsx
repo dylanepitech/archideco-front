@@ -1,11 +1,9 @@
 import Footer from "../components/Footer";
 import { ChangeEvent, useState } from "react";
 import Navbar from "../components/Navbar";
-import famille from "../assets/picture/famille.jpg";
-import { useToast } from '@chakra-ui/react'
+import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../Requests/AuthRequest";
-
 
 const RegisterPage = () => {
   const [firstname, setFirstname] = useState<string>("");
@@ -17,7 +15,7 @@ const RegisterPage = () => {
   const [cgvChecked, setCgvChecked] = useState<boolean | undefined>(undefined);
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  const toast = useToast()
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,36 +37,36 @@ const RegisterPage = () => {
     if (isValid) {
       try {
         const response = await register(firstname, lastname, email, password);
-        console.log(response)
-        if (typeof response === 'string') {
+        console.log(response);
+        if (typeof response === "string") {
           setError(response);
           toast({
             title: "Erreur d'inscription",
             description: error,
-            status: 'error',
+            status: "error",
             duration: 4000,
             isClosable: true,
-            position: 'top'
+            position: "top",
           });
         } else {
           toast({
             title: "Inscription réussie",
             description: response.message,
-            status: 'success',
+            status: "success",
             duration: 4000,
             isClosable: true,
-            position: 'top'
+            position: "top",
           });
-          navigate('/login');
+          navigate("/login");
         }
       } catch (err: any) {
         toast({
           title: "Erreur d'inscription",
           description: err.message,
-          status: 'error',
+          status: "error",
           duration: 4000,
           isClosable: true,
-          position: 'top'
+          position: "top",
         });
       }
     }
@@ -77,13 +75,10 @@ const RegisterPage = () => {
   return (
     <div className="flex min-h-full flex-col justify-center">
       <Navbar />
-      <main className="flex justify-center items-center bg-gradient-to-b from-green-duck to-green-emerald">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg max-lg:hidden border-2">
-          <img src={famille} alt="famille" className="w-full h-auto rounded-lg" />
-        </div>
-        <div className="mb-10 mt-10 sm:mx-auto sm:w-full sm:max-w-sm bg-white px-10 pb-5 rounded-lg max-md:mx-5 relative">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white bg-[#639D87] rounded-t-lg absolute left-0 w-full py-2">
+      <main className="flex justify-center items-center">
+        <div className="mb-10 mt-10 bg-gray-100 sm:mx-auto sm:w-full sm:max-w-lg px-10 pb-5 rounded-lg max-md:mx-5 relative">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
+            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white bg-[#1E4347] rounded-t-lg absolute left-0 w-full py-2">
               Inscription
             </h2>
           </div>
@@ -105,7 +100,7 @@ const RegisterPage = () => {
                       setFirstname(e.target.value)
                     }
                     type="text"
-                    className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#639D87] outline-none"
+                    className="block w-full py-1.5 text-black rounded-md shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87]"
                   />
                 </div>
               </div>
@@ -125,7 +120,7 @@ const RegisterPage = () => {
                       setLastname(e.target.value)
                     }
                     type="text"
-                    className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#1E4347] outline-none"
+                    className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md "
                   />
                 </div>
               </div>
@@ -147,7 +142,7 @@ const RegisterPage = () => {
                   }
                   type="email"
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#639D87] outline-none"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
                 ></input>
               </div>
             </div>
@@ -170,7 +165,7 @@ const RegisterPage = () => {
                   }
                   type="password"
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#1E4347] outline-none"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
                 ></input>
               </div>
             </div>
@@ -193,7 +188,7 @@ const RegisterPage = () => {
                   }
                   type="password"
                   required
-                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 border-b-2 border-[#639D87] outline-none"
+                  className="block w-full py-1.5 text-black shadow-sm sm:text-sm sm:leading-6 focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
                 ></input>
               </div>
             </div>
@@ -207,9 +202,12 @@ const RegisterPage = () => {
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setCgvChecked(e.target.checked)
                   }
-                  className="h-4 w-4 text-[#639D87] focus:ring-[#639D87] border-gray-300 rounded"
+                  className="h-4 w-4 text-[#639D87] focus:outline-none focus:border-[1px] focus:border-[#639D87] rounded-md"
                 />
-                <label htmlFor="cgv" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="cgv"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   J'accepte les conditions générales de vente
                 </label>
               </div>
@@ -236,7 +234,7 @@ const RegisterPage = () => {
             Déjà membre ?
             <a
               href="/login"
-              className="font-semibold leading-6 text-[#639D87] hover:text-[#1E4347]"
+              className="font-semibold leading-6 text-[#1E4347] hover:text-[#639D87]"
             >
               {" "}
               Connectez-vous !
