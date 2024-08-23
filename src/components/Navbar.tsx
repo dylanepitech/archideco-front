@@ -8,13 +8,33 @@ import {
   LayoutGrid,
   X,
   Heart,
+  DoorOpen,
 } from "lucide-react";
 import Accordions from "../UI/Accordion";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ModalSearch from "./ModalSearch";
+import { useToast } from "@chakra-ui/react";
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const [connected, setConnected] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    function isConnected() {
+      const token = localStorage.getItem("authToken");
+
+      return token ? setConnected(true) : setConnected(false);
+    }
+    isConnected();
+  });
+
+  function deconnexion() {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+    window.location.reload();
+  }
 
   function openMenu() {
     open ? setOpen(false) : setOpen(true);
@@ -46,12 +66,25 @@ export default function Navbar() {
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          <Link to="/login" className="flex flex-col items-center">
-            <User color="#639d87" />
-            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-              Connectez-vous!
-            </div>
-          </Link>
+          {connected ? (
+            <p
+              className="flex flex-col items-center hover:cursor-pointer"
+              onClick={() => deconnexion()}
+            >
+              <DoorOpen color="#639d87" />
+              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline text-red-500">
+                Déconnexion
+              </div>
+            </p>
+          ) : (
+            <Link to="/login" className="flex flex-col items-center">
+              <User color="#639d87" />
+              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                Connectez-vous!
+              </div>
+            </Link>
+          )}
+
           <p className="bg-black/20 w-0.5 h-8"></p>
 
           <Link to="/envies" className="flex flex-col items-center">

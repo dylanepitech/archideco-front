@@ -1,7 +1,30 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
+import { newsletterUser } from "../Requests/UserCrudRequests";
 
 const NewsletterPopup = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [validate, setValidate] = useState<boolean>(false);
+
+  const registerNewsletter = async (e: any) => {
+    e.preventDefault();
+
+    if (!email) {
+      return;
+    }
+    try {
+      const response = await newsletterUser(email);
+
+      if (response.status === 200) {
+        console.log("ok");
+        setValidate(true);
+      } else {
+        console.log("nikmouk");
+      }
+    } catch (error) {
+      console.log("Erreur lors de l'inscription à la newsletter:", error);
+    }
+  };
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -25,25 +48,46 @@ const NewsletterPopup = () => {
             >
               &times;
             </button>
-            <h2 className="text-xl font-bold text-green-emerald mb-4">
-              Suivez la tendance !
+            <h2
+              className={`text-xl font-bold text-green-emerald mb-4 ${
+                validate ? "text-red-500 font-semiboldj" : ""
+              }`}
+            >
+              {validate ? "Merci !" : "Suivez la tendance !"}
             </h2>
-            <p className="text-base text-gray-700 mb-6">
-              Écoutez vos envies et abonnez-vous à notre newsletter pour ne rien
-              manquer des dernières tendances.
+            <p
+              className={`text-base text-gray-700 mb-6 ${
+                validate ? "text-black" : ""
+              }`}
+            >
+              {validate
+                ? "Merci d'avoir souscris a notre newsletter, promis nous n'allons pas vous spamer mais juste vous envoyer les tendances et promotion."
+                : "Écoutez vos envies et abonnez-vous à notre newsletter pour ne rien manquer des dernières tendances."}
             </p>
             <form className="flex flex-col space-y-4">
               <input
                 type="email"
                 placeholder="Votre adresse email"
                 className="border border-gray-300 bg-white rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-emerald"
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
               />
-              <button
-                type="submit"
-                className="bg-green-emerald text-white py-2 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn btn-solid-success"
-              >
-                S'abonner
-              </button>
+              {validate ? (
+                <button
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="bg-green-emerald text-white py-2 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn btn-solid-success"
+                >
+                  Fermer
+                </button>
+              ) : (
+                <button
+                  onClick={(e) => registerNewsletter(e)}
+                  className="bg-green-emerald text-white py-2 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn btn-solid-success"
+                >
+                  S'abonner
+                </button>
+              )}
             </form>
           </div>
         </div>
