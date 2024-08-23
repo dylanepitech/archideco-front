@@ -19,7 +19,6 @@ import CgvCgu from "./pages/CgvCgu";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import HistoirePage from "./pages/HistoirePage";
 import IndoorFurniture from "./pages/indoorFurniture";
-import UserProfile from "./pages/";
 const AppRoutes: React.FC = () => {
   const { isLoading } = useContext(AuthContext);
 
