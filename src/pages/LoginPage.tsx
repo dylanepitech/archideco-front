@@ -46,7 +46,6 @@ const LoginPage = () => {
       }
     } catch (error) {
       toast({
-
         title: "Email ou mot de passe invalide",
         description: "",
         status: "error",
@@ -64,7 +63,7 @@ const LoginPage = () => {
         {erreur && (
           <p className="text-center text-red-500/50 text-sm">{messageErreur}</p>
         )}
-        <div className="mt-10 mb-10 sm:mx-auto sm:w-full h-[500px] sm:max-w-sm bg-gray-100 p-10 rounded-lg max-md:p-5 relative">
+        <div className="mt-10 mb-10 sm:mx-auto sm:w-full h-[500px] sm:max-w-lg bg-gray-100 p-10 rounded-lg max-md:p-5 relative">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-16">
             <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white bg-[#639D87] rounded-t-lg absolute left-0 top-0 w-full py-2">
               Connexion
@@ -142,13 +141,6 @@ const LoginPage = () => {
               Créez-en un !
             </a>
           </p>
-        </div>
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-white rounded-lg max-lg:hidden border-2">
-          <img
-            src={famille}
-            alt="famille"
-            className="w-full h-auto rounded-lg"
-          />
         </div>
       </main>
       <Footer />
