@@ -1,7 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
+import { delay } from "framer-motion";
 
 export default function Carousel({ type }: { type: "marques" | "items" }) {
   const items = [

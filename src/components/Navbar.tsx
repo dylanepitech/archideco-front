@@ -17,8 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 import ModalSearch from "./ModalSearch";
 import { AuthContext } from "../hooks/AuthContext";
 import decodeToken from "../hooks/DecodeToken";
-
-
+import { useConnected } from "../hooks/Connected";
+        
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
   const { authToken } = useContext<any>(AuthContext);
@@ -26,22 +26,15 @@ export default function Navbar() {
   const roles = decodedToken ? decodedToken.roles : [];
   const navigate = useNavigate();
   const [connected, setConnected] = useState<boolean | null>(null);
+  const [open, setOpen] = useState<boolean>(false);
+  const connected = useConnected();
 
-  useEffect(() => {
-    function isConnected() {
-      const token = localStorage.getItem("authToken");
-
-      return token ? setConnected(true) : setConnected(false);
-    }
-    isConnected();
-  });
 
   function deconnexion() {
     localStorage.removeItem("authToken");
     navigate("/login");
     window.location.reload();
   }
-
 
   function openMenu() {
     open ? setOpen(false) : setOpen(true);
@@ -59,9 +52,7 @@ export default function Navbar() {
           <p className="bg-black/20 w-0.5 h-8"></p>
           <Link to="/FAQ" className="flex flex-col items-center">
             <CircleHelp color="#639d87" />
-            <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-            >
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Foire au questions
             </div>
           </Link>
@@ -69,17 +60,16 @@ export default function Navbar() {
 
           <Link to="/map" className="flex flex-col items-center">
             <MapPin color="#639d87" />
-            <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
 
-            >
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
               Nous localiser
             </div>
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
           {connected ? (
-            <div
+            <div>
+            <p
               className="flex flex-col items-center hover:cursor-pointer"
               onClick={() => deconnexion()}
             >
@@ -88,6 +78,7 @@ export default function Navbar() {
                 Déconnexion
               </div>
             </div>
+            </p>
           ) : (
             <Link to="/login" className="flex flex-col items-center">
               <User color="#639d87" />
