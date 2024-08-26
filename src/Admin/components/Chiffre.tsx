@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function ProductPage() {
+export default function Chiffre() {
   return (
     <div>
-      
+      componsant chiffre
     </div>
   )
 }

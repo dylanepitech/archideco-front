@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { localhost } from "../constants/Localhost";
-import { AuthContext } from "../hooks/AuthContext";
-import { useToast } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useConnected } from "../hooks/Connected";
 
 export default function Card({
   id,
   title,
   price,
-  reduction = 0,
+  reduction,
   note = 9,
   product,
   onAddToCart,
@@ -16,7 +15,7 @@ export default function Card({
   id: number;
   title: string;
   price: string;
-  reduction: number;
+  reduction?: string;
   note: number;
   product: any;
   onAddToCart: any;
@@ -35,13 +34,19 @@ export default function Card({
   };
 
   const removeBaseUrl = (url: string) => {
-    if (localhost === "") {
+    if (localhost == "") {
       const baseUrl = "http://localhost:8000";
       return url.replace(baseUrl, "");
     } else {
       return url;
     }
   };
+  const connected = useConnected();
+  const navigate = useNavigate();
+  const onLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="bg-slate-100 rounded-lg border border-zinc-200 max-w-xs w-full h-full flex flex-col">
       <Link to={`/product/${product?.categoryTitle}/${title}/${product?.id}`}>
@@ -63,19 +68,29 @@ export default function Card({
             </span>
             <span className="ml-2 text-xs text-zinc-500">{note} / 10</span>
           </div>
-          <div className="mt-2">
-            <span className="text-red-600 font-bold text-xl">{price}</span>
-            <span className="line-through text-zinc-500 text-sm">599,99 €</span>
-            <span className="bg-red-500 text-white text-xs font-bold uppercase px-2 rounded mt-2 inline-block">
-              BON PLAN -25%
-            </span>
-          </div>
+          {reduction ? (
+            <div className="mt-2 grid  place-items-center justify-items-center">
+              <span className="text-red-600 font-bold text-xl col-span-6">
+                {price}
+              </span>
+              <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
+                {reduction}
+              </span>
+              <DiscountCalculator price={price} reduction={reduction} />
+            </div>
+          ) : (
+            <div className="mt-2">
+              <span className="text-slate-700 font-medium  text-lg">
+                {price}
+              </span>
+            </div>
+          )}
         </div>
       </Link>
       <div className="p-4">
         <button
           className="w-full bg-red-500 text-white font-bold py-2 text-sm rounded hover:bg-red-600"
-          onClick={onAddToCart}
+          onClick={connected ? onAddToCart : onLogin}
         >
           🛒 Ajouter au panier
         </button>
@@ -83,3 +98,45 @@ export default function Card({
     </div>
   );
 }
+
+interface Props {
+  price: string; // Prix original sous forme de chaîne
+  reduction: string; // Prix réduit sous forme de chaîne
+}
+
+const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
+  const [pourcentage, setPourcentage] = useState<number>(0);
+
+  useEffect(() => {
+    const calculateDiscount = () => {
+      try {
+        const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
+        const reductionInt = parseFloat(
+          reduction.replace("€", "").replace(",", ".")
+        );
+
+        if (priceInt <= 0 || reductionInt < 0) {
+          throw new Error("Les valeurs de prix doivent être positives.");
+        }
+
+        const discountPercentage = ((priceInt - reductionInt) / priceInt) * 100;
+
+        setPourcentage(Math.round(discountPercentage));
+      } catch (error) {
+        console.error(
+          "Erreur lors du calcul du pourcentage de réduction:",
+          error
+        );
+        setPourcentage(0);
+      }
+    };
+
+    calculateDiscount();
+  }, [price, reduction]);
+
+  return (
+    <span className="bg-red-500 text-white text-md font-bold uppercase px-2 rounded mt-2 inline-block col-span-12">
+      BON PLAN {pourcentage.toFixed()}%
+    </span>
+  );
+};
