@@ -66,6 +66,27 @@ export const getAllUser = async (
   }
 };
 
+export const getAllMember = async (token: string): Promise<ApiResponse | string> => {
+
+  try {
+    const response = await axios.get<ApiResponse>(`${localhost}/api/users/admin`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response.data.message || 'Une erreur est survenue';
+    } else {
+      return 'Une erreur est survenue';
+    }
+  }
+};
+
+
+export const createUser = async (token: string, email: string, firstname: string, lastname: string, password: string): Promise<ApiResponse | string> => {
 export const createUser = async (
   token: string,
   email: string,
@@ -73,6 +94,7 @@ export const createUser = async (
   lastname: string,
   password: string
 ): Promise<ApiResponse | string> => {
+
   const requestBody: UserBody = { email, firstname, lastname, password };
   try {
     const response = await axios.post<ApiResponse>(

@@ -59,6 +59,24 @@ export const createReduction = async (token: string, reductionData: CreateReduct
   }
 };
 
+export const createPromo = async (token: string, reductionData: CreateReductionBody): Promise<ApiResponse | string> => {
+  try {
+    const response = await axios.post<ApiResponse>(`${localhost}/api/codepromo`, reductionData, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response.data.message || 'Une erreur est survenue';
+    } else {
+      return 'Une erreur est survenue';
+    }
+  }
+};
+
 
 export const updateReduction = async (token: string, id: number, reductionData: UpdateReductionBody): Promise<ApiResponse | string> => {
   try {

@@ -1,0 +1,97 @@
+{
+    "july": {
+      "sales": [
+        { "date": "2024-07-01", "total": 300 },
+        { "date": "2024-07-02", "total": 500 },
+        { "date": "2024-07-03", "total": 700 },
+        { "date": "2024-07-04", "total": 400 },
+        { "date": "2024-07-05", "total": 650 },
+        { "date": "2024-07-06", "total": 300 },
+        { "date": "2024-07-07", "total": 900 },
+        { "date": "2024-07-08", "total": 800 },
+        { "date": "2024-07-09", "total": 600 },
+        { "date": "2024-07-10", "total": 300 },
+        { "date": "2024-07-11", "total": 1200 },
+        { "date": "2024-07-12", "total": 1500 },
+        { "date": "2024-07-13", "total": 400 },
+        { "date": "2024-07-14", "total": 600 },
+        { "date": "2024-07-15", "total": 350 },
+        { "date": "2024-07-16", "total": 1100 },
+        { "date": "2024-07-17", "total": 750 },
+        { "date": "2024-07-18", "total": 650 },
+        { "date": "2024-07-19", "total": 300 },
+        { "date": "2024-07-20", "total": 950 },
+        { "date": "2024-07-21", "total": 800 },
+        { "date": "2024-07-22", "total": 400 },
+        { "date": "2024-07-23", "total": 700 },
+        { "date": "2024-07-24", "total": 500 },
+        { "date": "2024-07-25", "total": 300 },
+        { "date": "2024-07-26", "total": 1200 },
+        { "date": "2024-07-27", "total": 1300 },
+        { "date": "2024-07-28", "total": 400 },
+        { "date": "2024-07-29", "total": 900 },
+        { "date": "2024-07-30", "total": 300 },
+        { "date": "2024-07-31", "total": 500 }
+      ],
+      "orderStats": {
+        "successful": 180,
+        "failed": 20,
+        "inProgress": 10
+      },
+      "topProducts": [
+        { "name": "Cuisine", "quantity": 300 },
+        { "name": "Salon", "quantity": 250 },
+        { "name": "PEM", "quantity": 200 },
+        { "name": "GEM", "quantity": 150 },
+        { "name": "Salle de bain", "quantity": 100 }
+      ]
+    },
+    "august": {
+      "sales": [
+        { "date": "2024-08-01", "total": 400 },
+        { "date": "2024-08-02", "total": 800 },
+        { "date": "2024-08-03", "total": 600 },
+        { "date": "2024-08-04", "total": 500 },
+        { "date": "2024-08-05", "total": 1000 },
+        { "date": "2024-08-06", "total": 300 },
+        { "date": "2024-08-07", "total": 1300 },
+        { "date": "2024-08-08", "total": 900 },
+        { "date": "2024-08-09", "total": 700 },
+        { "date": "2024-08-10", "total": 400 },
+        { "date": "2024-08-11", "total": 1500 },
+        { "date": "2024-08-12", "total": 1600 },
+        { "date": "2024-08-13", "total": 300 },
+        { "date": "2024-08-14", "total": 800 },
+        { "date": "2024-08-15", "total": 500 },
+        { "date": "2024-08-16", "total": 1200 },
+        { "date": "2024-08-17", "total": 1000 },
+        { "date": "2024-08-18", "total": 600 },
+        { "date": "2024-08-19", "total": 300 },
+        { "date": "2024-08-20", "total": 1100 },
+        { "date": "2024-08-21", "total": 950 },
+        { "date": "2024-08-22", "total": 500 },
+        { "date": "2024-08-23", "total": 700 },
+        { "date": "2024-08-24", "total": 400 },
+        { "date": "2024-08-25", "total": 1000 },
+        { "date": "2024-08-26", "total": 1200 },
+        { "date": "2024-08-27", "total": 350 },
+        { "date": "2024-08-28", "total": 800 },
+        { "date": "2024-08-29", "total": 600 },
+        { "date": "2024-08-30", "total": 900 },
+        { "date": "2024-08-31", "total": 300 }
+      ],
+      "orderStats": {
+        "successful": 190,
+        "failed": 15,
+        "inProgress": 12
+      },
+      "topProducts": [
+        { "name": "GEM", "quantity": 320 },
+        { "name": "Cuisine", "quantity": 280 },
+        { "name": "Salle de bain", "quantity": 240 },
+        { "name": "PEM", "quantity": 200 },
+        { "name": "Salon", "quantity": 150 }
+      ]
+    }
+  }
+  

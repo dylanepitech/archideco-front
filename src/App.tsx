@@ -21,6 +21,7 @@ import HistoirePage from "./pages/HistoirePage";
 // import IndoorFurniture from "./pages/indoorFurniture"; // Capitalized component name
 import Map from "./pages/Map";
 import WishlistPage from "./pages/WishListPage";
+import Dashboard from "./Admin/Dashboard";
 import IndoorFurniture from "./pages/indoorFurniture";
 
 const AppRoutes: React.FC = () => {
@@ -68,6 +69,8 @@ const AppRoutes: React.FC = () => {
         {/* Route administrateur */}
         <Route element={<ProtectedAdminRoute />}>
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/admin/dashboard" element={<Dashboard/>} />
+          <Route path="/admin" element={<Dashboard/>} />
         </Route>
       </Routes>
     </ChakraProvider>
