@@ -291,6 +291,17 @@ export default function Product() {
             });
           }
         }
+    };
+
+
+
+    function removeBaseUrl(url: any) {
+        if (localhost == "http://localhost:8000") {
+
+            if (typeof url == "string") {
+                const baseUrl = "http://localhost:8000";
+                return url.replace(baseUrl, '');
+            }
       }
     } catch (err) {
       setError("Erreur lors de la mise à jour de la liste de souhaits");
