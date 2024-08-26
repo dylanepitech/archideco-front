@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
-import { useNavigate } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthContext";
@@ -28,7 +27,7 @@ import {
 } from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
-import { getWishList, getWishListItems, putWishList } from "../hooks/wishListe";
+import { getWishListItems, putWishList } from "../hooks/wishListe";
 
 export default function Product() {
   const { category, productTitle, id } = useParams();
