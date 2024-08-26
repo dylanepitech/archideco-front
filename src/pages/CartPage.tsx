@@ -38,48 +38,10 @@ const CartPage: React.FC = () => {
     handleGetMyCart();
   }, [authToken]);
 
-  const handleCheckout = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/create-checkout-session",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(
-            cartItems.map((item) => ({
-              price_data: {
-                currency: "eur",
-                product_data: {
-                  name: item.title,
-                },
-                unit_amount:
-                  parseFloat(
-                    item.price.replace("€", "").replace(",", ".").trim()
-                  ) * 100,
-              },
-              quantity: item.quantity,
-            }))
-          ),
-        }
-      );
-
-      const { url } = await response.json();
-      const stripe = await stripePromise;
-      window.location.href = url;
-    } catch (error) {
-      console.error("Error during checkout:", error);
-      toast({
-        title: "Erreur",
-        description:
-          "Une erreur est survenue lors de la création de la session de paiement.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+  const handleCheckout = () => {
+    window.location.href = '/payment';
   };
+  
 
   useEffect(() => {
     handleAllGetProducts();
