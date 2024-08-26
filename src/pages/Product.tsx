@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthContext";
 import { useToast } from "@chakra-ui/react";
@@ -13,13 +13,21 @@ import {
 } from "../Requests/ProductsRequest";
 import { localhost } from "../constants/Localhost";
 import { CreateCartBody } from "../Types/cartCrud";
-import { Heart, ShoppingBasket, HeartCrack } from "lucide-react";
+import {
+  Heart,
+  ShoppingBasket,
+  HeartCrack,
+  ShoppingCart,
+  Save,
+} from "lucide-react";
 import {
   getMyWishlist,
   createWishlist,
   updateWishlist,
 } from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
+import { useConnected } from "../hooks/Connected";
+import { getWishList, getWishListItems, putWishList } from "../hooks/wishListe";
 
 export default function Product() {
   const { category, productTitle, id } = useParams();
@@ -32,7 +40,8 @@ export default function Product() {
   const [mainImage, setMainImage] = useState("");
   const [cart, setCart] = useState<any | null>(null);
   const [wishlists, setWishlists] = useState<any | null>(null);
-
+  const connected = useConnected();
+  const wishListItems = getWishListItems();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -423,29 +432,47 @@ export default function Product() {
               </ul>
             </Accordion>
             <div className="flex items-center space-x-2">
-              <button
-                className="flex gap-2 items-center bg-green-emerald text-white hover:bg-green-duck rounded px-4 py-2"
-                onClick={() => handleAddToCart(product?.id)}
-              >
-                <ShoppingBasket className="text-white" />
-                Ajouter au panier
-              </button>
-              {wishlists?.id_products.includes(product?.id) ? (
-                <button
-                  className="flex gap-2 items-center bg-slate-400 hover:bg-slate-500 text-white rounded px-4 py-2"
-                  onClick={() => handleAddToWishlist(product?.id)}
-                >
-                  <HeartCrack />
-                  Retirer de vos envies
-                </button>
+              {connected ? (
+                // Si l'utilisateur est connecté
+                <div className="w-full flex flex-row gap-2 ">
+                  {/* Bouton pour ajouter le produit au panier */}
+                  <button
+                    className="flex gap-2 items-center bg-green-emerald text-white hover:bg-green-duck rounded px-4 py-2"
+                    onClick={() => handleAddToCart(product?.id)}
+                  >
+                    <ShoppingBasket className="text-white" />
+                    Ajouter au panier
+                  </button>
+
+                  {/* Condition pour afficher le bouton "Retirer de vos envies" ou "Ajouter aux envies" */}
+                  {wishlists?.id_products.includes(product?.id) ? (
+                    <button
+                      className="flex gap-2 items-center bg-slate-400 hover:bg-slate-500 text-white rounded px-4 py-2"
+                      onClick={() => handleAddToWishlist(product?.id)}
+                    >
+                      <HeartCrack />
+                      Retirer de vos envies
+                    </button>
+                  ) : (
+                    <button
+                      className="flex gap-2 items-center border-2 border-green-emerald hover:bg-slate-100 hover:border-green-duck bg-white text-black rounded px-4 py-2"
+                      onClick={() => handleAddToWishlist(product?.id)}
+                    >
+                      <Heart color="red" />
+                      Ajouter aux envies
+                    </button>
+                  )}
+                </div>
               ) : (
-                <button
-                  className="flex gap-2 items-center bg-sweet-pink hover:bg-funny-pink text-white rounded px-4 py-2"
-                  onClick={() => handleAddToWishlist(product?.id)}
-                >
-                  <Heart className="text-white" />
-                  Ajouter aux envies
-                </button>
+                <div className="w-full flex flex-row gap-2">
+                  <Link
+                    to="/login"
+                    className="flex gap-2 items-center bg-green-emerald text-white hover:bg-green-duck rounded px-4 py-2"
+                  >
+                    <ShoppingCart color="black" />
+                    Commandez en quelques click !
+                  </Link>
+                </div>
               )}
             </div>
           </div>

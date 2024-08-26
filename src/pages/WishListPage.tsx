@@ -9,6 +9,7 @@ import { UpdateWishlistBody } from "../Types/wishlist";
 import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import { useToast } from "@chakra-ui/react";
 import { localhost } from "../constants/Localhost";
+import { useConnected } from "../hooks/Connected";
 
 interface WishlistItem {
   id: number;
@@ -19,6 +20,10 @@ interface WishlistItem {
   categoryId?: any;
   categoryTitle?: any;
 }
+interface items {
+  id: number;
+  name: string;
+}
 
 const WishlistPage = () => {
   const { authToken } = useContext(AuthContext);
@@ -27,7 +32,7 @@ const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
   const [wishlists, setWishlists] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [connected, setconnecter] = useState<boolean>(false);
+  const connected = useConnected();
 
   const handleGetMyWishlist = async () => {
     try {
@@ -38,7 +43,6 @@ const WishlistPage = () => {
           setWishlists(null);
         } else {
           setWishlists(data.data);
-          console.log(data.data);
         }
       }
     } catch (err) {
@@ -115,10 +119,6 @@ const WishlistPage = () => {
   useEffect(() => {
     handleGetMyWishlist();
     handleGetMyCart();
-    const token: string | null = localStorage.getItem("authToken");
-    if (token) {
-      setconnecter(true);
-    }
   }, [authToken]);
 
   useEffect(() => {

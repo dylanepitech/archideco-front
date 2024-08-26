@@ -11,24 +11,15 @@ import {
   DoorOpen,
 } from "lucide-react";
 import Accordions from "../UI/Accordion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ModalSearch from "./ModalSearch";
-import { useToast } from "@chakra-ui/react";
+import { useConnected } from "../hooks/Connected";
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const [connected, setConnected] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    function isConnected() {
-      const token = localStorage.getItem("authToken");
-
-      return token ? setConnected(true) : setConnected(false);
-    }
-    isConnected();
-  });
+  const connected = useConnected();
 
   function deconnexion() {
     localStorage.removeItem("authToken");

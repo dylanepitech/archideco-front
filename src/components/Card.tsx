@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { localhost } from "../constants/Localhost";
 import { Link, useNavigate } from "react-router-dom";
+import { useConnected } from "../hooks/Connected";
 
 export default function Card({
   id,
@@ -40,18 +41,11 @@ export default function Card({
       return url;
     }
   };
-  const [connected, setConnected] = useState<boolean>(false);
+  const connected = useConnected();
   const navigate = useNavigate();
   const onLogin = () => {
     navigate("/login");
   };
-
-  useEffect(() => {
-    const token: string | null = localStorage.getItem("authToken");
-    if (token) {
-      setConnected(true);
-    }
-  });
 
   return (
     <div className="bg-slate-100 rounded-lg border border-zinc-200 max-w-xs w-full h-full flex flex-col">
