@@ -2,13 +2,13 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from "../components/Footer";
+import { useToast } from '@chakra-ui/react'
+import { localhost } from '../constants/Localhost';
 import { AuthContext } from "../hooks/AuthContext";
 import { getAllProducts } from '../Requests/ProductsRequest';
 import { getMyWishlist, updateWishlist } from "../Requests/WishlistRequest";
 import { UpdateWishlistBody } from "../Types/wishlist";
 import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
-import { useToast } from '@chakra-ui/react'
-import { localhost } from '../constants/Localhost';
 
 interface WishlistItem {
   id: number;
@@ -62,7 +62,7 @@ const WishlistPage = () => {
             let idStr: any = id.toString()
             idCountMap[idStr] = (idCountMap[idStr] || 0) + 1;
           });
-        //   console.log("les data",data)
+        
 
           let inWishlists: any = data
             .filter((product: any) => idCountMap[product.id])

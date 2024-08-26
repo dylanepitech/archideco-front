@@ -26,11 +26,10 @@ interface CartItem {
 
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<any | null>(null);
   const [promoCode, setPromoCode] = useState('');
   const { authToken } = useContext(AuthContext);
-
   const [error, setError] = useState<string | null>(null);
-  const [cart, setCart] = useState<any | null>(null);
 
 
   useEffect(() => {

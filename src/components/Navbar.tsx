@@ -1,6 +1,5 @@
 import Logo from "../assets/LogoArchideco.png";
 import {
-  Search,
   CircleHelp,
   MapPin,
   ShoppingBasket,
@@ -9,13 +8,40 @@ import {
   LayoutGrid,
   X,
   Heart,
+  ShieldCheck,
+  DoorOpen,
 } from "lucide-react";
 import Accordions from "../UI/Accordion";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ModalSearch from "./ModalSearch";
+import { AuthContext } from "../hooks/AuthContext";
+import decodeToken from "../hooks/DecodeToken";
+
+
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
+  const { authToken } = useContext<any>(AuthContext);
+  const decodedToken = authToken ? decodeToken(authToken) : null;
+  const roles = decodedToken ? decodedToken.roles : [];
+  const navigate = useNavigate();
+  const [connected, setConnected] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    function isConnected() {
+      const token = localStorage.getItem("authToken");
+
+      return token ? setConnected(true) : setConnected(false);
+    }
+    isConnected();
+  });
+
+  function deconnexion() {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+    window.location.reload();
+  }
+
 
   function openMenu() {
     open ? setOpen(false) : setOpen(true);
@@ -45,21 +71,31 @@ export default function Navbar() {
             <MapPin color="#639d87" />
             <div
               className="font-semibold text-sm hover:underline-offset-4 hover:underline"
-              
+
             >
               Nous localiser
             </div>
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          <Link to="/login" className="flex flex-col items-center">
-            <User color="#639d87" />
+          {connected ? (
             <div
-              className="font-semibold text-sm hover:underline-offset-4 hover:underline"
+              className="flex flex-col items-center hover:cursor-pointer"
+              onClick={() => deconnexion()}
             >
-              Connectez-vous!
+              <DoorOpen color="#639d87" />
+              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline text-red-500">
+                Déconnexion
+              </div>
             </div>
-          </Link>
+          ) : (
+            <Link to="/login" className="flex flex-col items-center">
+              <User color="#639d87" />
+              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                Connectez-vous!
+              </div>
+            </Link>
+          )}
           <p className="bg-black/20 w-0.5 h-8"></p>
 
           <Link to="/envies" className="flex flex-col items-center">
@@ -76,6 +112,16 @@ export default function Navbar() {
               Mon panier
             </div>
           </Link>
+          {roles.includes("ROLE_ADMIN") ?
+
+            <Link to="/admin/dashboard" className="flex flex-col items-center">
+
+              <ShieldCheck color="#639d87" />
+              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                Dashboard
+              </div>
+            </Link> : ""
+          }
         </section>
         <section className="flex flex-row w-full items-center justify-start gap-10 px-8 pt-6">
           <LayoutGrid />
@@ -116,16 +162,14 @@ export default function Navbar() {
           <X
             size={28}
             onClick={openMenu}
-            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${
-              open ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-100" : "opacity-0"
+              }`}
           />
           <Menu
             size={28}
             onClick={openMenu}
-            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${
-              open ? "opacity-0" : "opacity-100"
-            }`}
+            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-0" : "opacity-100"
+              }`}
           />
         </section>
       </nav>
@@ -134,16 +178,7 @@ export default function Navbar() {
         <section
           className={` bg-white block lg:hidden h-auto w-full bg-white/20 relative transition-opacity duration-300 ease-in-out `}
         >
-          {/* <div className="flex flex-row items-center justify-center px-1 py-2 bg-white">
-            <input
-              type="text"
-              placeholder="  Mixeur,lave-linge,Machine à cafée..."
-              className="bg-transparent border-2 border-green-duck h-10 w-full max-w-110 text-black rounded-l-md text-sm"
-            />
-            <button className="bg-green-duck h-10 p-2 flex items-center rounded-r-md">
-              {<Search color="white" />}
-            </button>
-          </div> */}
+
           <div className="h-auto grid grid-cols-2 grid-rows-2 sm:grid-cols-4  gap-4 pt-2 py-2 bg-white">
             <div className="flex flex-col items-center">
               <CircleHelp color="#639d87" />
@@ -156,32 +191,32 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col items-center">
               <MapPin color="#639d87" />
-              <a
+              <Link
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
-                href=""
+                to="/map"
               >
                 Nous localiser
-              </a>
+              </Link>
             </div>
 
             <div className="flex flex-col items-center">
               <User color="#639d87" />
-              <a
+              <Link
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
-                href=""
+                to="/login"
               >
                 Connectez-vous!
-              </a>
+              </Link>
             </div>
 
             <div className="flex flex-col items-center">
               <Heart color="#639d87" />
-              <a
+              <Link
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
-                href=""
+                to="/envies"
               >
                 Mes envies
-              </a>
+              </Link>
             </div>
 
             <div className="flex flex-col items-center">
@@ -190,13 +225,23 @@ export default function Navbar() {
 
             <div className="flex flex-col items-center">
               <ShoppingBasket color="#639d87" />
-              <a
+              <Link
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
-                href=""
+                to="/cart"
               >
                 Mon panier
-              </a>
+              </Link>
             </div>
+            {roles.includes("ROLE_ADMIN") ?
+
+              <Link to="/admin/dashboard" className="flex flex-col items-center">
+
+                <ShieldCheck color="#639d87" />
+                <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                  Dashboard
+                </div>
+              </Link> : ""
+            }
           </div>
           <Accordions />
         </section>

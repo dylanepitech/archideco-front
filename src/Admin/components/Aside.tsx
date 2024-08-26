@@ -1,6 +1,7 @@
 import React from "react";
 import { Boxes, CircleDollarSign, LayoutDashboard, ScanBarcode, Users } from "lucide-react";
 import logo from "../../assets/LogoArchideco.png";
+import { Link } from "react-router-dom";
 
 interface AsideProps {
     selectedItem: string | null;
@@ -12,9 +13,9 @@ export default function Aside({ selectedItem, onSelect }: AsideProps) {
         <aside className="flex flex-col items-center h-screen bg-card text-foreground shadow-lg 
                          w-24 md:w-40 transition-width duration-300">
            
-            <div className="flex items-start mt-4 md:block hidden">
+            <Link to="/" className="flex items-start mt-4 md:block hidden">
                 <img src={logo} alt="Archideco logo" className="h-20 w-20" />
-            </div>
+            </Link>
             <nav className="mt-4">
                 <ul className="space-y-2">
                     <li>
