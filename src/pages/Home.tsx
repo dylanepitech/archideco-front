@@ -14,15 +14,11 @@ import {
   ShieldCheck,
   ArrowRightLeft,
   PackageCheck,
-  CircleAlert,
   Zap,
   Slash,
-  Siren,
 } from "lucide-react";
 import Carousel from "../components/Carousel";
-import Logo from "../assets/LogoArchideco.png";
 import { Link } from "react-router-dom";
-import Card from "../components/Card";
 import CardFixHomePage from "../components/CardFixHomePage";
 
 export default function Home() {
@@ -30,13 +26,6 @@ export default function Home() {
     <div className="bg-slate-100 w-screen min-h-dvh h-auto text-black">
       <Navbar />
       <main className=" h-auto min-w-screen mt-6 px-4 flex flex-col gap-14">
-        {/* <section className="w-full h-auto rounded-md bg-green-emerald text-center flex flex-col md:flex-row gap-3 items-center justify-center py-1">
-          <CircleAlert />
-          <h3 className="font-Gotham">
-            Cette semaine profitez de -10% sur tout l'Électroménager avec le
-            code <span className="font-semibold">Archideco10</span>
-          </h3>
-        </section> */}
         <section className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
           {[
             {
@@ -47,6 +36,7 @@ export default function Home() {
               bgColor: "bg-white",
               textColor: "text-white",
               borderColor: "border-black",
+              link: "/products/gem",
             },
             {
               title: "Fours et Micro-ondes",
@@ -56,6 +46,7 @@ export default function Home() {
               bgColor: "bg-green-duck",
               textColor: "text-white",
               borderColor: "border-white",
+              link: "/products/pem",
             },
             {
               title: "Machines à Café & Petit Électroménager",
@@ -65,6 +56,7 @@ export default function Home() {
               bgColor: "bg-green-duck",
               textColor: "text-white",
               borderColor: "border-white",
+              link: "/products/pem",
             },
             {
               title: "Réfrigérateurs & Congélateurs",
@@ -74,9 +66,11 @@ export default function Home() {
               bgColor: "bg-white",
               textColor: "text-white",
               borderColor: "border-black",
+              link: "/products/gem",
             },
           ].map((item, index) => (
-            <div
+            <Link
+              to={item.link}
               key={index}
               className={`relative w-full max-w-2xl h-96 rounded-md overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 ${item.bgColor} ${item.borderColor} border hover:shadow-xl hover:cursor-pointer group`}
             >
@@ -106,7 +100,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </section>
 
