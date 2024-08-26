@@ -22,14 +22,13 @@ interface CartItem {
   categoryTitle?: any;
 }
 
-
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
 );
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cart, setCart] = useState<any | null>(null);
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState("");
   const { authToken } = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
   const connected = useConnected();
@@ -40,9 +39,9 @@ const CartPage: React.FC = () => {
   }, [authToken]);
 
   const handleCheckout = () => {
-    window.location.href = '/payment';
+    window.location.href = "/payment";
   };
- 
+
   useEffect(() => {
     handleAllGetProducts();
   }, [cart]);
@@ -181,9 +180,8 @@ const CartPage: React.FC = () => {
       return url;
     }
   };
-
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Navbar />
       {connected ? (
         <main className="flex-grow container mx-auto px-4 py-8">
@@ -264,97 +262,6 @@ const CartPage: React.FC = () => {
                         </svg>
                       </button>
                     </div>
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="text-gray-500 hover:text-red-700"
-                      aria-label="Supprimer l'article"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="md:w-1/3 mt-8 md:mt-0">
-              <div className="border rounded-lg p-4 shadow-sm">
-                <h2 className="text-2xl font-bold mb-4 text-center">
-                  Récapitulatif
-                </h2>
-                <div className="flex justify-between mb-2">
-                  <span>Sous-total :</span>
-                  <span>{total} €</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Frais de livraison :</span>
-                  <span>Gratuit</span>
-                </div>
-                <div className="border-t pt-2 mt-2">
-                  <div className="flex justify-between font-bold">
-                    <span>Total :</span>
-                    <span>{total} €</span>
-                  </div>
-                </div>
-                <button
-                  className="w-full mt-4 bg-green-light text-white px-6 py-2 rounded hover:bg-custom-bg"
-                  onClick={handleCheckout}
-                >
-                  Valider mon panier
-                </button>
-                <form onSubmit={handlePromoCodeSubmit} className="mt-4">
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      placeholder="Code promo"
-                      className="flex-grow px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-light"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-green-light text-white px-4 py-2 rounded-r-md hover:bg-custom-bg"
-                    >
-                      Appliquer
-                    </button>
-                  </div>
-                </form>
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-2">
-                    NOUS ACCEPTONS :
-                  </h3>
-                  <div className="flex justify-center space-x-4">
-                    <img
-                      src="src/assets/picture/mastercard.png"
-                      alt="Mastercard"
-                      className="w-12 h-12 object-contain"
-                    />
-                    <img
-                      src="src/assets/picture/visa.png"
-                      alt="Mastercard"
-                      className="w-12 h-12 object-contain"
-                    />
-                    <img
-                      src="src/assets/picture/americanexpress.png"
-                      alt="Mastercard"
-                      className="w-12 h-12 object-contain"
-                    />
-                    <img
-                      src="src/assets/picture/paypal.png"
-                      alt="Mastercard"
-                      className="w-12 h-12 object-contain"
-                    />
                   </div>
                 ))}
               </div>
@@ -377,9 +284,12 @@ const CartPage: React.FC = () => {
                       <span>{total} €</span>
                     </div>
                   </div>
-                  <button className="w-full mt-4 bg-green-emerald text-white px-6 py-2 rounded hover:bg-custom-bg">
+                  <Link
+                    to="/payment"
+                    className="w-full mt-4 bg-green-emerald text-white px-6 py-2 rounded hover:bg-custom-bg"
+                  >
                     Valider mon panier
-                  </button>
+                  </Link>
                   <form onSubmit={handlePromoCodeSubmit} className="mt-4">
                     <div className="flex items-center">
                       <input
