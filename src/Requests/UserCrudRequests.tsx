@@ -86,7 +86,6 @@ export const getAllMember = async (token: string): Promise<ApiResponse | string>
 };
 
 
-export const createUser = async (token: string, email: string, firstname: string, lastname: string, password: string): Promise<ApiResponse | string> => {
 export const createUser = async (
   token: string,
   email: string,

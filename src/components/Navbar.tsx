@@ -18,17 +18,14 @@ import ModalSearch from "./ModalSearch";
 import { AuthContext } from "../hooks/AuthContext";
 import decodeToken from "../hooks/DecodeToken";
 import { useConnected } from "../hooks/Connected";
-        
+
 export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
   const { authToken } = useContext<any>(AuthContext);
   const decodedToken = authToken ? decodeToken(authToken) : null;
   const roles = decodedToken ? decodedToken.roles : [];
   const navigate = useNavigate();
-  const [connected, setConnected] = useState<boolean | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
   const connected = useConnected();
-
 
   function deconnexion() {
     localStorage.removeItem("authToken");
@@ -68,8 +65,7 @@ export default function Navbar() {
           <p className="bg-black/20 w-0.5 h-8"></p>
 
           {connected ? (
-            <div>
-            <p
+            <div
               className="flex flex-col items-center hover:cursor-pointer"
               onClick={() => deconnexion()}
             >
@@ -78,7 +74,6 @@ export default function Navbar() {
                 Déconnexion
               </div>
             </div>
-            </p>
           ) : (
             <Link to="/login" className="flex flex-col items-center">
               <User color="#639d87" />
@@ -87,6 +82,7 @@ export default function Navbar() {
               </div>
             </Link>
           )}
+
           <p className="bg-black/20 w-0.5 h-8"></p>
 
           <Link to="/envies" className="flex flex-col items-center">
@@ -103,16 +99,18 @@ export default function Navbar() {
               Mon panier
             </div>
           </Link>
-          {roles.includes("ROLE_ADMIN") ?
+          <p className="bg-black/20 w-0.5 h-8"></p>
 
+          {roles.includes("ROLE_ADMIN") ? (
             <Link to="/admin/dashboard" className="flex flex-col items-center">
-
               <ShieldCheck color="#639d87" />
               <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
                 Dashboard
               </div>
-            </Link> : ""
-          }
+            </Link>
+          ) : (
+            ""
+          )}
         </section>
         <section className="flex flex-row w-full items-center justify-start gap-10 px-8 pt-6">
           <LayoutGrid />
@@ -153,14 +151,16 @@ export default function Navbar() {
           <X
             size={28}
             onClick={openMenu}
-            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-100" : "opacity-0"
-              }`}
+            className={`absolute right-10 transition-opacity duration-300 ease-in-out ${
+              open ? "opacity-100" : "opacity-0"
+            }`}
           />
           <Menu
             size={28}
             onClick={openMenu}
-            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${open ? "opacity-0" : "opacity-100"
-              }`}
+            className={`absolute  right-10 transition-opacity duration-300 ease-in-out ${
+              open ? "opacity-0" : "opacity-100"
+            }`}
           />
         </section>
       </nav>
@@ -169,7 +169,6 @@ export default function Navbar() {
         <section
           className={` bg-white block lg:hidden h-auto w-full bg-white/20 relative transition-opacity duration-300 ease-in-out `}
         >
-
           <div className="h-auto grid grid-cols-2 grid-rows-2 sm:grid-cols-4  gap-4 pt-2 py-2 bg-white">
             <div className="flex flex-col items-center">
               <CircleHelp color="#639d87" />
@@ -223,16 +222,19 @@ export default function Navbar() {
                 Mon panier
               </Link>
             </div>
-            {roles.includes("ROLE_ADMIN") ?
-
-              <Link to="/admin/dashboard" className="flex flex-col items-center">
-
+            {roles.includes("ROLE_ADMIN") ? (
+              <Link
+                to="/admin/dashboard"
+                className="flex flex-col items-center"
+              >
                 <ShieldCheck color="#639d87" />
                 <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
                   Dashboard
                 </div>
-              </Link> : ""
-            }
+              </Link>
+            ) : (
+              ""
+            )}
           </div>
           <Accordions />
         </section>

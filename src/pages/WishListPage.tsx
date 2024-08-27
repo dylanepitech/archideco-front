@@ -9,8 +9,6 @@ import { getAllProducts } from "../Requests/ProductsRequest";
 import { getMyWishlist, updateWishlist } from "../Requests/WishlistRequest";
 import { UpdateWishlistBody } from "../Types/wishlist";
 import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
-import { useToast } from "@chakra-ui/react";
-import { localhost } from "../constants/Localhost";
 import { useConnected } from "../hooks/Connected";
 
 interface WishlistItem {
