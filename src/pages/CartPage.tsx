@@ -284,12 +284,14 @@ const CartPage: React.FC = () => {
                       <span>{total} €</span>
                     </div>
                   </div>
-                  <Link
-                    to="/payment"
-                    className="w-full mt-4 bg-green-emerald text-white px-6 py-2 rounded hover:bg-custom-bg"
-                  >
-                    Valider mon panier
-                  </Link>
+                  <div className="flex justify-center mt-4">
+                    <Link
+                      to="/payment"
+                      className="bg-green-emerald text-white px-6 py-3 rounded-md hover:bg-green-duck focus:outline-none focus:ring-2"
+                    >
+                      Valider mon panier
+                    </Link>
+                  </div><br/>
                   <form onSubmit={handlePromoCodeSubmit} className="mt-4">
                     <div className="flex items-center">
                       <input
@@ -301,17 +303,23 @@ const CartPage: React.FC = () => {
                       />
                       <button
                         type="submit"
-                        className="bg-green-emerald text-white px-4 py-2 rounded-r-md hover:bg-custom-bg"
+                        className="bg-green-emerald text-white px-4 py-2 rounded-r-md hover:bg-green-duck focus:outline-none"
                       >
                         Appliquer
                       </button>
                     </div>
                   </form>
                   <div className="mt-6">
-                    <h3 className="text-lg font-semibold mb-2">
-                      NOUS ACCEPTONS :
+                    <h3 className="text-lg font-semibold mb-2 text-center">
+                      Paiement sécurisé par Stripe
                     </h3>
+                    <div className="flex justify-center space-x-4 mb-4"></div>
                     <div className="flex justify-center space-x-4">
+                    <img
+                        src="src/assets/picture/carte.png"
+                        alt="Secured"
+                        className="w-12 h-12 object-contain"
+                      />
                       <img
                         src="src/assets/picture/mastercard.png"
                         alt="Mastercard"
@@ -319,17 +327,12 @@ const CartPage: React.FC = () => {
                       />
                       <img
                         src="src/assets/picture/visa.png"
-                        alt="Mastercard"
+                        alt="Visa"
                         className="w-12 h-12 object-contain"
                       />
                       <img
                         src="src/assets/picture/americanexpress.png"
-                        alt="Mastercard"
-                        className="w-12 h-12 object-contain"
-                      />
-                      <img
-                        src="src/assets/picture/paypal.png"
-                        alt="Mastercard"
+                        alt="American Express"
                         className="w-12 h-12 object-contain"
                       />
                     </div>

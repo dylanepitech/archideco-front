@@ -9,6 +9,10 @@ import {
 import { AuthContext } from "../hooks/AuthContext";
 import { getMyCart } from "../Requests/CartRequest";
 import { getAllProducts } from "../Requests/ProductsRequest";
+import Logo from "../assets/LogoArchideco.png";
+import { Link } from "react-router-dom";
+
+
 
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
@@ -19,6 +23,8 @@ const PaymentForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [name, setName] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [country, setCountry] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [adresse, setAdresse] = useState("");
   const [phone, setPhone] = useState("");
@@ -152,53 +158,61 @@ const PaymentForm: React.FC = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-1/3 p-4">
-        <h2 className="text-2xl font-semibold mb-4">Votre panier</h2>
-        {cartItems.map((item, index) => (
-          <div key={index} className="mb-2">
-            <span>{item.title}</span>
-            <span className="float-right">{item.price}</span>
+    <div className="grid md:grid-cols-2 h-screen">
+      <div className="p-4 bg-gray-100 flex flex-col">
+        <div className="max-w-md mx-auto w-full">
+          <div className="flex gap-4 items-center">
+            <h2 className="text-2xl font-semibold">Votre panier</h2>
+            <Link to="/">
+              <img src={Logo} alt="Logo" height={100} width={100} />
+            </Link>
           </div>
-        ))}
-        <div className="mt-4 font-bold">
-          <span>Total:</span>
-          <span className="float-right">{total.toFixed(2)} €</span>
+          {cartItems.map((item, index) => (
+            <div key={index} className="mb-2 flex justify-between">
+              <span>{item.title}</span>
+              <span>{item.price}</span>
+            </div>
+          ))}
+          <div className="mt-4 font-bold flex justify-between">
+            <span>Total : </span>
+            <span>{total.toFixed(2)} €</span>
+          </div>
         </div>
       </div>
-      <div className="w-2/3 p-4">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Paiement</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="p-4 flex justify-center mt-8">
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-md w-full">
           {error && <div className="text-red-500">{error}</div>}
           {success && <div className="text-green-500">{success}</div>}
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Nom</label>
+          <h2 className="text-2xl font-bold">Coordonnées de livraison</h2>
+          <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option selected>Choissisez un pays</option>
+            <option value="FR">France</option>
+            <option value="BE">Belgique</option>
+            <option value="SW">Suisse</option>
+            <option value="LX">Luxembourg</option>
+          </select>
+          <div className="flex flex-col gap-2 md:flex-row">
             <input
+              placeholder="Nom"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Code Postal
-            </label>
             <input
+              placeholder="Prénom"
               type="text"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium mb-1">Adresse</label>
             <input
+              placeholder="Adresse"
               type="text"
               value={adresse}
               onChange={(e) => setAdresse(e.target.value)}
@@ -206,10 +220,27 @@ const PaymentForm: React.FC = () => {
               required
             />
           </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Téléphone</label>
+          <div className="flex flex-col gap-2 md:flex-row">
             <input
+              placeholder="Code Postal"
+              type="text"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+            <input
+              placeholder="Ville"
+              type="text"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+          <div>
+            <input
+              placeholder="Téléphone"
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -217,17 +248,37 @@ const PaymentForm: React.FC = () => {
               required
             />
           </div>
-
+          <div className="flex">
+            <div className="flex items-center h-5">
+              <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value="" className="w-4 h-4 border-gray-300 rounded" />
+            </div>
+            <div className="ms-2 text-sm">
+              <label htmlFor="helper-checkbox" className="font-medium text-gray-900 dark:text-gray-300">Sauvegarder mes coordonnées pour la prochaine fois</label>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold">Détails de la carte</h2>
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Détails de la carte
-            </label>
             <CardElement className="border p-4 rounded-md shadow-sm" />
           </div>
-
+          <div>
+            <input
+              placeholder="Nom sur la carte"
+              type="text"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
+            />
+          </div>
+          <div className="flex">
+            <div className="flex items-center h-5">
+              <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value="" className="w-4 h-4 border-gray-300 rounded" />
+            </div>
+            <div className="ms-2 text-sm">
+              <label htmlFor="helper-checkbox" className="font-medium text-gray-900 dark:text-gray-300">Utiliser l'adresse d'expédition comme adresse de facturation</label> 
+            </div>
+          </div>
           <button
             type="submit"
-            className="w-full mt-4 bg-green-light border border-gray-300 text-black px-6 py-2 rounded hover:bg-custom-bg"
+            className="w-full mt-4 border border-gray-300 text-black px-6 py-2 rounded bg-[#639d87]"
           >
             Payer {total.toFixed(2)} €
           </button>
