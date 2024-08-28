@@ -80,6 +80,7 @@ export default function Card({
               </span>
               <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
                 {reduction > 0?priceInt:''}
+
               </span>
               <DiscountCalculator price={price} reduction={reduction} />
             </div>
@@ -139,7 +140,7 @@ const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
 
   return (
     <span className="bg-red-500 text-white text-md font-bold uppercase px-2 rounded mt-2 inline-block col-span-12">
-      BON PLAN {pourcentage.toFixed()}%
+      BON PLAN -{pourcentage.toFixed()}%
     </span>
   );
 };

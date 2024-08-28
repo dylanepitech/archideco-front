@@ -29,6 +29,7 @@ import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
 import { getWishListItems, putWishList } from "../hooks/wishListe";
 
+
 export default function Product() {
   const { category, productTitle, id } = useParams();
   const [categoryId, setCategoryId] = useState<number | null>(null);
@@ -249,53 +250,52 @@ export default function Product() {
   const handleUpdateWishlist = async (idProduct: number) => {
     try {
       if (authToken) {
-        let newProducts = wishlists?.id_products;
+        let newProducts = wishlists?.id_products
+          ? [...wishlists.id_products]
+          : []; // Ensuring newProducts is always an array
         let add: boolean = true;
-        if (wishlists?.id_products.includes(idProduct)) {
-          newProducts = newProducts.filter((item: any) => item !== idProduct);
+
+        if (newProducts.includes(idProduct)) {
+          newProducts = newProducts.filter(
+            (item: number) => item !== idProduct
+          ); // Assuming id_products is an array of numbers
           add = false;
         } else {
           newProducts.push(idProduct);
         }
+
         const wishlistData: UpdateWishlistBody = {
           idProducts: newProducts,
         };
+
         const id = wishlists?.id;
-        console.log(idProduct, wishlists.id_products);
+        console.log(idProduct, wishlists?.id_products); // Use optional chaining to avoid potential errors if wishlists is undefined
+
         const data: any | string = await updateWishlist(
           authToken,
           id,
           wishlistData
         );
+
         if (typeof data === "string") {
           setError(data);
         } else {
           setWishlists(data.data);
 
-          if (add) {
-            toast({
-              title: "Felicitation",
-              position: "top",
-              description: `${product?.title} ajouté au panier`,
-              status: "success",
-              duration: 2000,
-              isClosable: true,
-            });
-          } else {
-            toast({
-              title: "Felicitation",
-              position: "top",
-              description: `${product?.title} retiré a la wishlist`,
-              status: "warning",
-              duration: 2000,
-              isClosable: true,
-            });
-          }
+          toast({
+            title: "Félicitations",
+            position: "top",
+            description: `${product?.title} ${
+              add ? "ajouté à" : "retiré de"
+            } la wishlist`,
+            status: add ? "success" : "warning",
+            duration: 2000,
+            isClosable: true,
+          });
         }
       }
-    } catch (err) {
-      setError("Erreur lors de la mise à jour de la liste de souhaits");
-      console.error("Erreur:", err);
+    } catch (error) {
+      console.error("Error updating wishlist:", error); // Improved logging message
     }
   };
 

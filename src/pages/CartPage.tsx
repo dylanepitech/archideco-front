@@ -2,12 +2,14 @@ import { useEffect, useState, useContext } from "react";
 import Footer from "../components/Footer";
 import { useToast } from "@chakra-ui/react";
 import { AuthContext } from "../hooks/AuthContext";
+import { useConnected } from "../hooks/Connected";
 import { getAllProducts } from "../Requests/ProductsRequest";
 import { getMyCart, updateCart } from "../Requests/CartRequest";
 import { CreateCartBody } from "../Types/cartCrud";
 import { localhost } from "../constants/Localhost";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface CartItem {
   id: number;
@@ -20,23 +22,25 @@ interface CartItem {
   categoryTitle?: any;
 }
 
+const stripePromise = loadStripe(
+  "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
+);
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cart, setCart] = useState<any | null>(null);
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState("");
   const { authToken } = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
- const [connected, setconnecter] = useState<boolean>(false);
+  const connected = useConnected();
   const toast = useToast();
 
   useEffect(() => {
     handleGetMyCart();
-    const token: string | null = localStorage.getItem("authToken");
-
-    if (token) {
-      setconnecter(true);
-    }
   }, [authToken]);
+
+  const handleCheckout = () => {
+    window.location.href = "/payment";
+  };
 
   useEffect(() => {
     handleAllGetProducts();
@@ -120,6 +124,7 @@ const CartPage: React.FC = () => {
             let idStr: any = id.toString();
             idCountMap[idStr] = (idCountMap[idStr] || 0) + 1;
           });
+          console.log("les data", data);
 
           let inCart: any = data
             .filter((product: any) => idCountMap[product.id])
@@ -175,7 +180,6 @@ const CartPage: React.FC = () => {
       return url;
     }
   };
-
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Navbar />
@@ -280,9 +284,12 @@ const CartPage: React.FC = () => {
                       <span>{total} €</span>
                     </div>
                   </div>
-                  <button className="w-full mt-4 bg-green-emerald text-white px-6 py-2 rounded hover:bg-custom-bg">
+                  <Link
+                    to="/payment"
+                    className="w-full mt-4 bg-green-emerald text-white px-6 py-2 rounded hover:bg-custom-bg"
+                  >
                     Valider mon panier
-                  </button>
+                  </Link>
                   <form onSubmit={handlePromoCodeSubmit} className="mt-4">
                     <div className="flex items-center">
                       <input

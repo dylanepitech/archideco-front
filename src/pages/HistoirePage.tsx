@@ -233,7 +233,8 @@ export default function HistoirePage() {
             l'espace de vos rêves.
           </p>
           <a
-            href="/contact"
+            href="https://www.mobalpa.fr/me-rendre-en-magasin"
+            target="_blank"
             className="bg-white text-green-emerald py-3 px-6 rounded-lg font-semibold"
           >
             Nous Contacter
