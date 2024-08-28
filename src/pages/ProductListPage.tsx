@@ -46,10 +46,7 @@ export default function ProductListPage() {
     applyFilters();
   }, [filters, products]);
 
-  // useEffect(() => {
-  //   handleGetMyCart()
-  //   console.log(cart)
-  // }, [cart]);
+  
 
   const handleCreateCart = async (idProduct: number) => {
     try {
@@ -144,7 +141,7 @@ export default function ProductListPage() {
           setError(data);
         } else {
           setCart(data.data);
-          console.log(data.data);
+          // console.log(data.data);
         }
       }
     } catch (err) {
@@ -159,6 +156,7 @@ export default function ProductListPage() {
       switch (category) {
         case "gem":
           data = await getGem();
+          // console.log(data)
           break;
         case "pem":
           data = await getPem();

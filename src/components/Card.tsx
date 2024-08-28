@@ -15,7 +15,7 @@ export default function Card({
   id: number;
   title: string;
   price: string;
-  reduction?: string;
+  reduction: number;
   note: number;
   product: any;
   onAddToCart: any;
@@ -47,6 +47,11 @@ export default function Card({
     navigate("/login");
   };
 
+  const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
+  // const reductionInt = parseFloat(reduction);
+
+  
+
   return (
     <div className="bg-slate-100 rounded-lg border border-zinc-200 max-w-xs w-full h-full flex flex-col">
       <Link to={`/product/${product?.categoryTitle}/${title}/${product?.id}`}>
@@ -71,10 +76,11 @@ export default function Card({
           {reduction ? (
             <div className="mt-2 grid  place-items-center justify-items-center">
               <span className="text-red-600 font-bold text-xl col-span-6">
-                {reduction}€
+                {reduction > 0 ? priceInt - reduction : priceInt}
               </span>
               <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
-                {price}
+                {reduction > 0?priceInt:''}
+
               </span>
               <DiscountCalculator price={price} reduction={reduction} />
             </div>
@@ -100,8 +106,8 @@ export default function Card({
 }
 
 interface Props {
-  price: string; // Prix original sous forme de chaîne
-  reduction: string; // Prix réduit sous forme de chaîne
+  price: string;
+  reduction: number;
 }
 
 const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
@@ -111,15 +117,13 @@ const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
     const calculateDiscount = () => {
       try {
         const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
-        const reductionInt = parseFloat(
-          reduction.replace("€", "").replace(",", ".")
-        );
+        // const reductionInt = parseFloat(reduction);
 
-        if (priceInt <= 0 || reductionInt < 0) {
+        if (priceInt <= 0 || reduction < 0) {
           throw new Error("Les valeurs de prix doivent être positives.");
         }
 
-        const discountPercentage = ((priceInt - reductionInt) / priceInt) * 100;
+        const discountPercentage = ((priceInt - reduction) / priceInt) * 100;
 
         setPourcentage(Math.round(discountPercentage));
       } catch (error) {

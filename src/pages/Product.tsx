@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../hooks/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { AuthContext } from "../hooks/AuthContext";
 import { useToast } from "@chakra-ui/react";
 import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import {
@@ -28,7 +28,7 @@ import {
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
 import { getWishListItems, putWishList } from "../hooks/wishListe";
-import { log } from "console";
+
 
 export default function Product() {
   const { category, productTitle, id } = useParams();
@@ -109,6 +109,7 @@ export default function Product() {
 
       if (specificProduct) {
         setProduct(specificProduct);
+        console.log(specificProduct)
       } else {
         navigate("/sorry/not-found");
       }
@@ -378,9 +379,9 @@ export default function Product() {
                   mainImage
                     ? mainImage
                     : removeBaseUrl(
-                        product?.images[Object.keys(product?.images)[0]][0]
-                          .image
-                      )
+                      product?.images[Object.keys(product?.images)[0]][0]
+                        .image
+                    )
                 }
                 alt="Main product image"
                 className="rounded-lg w-full rounded-xl w-[300px] md:w-[500px] h-full"
@@ -394,7 +395,26 @@ export default function Product() {
               {product?.title}
             </h2>
             <p className="text-lg text-gray-700 mb-2">{product?.description}</p>
-            <p className="text-lg text-green-500 mb-4">{product?.price}</p>
+            <p className="flex gap-4 text-lg text-green-500 mb-4">
+
+              {product?.reduction > 0 ? (
+                <>
+                  <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
+                    {parseFloat(product?.price.replace("€", "").replace(",", "."))}€
+                  </span>
+                  <span>
+                    {(
+                      parseFloat(product?.price.replace("€", "").replace(",", ".")) - product?.reduction
+                    ).toFixed(2)}€
+                  </span>
+                </>
+              ) : (
+                <span>
+                  {product?.price}
+                </span>
+              )}
+
+            </p>
             <div className="flex flex-wrap items-center space-x-2 mb-4">
               <span className="bg-green-500 text-white px-2 py-1 rounded">
                 G
