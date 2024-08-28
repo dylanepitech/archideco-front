@@ -156,7 +156,7 @@ export default function ProductListPage() {
       switch (category) {
         case "gem":
           data = await getGem();
-          console.log(data)
+          // console.log(data)
           break;
         case "pem":
           data = await getPem();
