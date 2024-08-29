@@ -356,7 +356,7 @@ export default function Profile({
           </div>
         );
       case "Facture":
-        return <div className="text-gray-500">Factures du client</div>;
+        return <div className="text-gray-500">Factures du cliente</div>;
       case "Code Promo":
         return infoCodePromo();
       default:

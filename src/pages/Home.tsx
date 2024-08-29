@@ -20,12 +20,14 @@ import {
 import Carousel from "../components/Carousel";
 import { Link } from "react-router-dom";
 import CardFixHomePage from "../components/CardFixHomePage";
+import Assistant from "../components/Assistant";
 
 export default function Home() {
   return (
     <div className="bg-slate-100 w-screen min-h-dvh h-auto text-black">
       <Navbar />
       <main className=" h-auto min-w-screen mt-6 px-4 flex flex-col gap-14">
+        <Assistant />
         <section className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
           {[
             {
