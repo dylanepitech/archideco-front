@@ -12,8 +12,6 @@ import { getAllProducts } from "../Requests/ProductsRequest";
 import Logo from "../assets/LogoArchideco.png";
 import { Link } from "react-router-dom";
 
-
-
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
 );
@@ -177,6 +175,24 @@ const PaymentForm: React.FC = () => {
             <span>Total : </span>
             <span>{total.toFixed(2)} €</span>
           </div>
+          <div className="mt-4 font-bold flex justify-between">
+            <div className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-4 bg-gray-100 shadow-lg rounded-lg">
+              <h2 className="text-xl font-bold mb-4">
+                Récapitulatif de votre commande
+              </h2>
+              {cartItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center w-full mb-2 p-2 border-b border-gray-200"
+                >
+                  <div className="flex flex-col">
+                    <p className="text-lg font-semibold">{item.title}</p>
+                    <p className="text-gray-500">Prix : {item.price}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <div className="p-4 flex justify-center mt-8">
@@ -185,7 +201,10 @@ const PaymentForm: React.FC = () => {
           {success && <div className="text-green-500">{success}</div>}
 
           <h2 className="text-2xl font-bold">Coordonnées de livraison</h2>
-          <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+          <select
+            id="countries"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          >
             <option selected>Choissisez un pays</option>
             <option value="FR">France</option>
             <option value="BE">Belgique</option>
@@ -250,10 +269,21 @@ const PaymentForm: React.FC = () => {
           </div>
           <div className="flex">
             <div className="flex items-center h-5">
-              <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value="" className="w-4 h-4 border-gray-300 rounded" />
+              <input
+                id="helper-checkbox"
+                aria-describedby="helper-checkbox-text"
+                type="checkbox"
+                value=""
+                className="w-4 h-4 border-gray-300 rounded"
+              />
             </div>
             <div className="ms-2 text-sm">
-              <label htmlFor="helper-checkbox" className="font-medium text-gray-900 dark:text-gray-300">Sauvegarder mes coordonnées pour la prochaine fois</label>
+              <label
+                htmlFor="helper-checkbox"
+                className="font-medium text-gray-900 dark:text-gray-300"
+              >
+                Sauvegarder mes coordonnées pour la prochaine fois
+              </label>
             </div>
           </div>
           <h2 className="text-2xl font-bold">Détails de la carte</h2>
@@ -270,10 +300,21 @@ const PaymentForm: React.FC = () => {
           </div>
           <div className="flex">
             <div className="flex items-center h-5">
-              <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value="" className="w-4 h-4 border-gray-300 rounded" />
+              <input
+                id="helper-checkbox"
+                aria-describedby="helper-checkbox-text"
+                type="checkbox"
+                value=""
+                className="w-4 h-4 border-gray-300 rounded"
+              />
             </div>
             <div className="ms-2 text-sm">
-              <label htmlFor="helper-checkbox" className="font-medium text-gray-900 dark:text-gray-300">Utiliser l'adresse d'expédition comme adresse de facturation</label> 
+              <label
+                htmlFor="helper-checkbox"
+                className="font-medium text-gray-900 dark:text-gray-300"
+              >
+                Utiliser l'adresse d'expédition comme adresse de facturation
+              </label>
             </div>
           </div>
           <button
