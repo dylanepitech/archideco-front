@@ -5,17 +5,24 @@ import { ApiResponse } from "../Types/userCrud";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { UserRoundCog, ListOrdered, LogOut, SquarePen } from "lucide-react";
+import {
+  UserRoundCog,
+  ListOrdered,
+  LogOut,
+  SquarePen,
+  Download,
+} from "lucide-react";
 
 function Profile() {
   const { authToken } = useContext(AuthContext);
   const [profile, setProfile] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
+  const [showOrders, setShowOrders] = useState(false); // Nouvel état pour les commandes
   const [editingField, setEditingField] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const [showLogoutForm, setShowLogoutForm] = useState(false); // Nouveau état
+  const [showLogoutForm, setShowLogoutForm] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -67,14 +74,24 @@ function Profile() {
   };
 
   const handleLogoutClick = () => {
-    setShowLogoutForm(true); // Afficher le formulaire de déconnexion
+    setShowLogoutForm(true);
   };
 
   const handleLogoutSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logique pour déconnexion, e.g., supprimer le token d'authentification
     console.log("Déconnexion effectuée");
     setShowLogoutForm(false);
+  };
+
+  // Fonction pour gérer l'affichage des sections
+  const handleSectionClick = (section: "personalInfo" | "orders") => {
+    if (section === "personalInfo") {
+      setShowPersonalInfo(true);
+      setShowOrders(false);
+    } else if (section === "orders") {
+      setShowOrders(true);
+      setShowPersonalInfo(false);
+    }
   };
 
   if (error) {
@@ -100,7 +117,7 @@ function Profile() {
                 <a
                   href="#profile"
                   className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
-                  onClick={() => setShowPersonalInfo(true)}
+                  onClick={() => handleSectionClick("personalInfo")}
                 >
                   Mes informations personnelles
                 </a>
@@ -108,8 +125,9 @@ function Profile() {
               <li className="flex flex-col items-center">
                 <ListOrdered className="mb-2" />
                 <a
-                  href="#settings"
+                  href="#orders"
                   className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
+                  onClick={() => handleSectionClick("orders")}
                 >
                   Mes commandes
                 </a>
@@ -159,17 +177,17 @@ function Profile() {
                       {
                         label: "Numéro de téléphone",
                         field: "phone",
-                        value: user.phone,
+                        // value: user_complements.phone,
                       },
                       {
                         label: "Adresse",
                         field: "address",
-                        value: user.address,
+                        // value: user_complements.address,
                       },
                       {
                         label: "Code postal",
                         field: "zip_code",
-                        value: user.zip_code,
+                        // value: user_complements.zip_code,
                       },
                     ].map(({ label, field, value }) => (
                       <tr
@@ -224,36 +242,71 @@ function Profile() {
               </div>
             </>
           )}
+
+          {showDeletePopup && (
+            <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+              <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+                <p className="mb-4 text-lg">
+                  Voulez-vous vraiment supprimer votre compte?
+                </p>
+                <div className="flex flex-col sm:flex-row justify-end">
+                  <button
+                    className="mb-2 sm:mb-0 sm:mr-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                    onClick={() => setShowDeletePopup(false)}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                    onClick={handleDeleteAccount}
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showOrders && (
+            <div className="orders">
+              <h2 className="text-xl font-bold mb-4 sm:mb-6">Mes commandes</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+                  <thead>
+                    <tr className="border-t-2 border-t-[#639D87]">
+                      <th className="p-2 sm:p-4 text-center">ID</th>
+                      <th className="p-2 sm:p-4 text-center">Articles</th>
+                      <th className="p-2 sm:p-4 text-center">Date</th>
+                      <th className="p-2 sm:p-4 text-center">Total</th>
+                      <th className="p-2 sm:p-4 text-center">Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-gray-200 hover:bg-gray-50 transition duration-300">
+                      <td className="p-2 sm:p-4 text-center ">1</td>
+                      <td className="p-2 sm:p-4 text-center">Frigot samsung</td>
+                      <td className="p-2 sm:p-4 text-center">2024-01-01</td>
+                      <td className="p-2 sm:p-4 text-center">700 €</td>
+                      <td className="p-2 sm:p-4 text-center">
+                        En cours de préparation
+                      </td>
+                      <td className="p-2 sm:p-4 text-center">
+                        <button className="p-2 rounded-full hover:bg-[#639D87] transition duration-300 focus:outline-none">
+                          <Download className="text-[#639D87] hover:text-white" />
+                        </button>{" "}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
-      {showDeletePopup && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
-            <p className="mb-4 text-lg">
-              Voulez-vous vraiment supprimer votre compte?
-            </p>
-            <div className="flex flex-col sm:flex-row justify-end">
-              <button
-                className="mb-2 sm:mb-0 sm:mr-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
-                onClick={() => setShowDeletePopup(false)}
-              >
-                Annuler
-              </button>
-              <button
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                onClick={handleDeleteAccount}
-              >
-                Supprimer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {showLogoutForm && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg max-w-lg mx-4">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
             <form onSubmit={handleLogoutSubmit}>
               <p className="mb-4 text-lg">
                 Voulez-vous vraiment vous déconnecter?
@@ -261,7 +314,7 @@ function Profile() {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 mr-4"
+                  className="bg-gray-300 px-4 py-2 rounded mr-2 hover:bg-gray-400"
                   onClick={() => setShowLogoutForm(false)}
                 >
                   Annuler
