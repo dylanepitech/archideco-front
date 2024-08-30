@@ -46,7 +46,7 @@ const WishlistPage = () => {
         }
       }
     } catch (err) {
-      setError("Erreur lors de la recuperation de la liste de souhaits");
+      setError("Erreur lors de la récuperation de la liste de souhaits");
       console.error("Erreur:", err);
     }
   };
@@ -76,7 +76,7 @@ const WishlistPage = () => {
         }
       }
     } catch (err) {
-      setError("Erreur lors de la recuperation des produit");
+      setError("Erreur lors de la récuperation des produit");
       //   console.error("Erreur:", err);
     }
   };
@@ -210,7 +210,7 @@ const WishlistPage = () => {
         } else {
           setCart(data);
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: "top",
             description: `Ajouté au panier`,
             status: "success",
@@ -325,7 +325,7 @@ const WishlistPage = () => {
       ) : (
         <main className="flex flex-col container mx-auto min-h-2/3 h-auto px-4 py-8 items-center w-full justify-center">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            Vous n'êtes pas connectez
+          Vous n'êtes pas connecté
           </h1>
           <Link
             to={"/login"}

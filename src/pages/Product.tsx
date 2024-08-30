@@ -179,7 +179,7 @@ export default function Product() {
         } else {
           setCart(data);
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: "top",
             description: `${product?.title} ajouté au panier`,
             status: "success",
@@ -231,7 +231,7 @@ export default function Product() {
         } else {
           setWishlists(data.data);
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: "top",
             description: `${product?.title} ajouté au panier`,
             status: "success",
@@ -312,7 +312,7 @@ export default function Product() {
         }
       }
     } catch (err) {
-      setError("Erreur lors de la recuperation de la liste de souhaits");
+      setError("Erreur lors de la récuperation de la liste de souhaits");
       console.error("Erreur:", err);
     }
   };

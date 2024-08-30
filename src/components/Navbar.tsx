@@ -50,7 +50,7 @@ export default function Navbar() {
           <Link to="/FAQ" className="flex flex-col items-center">
             <CircleHelp color="#639d87" />
             <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-              Foire au questions
+              Foire aux questions
             </div>
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
@@ -176,7 +176,7 @@ export default function Navbar() {
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
                 to="/FAQ"
               >
-                Foire au questions
+                Foire aux questions
               </Link>
             </div>
             <div className="flex flex-col items-center">

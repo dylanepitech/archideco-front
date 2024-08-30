@@ -345,7 +345,7 @@ const CartPage: React.FC = () => {
       ) : (
         <main className="flex flex-col container mx-auto min-h-2/3 h-auto px-4 py-8 items-center w-full justify-center">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            Vous n'êtes pas connectez
+          Vous n'êtes pas connecté
           </h1>
           <Link
             to={"/login"}

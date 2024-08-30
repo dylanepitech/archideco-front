@@ -78,7 +78,7 @@ export default function IndoorFurniture() {
                 to="/map"
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
-                VISITEZ NOS MAGASIN
+                VISITEZ NOS MAGASINS
               </Link>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function IndoorFurniture() {
                 href=""
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
-                VISITEZ NOS MAGASIN
+                VISITEZ NOS MAGASINS
               </a>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function IndoorFurniture() {
                 href=""
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
-                VISITEZ NOS MAGASIN
+                VISITEZ NOS MAGASINS
               </a>
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function IndoorFurniture() {
                 href=""
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
-                VISITEZ NOS MAGASIN
+                VISITEZ NOS MAGASINS
               </a>
             </div>
           </div>
