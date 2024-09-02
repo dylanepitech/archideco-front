@@ -100,8 +100,6 @@ const CartPage: React.FC = () => {
       localStorage.setItem("codePromo", `${promoCode}|${response}`);
     }
     console.log(response);
-
-    setPromoCode("");
   };
 
   const handleGetMyCart = async () => {
@@ -312,6 +310,18 @@ const CartPage: React.FC = () => {
                     <span>Frais de livraison :</span>
                     <span>Gratuit</span>
                   </div>
+                  {promotion ? (
+                    <div className="flex justify-between mb-2">
+                      <span>
+                        {" "}
+                        <span className="font-semibold">
+                          Code promotionel :{" "}
+                        </span>{" "}
+                        {promoCode}
+                      </span>
+                      <span>{promotion}€</span>
+                    </div>
+                  ) : null}
                   <div className="border-t pt-2 mt-2">
                     <div className="flex justify-between font-bold">
                       <span>Total :</span>
@@ -327,23 +337,25 @@ const CartPage: React.FC = () => {
                     </Link>
                   </div>
                   <br />
-                  <form onSubmit={handlePromoCodeSubmit} className="mt-4">
-                    <div className="flex items-center">
-                      <input
-                        type="text"
-                        value={promoCode}
-                        onChange={(e) => setPromoCode(e.target.value)}
-                        placeholder="Code promo"
-                        className="flex-grow px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-light"
-                      />
-                      <button
-                        type="submit"
-                        className="bg-green-emerald text-white px-4 py-2 rounded-r-md hover:bg-green-duck focus:outline-none"
-                      >
-                        Appliquer
-                      </button>
-                    </div>
-                  </form>
+                  {!promotion ? (
+                    <form onSubmit={handlePromoCodeSubmit} className="mt-4">
+                      <div className="flex items-center">
+                        <input
+                          type="text"
+                          value={promoCode}
+                          onChange={(e) => setPromoCode(e.target.value)}
+                          placeholder="Code promo"
+                          className="flex-grow px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-light"
+                        />
+                        <button
+                          type="submit"
+                          className="bg-green-emerald text-white px-4 py-2 rounded-r-md hover:bg-green-duck focus:outline-none"
+                        >
+                          Appliquer
+                        </button>
+                      </div>
+                    </form>
+                  ) : null}
                   <div className="mt-6">
                     <h3 className="text-lg font-semibold mb-2 text-center">
                       Paiement sécurisé par Stripe
@@ -380,7 +392,7 @@ const CartPage: React.FC = () => {
       ) : (
         <main className="flex flex-col container mx-auto min-h-2/3 h-auto px-4 py-8 items-center w-full justify-center">
           <h1 className="text-3xl font-bold mb-6 text-center">
-          Vous n'êtes pas connecté
+            Vous n'êtes pas connecté
           </h1>
           <Link
             to={"/login"}
