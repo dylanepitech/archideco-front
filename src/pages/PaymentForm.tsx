@@ -11,6 +11,8 @@ import { getMyCart } from "../Requests/CartRequest";
 import { getAllProducts } from "../Requests/ProductsRequest";
 import Logo from "../assets/LogoArchideco.png";
 import { Link } from "react-router-dom";
+import { localhost } from "../constants/Localhost";
+import Footer from "../components/Footer";
 
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
@@ -30,11 +32,30 @@ const PaymentForm: React.FC = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
+  const [Promocode, setPromoCode] = useState<string | null>(null);
+  const [valuePromoCode, setValuePromoCode] = useState<number>(0);
 
   useEffect(() => {
     if (authToken) {
       fetchCartItems();
     }
+    const retrievePromoCodeAndValue = () => {
+      const codePromoData = localStorage.getItem("codePromo");
+
+      if (codePromoData) {
+        const [codePromo, value] = codePromoData.split("|");
+
+        const intValue = parseInt(value, 10);
+
+        setPromoCode(codePromo);
+        if (!isNaN(intValue)) {
+          setValuePromoCode(intValue);
+        } else {
+          console.error("La valeur de réduction n'est pas un entier valide.");
+        }
+      }
+    };
+    retrievePromoCodeAndValue();
   }, [authToken]);
 
   const fetchCartItems = async () => {
@@ -155,8 +176,17 @@ const PaymentForm: React.FC = () => {
     }
   };
 
+  const removeBaseUrl = (url: string) => {
+    if (localhost == "") {
+      const baseUrl = "http://localhost:8000";
+      return url.replace(baseUrl, "");
+    } else {
+      return url;
+    }
+  };
+
   return (
-    <div className="grid md:grid-cols-2 h-screen">
+    <div className="grid md:grid-cols-2 h-screenbg-white ">
       <div className="p-4 bg-gray-100 flex flex-col">
         <div className="max-w-md mx-auto w-full">
           <div className="flex gap-4 items-center">
@@ -165,32 +195,122 @@ const PaymentForm: React.FC = () => {
               <img src={Logo} alt="Logo" height={100} width={100} />
             </Link>
           </div>
-          {cartItems.map((item, index) => (
-            <div key={index} className="mb-2 flex justify-between">
-              <span>{item.title}</span>
-              <span>{item.price}</span>
+          {cartItems.map((item, index) => {
+            const priceInt = parseFloat(
+              item.price.replace("€", "").replace(",", ".")
+            );
+            const reducedPrice =
+              item.reduction > 0 ? priceInt - item.reduction : priceInt;
+
+            return (
+              <div
+                key={index}
+                className="mb-2 flex justify-between  rounded-lg p-4  "
+              >
+                <span>{item.title}</span>
+                <span>
+                  {item.reduction > 0 ? (
+                    <>
+                      <span className="line-through text-gray-500 mr-2">
+                        {priceInt.toFixed(2)}€
+                      </span>
+                      <span className="text-red-600 font-bold">
+                        {reducedPrice.toFixed(2)}€
+                      </span>
+                    </>
+                  ) : (
+                    <span>{priceInt.toFixed(2)}€</span>
+                  )}
+                </span>
+              </div>
+            );
+          })}
+
+          {Promocode && valuePromoCode !== null ? (
+            <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mt-4">
+              <h3 className="text-lg font-semibold mb-2">Code Promo</h3>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-gray-700 font-medium">Code :</span>
+                <span className="text-gray-900 font-bold">{Promocode}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700 font-medium">Réduction :</span>
+                <span className="text-green-600 font-bold">
+                  {valuePromoCode} €
+                </span>
+              </div>
             </div>
-          ))}
+          ) : null}
+
           <div className="mt-4 font-bold flex justify-between">
             <span>Total : </span>
-            <span>{total.toFixed(2)} €</span>
+            <span>
+              {cartItems
+                .reduce((acc, item) => {
+                  const priceInt = parseFloat(
+                    item.price.replace("€", "").replace(",", ".")
+                  );
+                  const reducedPrice =
+                    item.reduction > 0 ? priceInt - item.reduction : priceInt;
+                  return acc + reducedPrice;
+                }, 0)
+                .toFixed(2) - valuePromoCode}{" "}
+              €
+            </span>
           </div>
+
           <div className="mt-4 font-bold flex justify-between">
             <div className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-4 bg-gray-100 shadow-lg rounded-lg">
               <h2 className="text-xl font-bold mb-4">
                 Récapitulatif de votre commande
               </h2>
-              {cartItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center w-full mb-2 p-2 border-b border-gray-200"
-                >
-                  <div className="flex flex-col">
-                    <p className="text-lg font-semibold">{item.title}</p>
-                    <p className="text-gray-500">Prix : {item.price}</p>
+              {cartItems.map((item, index) => {
+                // Calculer le prix en nombre en supprimant le symbole '€' et en remplaçant la virgule par un point si nécessaire
+                const priceInt = parseFloat(
+                  item.price.replace("€", "").replace(",", ".")
+                );
+                const reducedPrice = priceInt - item.reduction; // Calculer le prix après réduction
+
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center w-full mb-4 p-4 border border-gray-300 rounded-lg shadow-sm bg-white"
+                  >
+                    <div className="flex-shrink-0">
+                      <img
+                        src={removeBaseUrl(
+                          item.images[Object.keys(item.images)[0]][0].image
+                        )}
+                        alt={item.title}
+                        className="h-40 w-40 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div className="ml-4 flex-1">
+                      <h3 className="text-xl font-semibold text-gray-800">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 mt-1">
+                        Prix : {priceInt.toFixed(2)}€
+                      </p>
+
+                      {item.reduction > 0 && (
+                        <>
+                          <p className="text-gray-600 mt-1">
+                            Réduction : -{item.reduction}€
+                          </p>
+                          <p className="text-red-600 mt-1 font-bold">
+                            Prix après réduction : {reducedPrice.toFixed(2)}€
+                          </p>
+                        </>
+                      )}
+
+                      <div className="mt-2 flex items-center justify-between">
+                        {/* Add any additional information or actions here */}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -311,7 +431,7 @@ const PaymentForm: React.FC = () => {
             <div className="ms-2 text-sm">
               <label
                 htmlFor="helper-checkbox"
-                className="font-medium text-gray-900 dark:text-gray-300"
+                className="font-semibold text-black  dark:text-gray-300"
               >
                 Utiliser l'adresse d'expédition comme adresse de facturation
               </label>
@@ -319,7 +439,7 @@ const PaymentForm: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full mt-4 border border-gray-300 text-black px-6 py-2 rounded bg-[#639d87]"
+            className="w-full mt-4 border border-gray-300 text-white font-bold px-6 py-2 rounded bg-[#639d87]"
           >
             Payer {total.toFixed(2)} €
           </button>
@@ -332,6 +452,7 @@ const PaymentForm: React.FC = () => {
 const Payment: React.FC = () => (
   <Elements stripe={stripePromise}>
     <PaymentForm />
+    <Footer />
   </Elements>
 );
 

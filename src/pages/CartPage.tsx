@@ -10,12 +10,14 @@ import { localhost } from "../constants/Localhost";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { loadStripe } from "@stripe/stripe-js";
+import { VerifyCodePromo } from "../Requests/ReductionRequest";
 
 interface CartItem {
   id: number;
   title: string;
   price: string;
   quantity: number;
+  reduction: number;
   image?: any;
   images?: any;
   categoryId?: any;
@@ -31,6 +33,7 @@ const CartPage: React.FC = () => {
   const [promoCode, setPromoCode] = useState("");
   const { authToken } = useContext(AuthContext);
   const [error, setError] = useState<string | null>(null);
+  const [promotion, setPromotion] = useState<number>(0);
   const connected = useConnected();
   const toast = useToast();
 
@@ -80,16 +83,24 @@ const CartPage: React.FC = () => {
     }
   };
 
+  // Calcul du total prenant en compte les réductions
   const total = cartItems.reduce((sum, item) => {
     const numPrice = item.price.replace("€", "").replace(",", ".").trim();
     const price = parseFloat(numPrice);
+    const reducedPrice = item.reduction > 0 ? price - item.reduction : price;
 
-    return sum + price * item.quantity;
+    return sum + reducedPrice * item.quantity;
   }, 0);
 
-  const handlePromoCodeSubmit = (e: React.FormEvent) => {
+  const handlePromoCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Code promo soumis:", promoCode);
+    const response = await VerifyCodePromo(promoCode, authToken);
+    if (response > 0) {
+      setPromotion(response);
+      localStorage.setItem("codePromo", `${promoCode}|${response}`);
+    }
+    console.log(response);
+
     setPromoCode("");
   };
 
@@ -102,7 +113,6 @@ const CartPage: React.FC = () => {
           setError(data);
         } else {
           setCart(data.data);
-          // console.log(cart)
         }
       }
     } catch (err) {
@@ -138,7 +148,6 @@ const CartPage: React.FC = () => {
       }
     } catch (err) {
       setError("Erreur lors de la mise à jour du panier");
-      // console.error("Erreur:", err);
     }
   };
 
@@ -180,6 +189,7 @@ const CartPage: React.FC = () => {
       return url;
     }
   };
+
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Navbar />
@@ -192,78 +202,102 @@ const CartPage: React.FC = () => {
           ) : (
             <div className="flex flex-col md:flex-row md:space-x-8">
               <div className="md:w-2/3 space-y-4">
-                {cartItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="border rounded-lg p-4 shadow-sm"
-                  >
-                    <div className="flex items-center">
-                      <Link
-                        to={`/${item.categoryTitle}/${item.title}/${item.id}`}
-                      >
-                        {Object.keys(item.images).length > 0 && (
-                          <img
-                            src={removeBaseUrl(
-                              item.images[Object.keys(item.images)[0]][0].image
-                            )} // Récupérer la première image du premier tableau
-                            alt={item.title}
-                            className="w-24 h-24 object-cover mr-4 rounded"
-                          />
-                        )}
-                      </Link>
+                {cartItems.map((item) => {
+                  const numPrice = item.price
+                    .replace("€", "")
+                    .replace(",", ".")
+                    .trim();
+                  const price = parseFloat(numPrice);
+                  const reducedPrice =
+                    item.reduction > 0 ? price - item.reduction : price; // Calcule le prix réduit
 
-                      <div className="flex-grow">
+                  return (
+                    <div
+                      key={item.id}
+                      className="border rounded-lg p-4 shadow-sm"
+                    >
+                      <div className="flex items-center">
                         <Link
                           to={`/${item.categoryTitle}/${item.title}/${item.id}`}
                         >
-                          <h2 className="text-xl font-semibold">
-                            {item.title}
-                          </h2>
+                          {Object.keys(item.images).length > 0 && (
+                            <img
+                              src={removeBaseUrl(
+                                item.images[Object.keys(item.images)[0]][0]
+                                  .image
+                              )}
+                              alt={item.title}
+                              className="w-24 h-24 object-cover mr-4 rounded"
+                            />
+                          )}
                         </Link>
-                        <p className="text-gray-600">{item.price}</p>
-                        <div className="flex items-center mt-2">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
-                            }
-                            className="bg-gray-200 px-2 py-1 rounded"
+
+                        <div className="flex-grow">
+                          <Link
+                            to={`/${item.categoryTitle}/${item.title}/${item.id}`}
                           >
-                            -
-                          </button>
-                          <span className="mx-2">{item.quantity}</span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
-                            className="bg-gray-200 px-2 py-1 rounded"
-                          >
-                            +
-                          </button>
+                            <h2 className="text-xl font-semibold">
+                              {item.title}
+                            </h2>
+                          </Link>
+                          <p className="text-gray-600">
+                            {item.reduction > 0 ? (
+                              <>
+                                <span className="line-through text-gray-500 mr-2">
+                                  {price.toFixed(2)}€
+                                </span>
+                                <span className="text-red-600 font-bold">
+                                  {reducedPrice.toFixed(2)}€
+                                </span>
+                              </>
+                            ) : (
+                              <span>{price.toFixed(2)}€</span>
+                            )}
+                          </p>
+                          <div className="flex items-center mt-2">
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
+                              className="bg-gray-200 px-2 py-1 rounded"
+                            >
+                              -
+                            </button>
+                            <span className="mx-2">{item.quantity}</span>
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
+                              className="bg-gray-200 px-2 py-1 rounded"
+                            >
+                              +
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-gray-500 hover:text-red-700"
-                        aria-label="Supprimer l'article"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="text-gray-500 hover:text-red-700"
+                          aria-label="Supprimer l'article"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="md:w-1/3 mt-8 md:mt-0">
                 <div className="border rounded-lg p-4 shadow-sm">
@@ -272,7 +306,7 @@ const CartPage: React.FC = () => {
                   </h2>
                   <div className="flex justify-between mb-2">
                     <span>Sous-total :</span>
-                    <span>{total} €</span>
+                    <span>{total.toFixed(2)} €</span>
                   </div>
                   <div className="flex justify-between mb-2">
                     <span>Frais de livraison :</span>
@@ -281,7 +315,7 @@ const CartPage: React.FC = () => {
                   <div className="border-t pt-2 mt-2">
                     <div className="flex justify-between font-bold">
                       <span>Total :</span>
-                      <span>{total} €</span>
+                      <span>{total.toFixed(2) - promotion} €</span>
                     </div>
                   </div>
                   <div className="flex justify-center mt-4">
@@ -291,7 +325,8 @@ const CartPage: React.FC = () => {
                     >
                       Valider mon panier
                     </Link>
-                  </div><br/>
+                  </div>
+                  <br />
                   <form onSubmit={handlePromoCodeSubmit} className="mt-4">
                     <div className="flex items-center">
                       <input
@@ -315,7 +350,7 @@ const CartPage: React.FC = () => {
                     </h3>
                     <div className="flex justify-center space-x-4 mb-4"></div>
                     <div className="flex justify-center space-x-4">
-                    <img
+                      <img
                         src="src/assets/picture/carte.png"
                         alt="Secured"
                         className="w-12 h-12 object-contain"
