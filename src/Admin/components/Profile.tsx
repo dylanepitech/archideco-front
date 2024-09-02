@@ -299,7 +299,7 @@ export default function Profile({
                 </p>
                 <p className="flex gap-2 font-semibold mb-2">
                   <span className="flex text-teal-500 font-semibold">
-                    Reduction:{" "}
+                    Réduction:{" "}
                   </span>{" "}
                   {promo.value} €
                 </p>
@@ -356,7 +356,7 @@ export default function Profile({
           </div>
         );
       case "Facture":
-        return <div className="text-gray-500">Factures du cliente</div>;
+        return <div className="text-gray-500">Factures du client</div>;
       case "Code Promo":
         return infoCodePromo();
       default:

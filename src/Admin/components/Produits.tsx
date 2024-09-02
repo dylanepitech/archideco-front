@@ -283,10 +283,10 @@ export default function Produits() {
                   />
                 </th>
                 <th className="py-2 px-4 border-b text-left">Produit</th>
-                <th className="py-2 px-4 border-b text-left">Categorie</th>
+                <th className="py-2 px-4 border-b text-left">Catégorie</th>
                 <th className="py-2 px-4 border-b text-left">Prix</th>
                 <th className="py-2 px-4 border-b text-left">Poids</th>
-                <th className="py-2 px-4 border-b text-left">Reduction</th>
+                <th className="py-2 px-4 border-b text-left">Réduction</th>
               </tr>
             </thead>
             <tbody>

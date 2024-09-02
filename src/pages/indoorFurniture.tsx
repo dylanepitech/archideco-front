@@ -130,7 +130,7 @@ export default function IndoorFurniture() {
                 to="/map"
                 className="mt-4 underline bg-red-600 p-2 sm:p-4 text-white hover:bg-red-700 rounded-md no-underline"
               >
-                VISITEZ NOS MAGASIN
+                VISITEZ NOS MAGASINS
               </Link>
             </div>
           </div>

@@ -177,7 +177,7 @@ export default function Home() {
             </h2>
           </div>
           <p className="text-center font-Gotham text-xl py-2 tracking-widest">
-            - Une colaboration pétillante -
+            - Une collaboration pétillante -
           </p>
         </section>
 
@@ -185,7 +185,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-2 mb-6 w-full">
             <div className="w-full flex justify-center">
               <h2 className="text-black text-2xl font-bold text-center">
-                - Des créations uniques et innoventes -
+                - Des créations uniques et innovantes -
               </h2>
             </div>
           </div>
