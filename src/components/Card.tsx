@@ -74,10 +74,10 @@ export default function Card({
           {reduction ? (
             <div className="mt-2 grid  place-items-center justify-items-center">
               <span className="text-red-600 font-bold text-xl col-span-6">
-                {reduction > 0 ? priceInt - reduction : priceInt}
+                {reduction > 0 ? priceInt - reduction : priceInt}€
               </span>
               <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
-                {reduction > 0 ? priceInt : ""}
+                {reduction > 0?priceInt+'€':''}
               </span>
               <DiscountCalculator price={price} reduction={reduction} />
             </div>

@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import Aside from './components/Aside';
 import Bord from './components/Bord';
 import Clients from './components/Clients';
-import Chiffre from './components/Chiffre';
 import Commandes from './components/Commandes';
 import Produits from './components/Produits';
-import Chart from './components/Chart';
+
 
 export default function Dashboard() {
     const [selectedItem, setSelectedItem] = useState<string | null>("Dashboard");
@@ -20,7 +19,7 @@ export default function Dashboard() {
                     {selectedItem === 'Dashboard' && <Bord />}
                     {selectedItem === 'Clients' && <Clients />}
                     {selectedItem === 'Commandes' && <Commandes />}
-                    {selectedItem === 'Chiffres' && <Chiffre />}
+                   
                     {selectedItem === 'Produits' && <Produits />}
                 </div>
                 
