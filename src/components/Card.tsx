@@ -18,7 +18,7 @@ export default function Card({
   reduction: number;
   note: number;
   product: any;
-  onAddToCart: any;
+  onAddToCart?: any;
 }) {
   const getImg = (product: any) => {
     let img: any;
@@ -49,8 +49,6 @@ export default function Card({
 
   const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
   // const reductionInt = parseFloat(reduction);
-
-  
 
   return (
     <div className="bg-slate-100 rounded-lg border border-zinc-200 max-w-xs w-full h-full flex flex-col">
@@ -92,14 +90,7 @@ export default function Card({
           )}
         </div>
       </Link>
-      <div className="p-4">
-        <button
-          className="w-full bg-red-500 text-white font-bold py-2 text-sm rounded hover:bg-red-600"
-          onClick={connected ? onAddToCart : onLogin}
-        >
-          🛒 Ajouter au panier
-        </button>
-      </div>
+      <div className="p-4"></div>
     </div>
   );
 }
@@ -139,7 +130,7 @@ const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
 
   return (
     <span className="bg-red-500 text-white text-md font-bold uppercase px-2 rounded mt-2 inline-block col-span-12">
-      BON PLAN {pourcentage.toFixed()}%
+      BON PLAN -{pourcentage.toFixed()}%
     </span>
   );
 };
