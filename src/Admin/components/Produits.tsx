@@ -70,7 +70,7 @@ export default function Produits() {
 
   useEffect(() => {
     let filtered: any[] = products;
-
+ 
     if (categoryFilter) {
       filtered = filtered.filter((product: any) => product.categoryTitle === categoryFilter);
     }
@@ -199,6 +199,9 @@ export default function Produits() {
                 </option>
               ))}
             </select>
+          </div>
+          <div>
+            <input className="flex border border-sm rounded-md p-1.5" type="text" name="" placeholder="Sous categorie" id="" />
           </div>
         </div>
       ) : (

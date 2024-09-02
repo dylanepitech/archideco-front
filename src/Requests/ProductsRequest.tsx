@@ -35,3 +35,22 @@ export const getCuisine = async (): Promise<Product[] | string> => {
     const response = await axios.get<Product[]>(`${localhost}/api/get-cuisine-products`);
     return response.data;
 };
+
+
+export const getSousCategory = async (token: string): Promise<any | string> => {
+    try {
+      const response = await axios.get(`${localhost}/api/sous-category`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data.message || 'Une erreur est survenue';
+      } else {
+        return 'Une erreur est survenue';
+      }
+    }
+  };
