@@ -64,6 +64,7 @@ const LoginPage = () => {
           <p className="text-center text-red-500/50 text-sm">{messageErreur}</p>
         )}
         <div className="mt-10 mb-10 sm:mx-auto sm:w-full h-[500px] sm:max-w-lg  p-10 rounded-lg max-md:p-5 relative">
+
           <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-16">
             <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-black  absolute left-0 top-0 w-full py-2">
               Connecte-toi
