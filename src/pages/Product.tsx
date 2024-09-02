@@ -29,7 +29,6 @@ import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
 import { getWishListItems, putWishList } from "../hooks/wishListe";
 
-
 export default function Product() {
   const { category, productTitle, id } = useParams();
   const [categoryId, setCategoryId] = useState<number | null>(null);
@@ -42,7 +41,6 @@ export default function Product() {
   const [cart, setCart] = useState<any | null>(null);
   const [wishlists, setWishlists] = useState<any | null>(null);
   const connected = useConnected();
-  const wishListItems = getWishListItems();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -91,10 +89,6 @@ export default function Product() {
     handleGetMyCart();
   }, [cart]);
 
-  if (error) {
-    console.log(error);
-  }
-
   const handleGetProduct = async (categoryId: number) => {
     try {
       const data: any[] = await getProductByCategoryId(categoryId);
@@ -109,7 +103,7 @@ export default function Product() {
 
       if (specificProduct) {
         setProduct(specificProduct);
-        console.log(specificProduct)
+        console.log(specificProduct);
       } else {
         navigate("/sorry/not-found");
       }
@@ -379,9 +373,9 @@ export default function Product() {
                   mainImage
                     ? mainImage
                     : removeBaseUrl(
-                      product?.images[Object.keys(product?.images)[0]][0]
-                        .image
-                    )
+                        product?.images[Object.keys(product?.images)[0]][0]
+                          .image
+                      )
                 }
                 alt="Main product image"
                 className="rounded-lg w-full rounded-xl w-[300px] md:w-[500px] h-full"
@@ -396,24 +390,26 @@ export default function Product() {
             </h2>
             <p className="text-lg text-gray-700 mb-2">{product?.description}</p>
             <p className="flex gap-4 text-lg text-green-500 mb-4">
-
               {product?.reduction > 0 ? (
                 <>
                   <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
-                    {parseFloat(product?.price.replace("€", "").replace(",", "."))}€
+                    {parseFloat(
+                      product?.price.replace("€", "").replace(",", ".")
+                    )}
+                    €
                   </span>
                   <span>
                     {(
-                      parseFloat(product?.price.replace("€", "").replace(",", ".")) - product?.reduction
-                    ).toFixed(2)}€
+                      parseFloat(
+                        product?.price.replace("€", "").replace(",", ".")
+                      ) - product?.reduction
+                    ).toFixed(2)}
+                    €
                   </span>
                 </>
               ) : (
-                <span>
-                  {product?.price}
-                </span>
+                <span>{product?.price}</span>
               )}
-
             </p>
             <div className="flex flex-wrap items-center space-x-2 mb-4">
               <span className="bg-green-500 text-white px-2 py-1 rounded">

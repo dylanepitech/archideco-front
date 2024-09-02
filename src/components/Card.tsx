@@ -34,13 +34,14 @@ export default function Card({
   };
 
   const removeBaseUrl = (url: string) => {
-    if (localhost == "") {
+    if (localhost === "") {
       const baseUrl = "http://localhost:8000";
       return url.replace(baseUrl, "");
     } else {
       return url;
     }
   };
+
   const connected = useConnected();
   const navigate = useNavigate();
   const onLogin = () => {
@@ -48,11 +49,17 @@ export default function Card({
   };
 
   const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
-  // const reductionInt = parseFloat(reduction);
+  const displayPrice = priceInt + "€";
+
+  const encodedTitle = encodeURIComponent(title);
+  const encodedCategoryTitle = encodeURIComponent(product?.categoryTitle);
 
   return (
     <div className="bg-slate-100 rounded-lg border border-zinc-200 max-w-xs w-full h-full flex flex-col">
-      <Link to={`/product/${product?.categoryTitle}/${title}/${product?.id}`}>
+      <Link
+        to={`/product/${encodedCategoryTitle}/${encodedTitle}/${product?.id}`}
+        className="no-underline"
+      >
         <div className="p-2 flex-1 flex items-center justify-center">
           <img
             className="rounded-t-lg object-cover h-48 w-full"
@@ -72,19 +79,19 @@ export default function Card({
             <span className="ml-2 text-xs text-zinc-500">{note} / 10</span>
           </div>
           {reduction ? (
-            <div className="mt-2 grid  place-items-center justify-items-center">
+            <div className="mt-2 grid place-items-center justify-items-center">
               <span className="text-red-600 font-bold text-xl col-span-6">
                 {reduction > 0 ? priceInt - reduction : priceInt}€
               </span>
               <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
-                {reduction > 0?priceInt+'€':''}
+                {reduction > 0 ? displayPrice : ""}
               </span>
               <DiscountCalculator price={price} reduction={reduction} />
             </div>
           ) : (
             <div className="mt-2">
-              <span className="text-slate-700 font-medium  text-lg">
-                {price}
+              <span className="text-slate-700 font-medium text-lg">
+                {displayPrice}
               </span>
             </div>
           )}
@@ -107,13 +114,13 @@ const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
     const calculateDiscount = () => {
       try {
         const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
-        // const reductionInt = parseFloat(reduction);
 
         if (priceInt <= 0 || reduction < 0) {
           throw new Error("Les valeurs de prix doivent être positives.");
         }
 
-        const discountPercentage = ((priceInt - reduction) / priceInt) * 100;
+        const newPrice = priceInt - reduction;
+        const discountPercentage = ((priceInt - newPrice) / priceInt) * 100;
 
         setPourcentage(Math.round(discountPercentage));
       } catch (error) {

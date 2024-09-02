@@ -1,26 +1,27 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../hooks/AuthContext";
-import { getAllProducts, getCategories } from '../../Requests/ProductsRequest';
-import { Search, Filter } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { createReduction } from '../../Requests/ReductionRequest';
+import { getAllProducts, getCategories } from "../../Requests/ProductsRequest";
+import { Search, Filter } from "lucide-react";
+import { Link } from "react-router-dom";
+import { createReduction } from "../../Requests/ReductionRequest";
 
 export default function Produits() {
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [selectedOnglet, setSelectedOnglet] = useState("Produits");
-  const [categoryFilter, setCategoryFilter] = useState<string>('');
-  const [nameFilter, setNameFilter] = useState<string>('');
-  const [priceFilter, setPriceFilter] = useState<string>('');
-  const [weightFilter, setWeightFilter] = useState<string>('');
+  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [nameFilter, setNameFilter] = useState<string>("");
+  const [priceFilter, setPriceFilter] = useState<string>("");
+  const [weightFilter, setWeightFilter] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [selectedProductIds, setSelectedProductIds] = useState<Set<number>>(new Set());
+  const [selectedProductIds, setSelectedProductIds] = useState<Set<number>>(
+    new Set()
+  );
   const { authToken } = useContext(AuthContext);
   const productsPerPage = 20;
-  const [endDate, setEndDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>("");
   const [reduction, setReduction] = useState<number>();
-
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -44,11 +45,11 @@ export default function Produits() {
       // console.log(data)
 
       const cleanedData = data.map((product: any) => {
-        const price = product.price || '';
-        const weight = product.weight || '';
+        const price = product.price || "";
+        const weight = product.weight || "";
 
-        let newPrice = price.split(' ')[0].replace(',', '.').trim();
-        let newWeight = weight.replace('kg', '').trim();
+        let newPrice = price.split(" ")[0].replace(",", ".").trim();
+        let newWeight = weight.replace("kg", "").trim();
 
         return {
           categoryId: product.categoryId,
@@ -57,7 +58,7 @@ export default function Produits() {
           id: product.id,
           weight: newWeight,
           price: newPrice,
-          reduction:product.reduction,
+          reduction: product.reduction,
         };
       });
 
@@ -70,14 +71,16 @@ export default function Produits() {
 
   useEffect(() => {
     let filtered: any[] = products;
- 
+
     if (categoryFilter) {
-      filtered = filtered.filter((product: any) => product.categoryTitle === categoryFilter);
+      filtered = filtered.filter(
+        (product: any) => product.categoryTitle === categoryFilter
+      );
     }
 
     if (nameFilter) {
       filtered = filtered.filter((product: any) => {
-        const productName = product.title ? product.title.toLowerCase() : '';
+        const productName = product.title ? product.title.toLowerCase() : "";
         return productName.includes(nameFilter.toLowerCase());
       });
     }
@@ -107,13 +110,14 @@ export default function Produits() {
     currentPage * productsPerPage
   );
 
-  const handleCreateReduction = async () => {
+  const handleCreateReduction = async (e: any) => {
+    e.preventDefault();
     if (authToken && selectedProductIds.size > 0 && reduction > 0 && endDate) {
       try {
         const reductionData = {
           reduction,
           id_products: Array.from(selectedProductIds),
-          end_at: endDate
+          end_at: endDate,
         };
 
         const data: any = await createReduction(authToken, reductionData);
@@ -121,15 +125,16 @@ export default function Produits() {
           console.log(data);
         } else {
           console.log(data);
-          setSelectedProductIds(new Set())
-          setReduction(0)
-          setEndDate('')
+          setSelectedProductIds(new Set());
+          setReduction(0);
+          setEndDate("");
         }
       } catch (error) {
         console.log(error);
       } finally {
         setIsModalOpen(false);
       }
+      console.log(reduction, selectedProductIds.size, endDate);
     } else {
       alert("Veuillez remplir tous les champs nécessaires.");
     }
@@ -153,7 +158,7 @@ export default function Produits() {
   };
 
   const handleCheckboxChange = (productId: number) => {
-    setSelectedProductIds(prev => {
+    setSelectedProductIds((prev) => {
       const newSelection = new Set(prev);
       if (newSelection.has(productId)) {
         newSelection.delete(productId);
@@ -164,19 +169,29 @@ export default function Produits() {
     });
   };
 
-  const allProductsSelected = currentProducts.every((product: any) => selectedProductIds.has(product.id));
+  const allProductsSelected = currentProducts.every((product: any) =>
+    selectedProductIds.has(product.id)
+  );
 
   return (
     <div>
       <div className="flex justify-center p-4 text-white">
         <div
-          className={`px-4 py-2 rounded-tl-md rounded-bl-md ${selectedOnglet === "Categories" ? 'bg-red-500' : 'bg-gray-300 text-black'}`}
+          className={`px-4 py-2 rounded-tl-md rounded-bl-md ${
+            selectedOnglet === "Categories"
+              ? "bg-red-500"
+              : "bg-gray-300 text-black"
+          }`}
           onClick={() => setSelectedOnglet("Categories")}
         >
           Categories
         </div>
         <div
-          className={`px-4 py-2 rounded-tr-md rounded-br-md ${selectedOnglet === "Produits" ? 'bg-blue-500' : 'bg-gray-300 text-black'}`}
+          className={`px-4 py-2 rounded-tr-md rounded-br-md ${
+            selectedOnglet === "Produits"
+              ? "bg-blue-500"
+              : "bg-gray-300 text-black"
+          }`}
           onClick={() => setSelectedOnglet("Produits")}
         >
           Produits
@@ -201,7 +216,13 @@ export default function Produits() {
             </select>
           </div>
           <div>
-            <input className="flex border border-sm rounded-md p-1.5" type="text" name="" placeholder="Sous categorie" id="" />
+            <input
+              className="flex border border-sm rounded-md p-1.5"
+              type="text"
+              name=""
+              placeholder="Sous categorie"
+              id=""
+            />
           </div>
         </div>
       ) : (
@@ -279,11 +300,17 @@ export default function Produits() {
                     />
                   </td>
                   <td className="py-2 px-4 border-b">
-                    <Link to={`/product/${product.categoryTitle}/${product.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <Link
+                      to={`/product/${product.categoryTitle}/${product.title
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`}
+                    >
                       {product.title}
                     </Link>
                   </td>
-                  <td className="py-2 px-4 border-b">{product.categoryTitle}</td>
+                  <td className="py-2 px-4 border-b">
+                    {product.categoryTitle}
+                  </td>
                   <td className="py-2 px-4 border-b">{product.price} €</td>
                   <td className="py-2 px-4 border-b">{product.weight} kg</td>
                   <td className="py-2 px-4 border-b">{product.reduction} €</td>
@@ -296,33 +323,40 @@ export default function Produits() {
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              className={`px-4 py-1 rounded ${currentPage === 1 ? 'bg-gray-200' : 'bg-blue-500 text-white'
-                }`}
+              className={`px-4 py-1 rounded ${
+                currentPage === 1 ? "bg-gray-200" : "bg-blue-500 text-white"
+              }`}
             >
               Précédent
             </button>
-            <span>Page {currentPage} sur {totalPages}</span>
+            <span>
+              Page {currentPage} sur {totalPages}
+            </span>
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className={`px-4 py-1 rounded ${currentPage === totalPages ? 'bg-gray-200' : 'bg-blue-500 text-white'
-                }`}
+              className={`px-4 py-1 rounded ${
+                currentPage === totalPages
+                  ? "bg-gray-200"
+                  : "bg-blue-500 text-white"
+              }`}
             >
               Suivant
             </button>
           </div>
 
           <div className="flex justify-center mt-4">
-            {
-              selectedProductIds.size>0?
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 bg-red-500 text-white rounded-md"
-              // disabled={selectedProductIds.size === 0}
-            >
-              Créer une réduction
-            </button>:""
-            }
+            {selectedProductIds.size > 0 ? (
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                // disabled={selectedProductIds.size === 0}
+              >
+                Créer une réduction
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       )}
@@ -330,13 +364,11 @@ export default function Produits() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md shadow-lg">
-            <h2 className="text-lg font-semibold mb-4"
-             
-            >
-              Créer une Réduction
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">Créer une Réduction</h2>
             <div className="mb-4">
-              <label className="block text-gray-700 mb-1">Réduction (euro)</label>
+              <label className="block text-gray-700 mb-1">
+                Réduction (euro)
+              </label>
               <input
                 type="number"
                 min="0"
@@ -363,7 +395,7 @@ export default function Produits() {
                 Annuler
               </button>
               <button
-                onClick={handleCreateReduction}
+                onClick={(e: any) => handleCreateReduction(e)}
                 className="px-4 py-2 bg-red-500 text-white rounded-md"
               >
                 Valider

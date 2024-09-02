@@ -12,8 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { getPromotion } from "../Requests/ProductsRequest";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface Product {
+  categoriesTitle: string;
   id: number;
   title: string;
   description: string;
@@ -31,7 +33,7 @@ interface Product {
     largeur: number;
     profondeur: number;
   };
-  reduction: string;
+  reduction: number;
   newPrice?: number;
   oldPrice?: number;
 }
@@ -55,9 +57,12 @@ const ProductList = () => {
   return (
     <>
       {products.map((item: Product) => {
-        // Adjust the key ('main' or other) based on your actual data
         const imageKey = Object.keys(item.images)[0];
         const imageUrl = item.images[imageKey]?.[0]?.image;
+
+        // Encode the category title and product title
+        const categoryTitleEncoded = encodeURIComponent(item.categoriesTitle);
+        const productTitleEncoded = encodeURIComponent(item.title);
 
         return (
           <Card key={item.id} maxW="sm" className="overflow-hidden">
@@ -68,15 +73,15 @@ const ProductList = () => {
               {imageUrl ? (
                 <Image src={imageUrl} alt={item.title} borderRadius="lg" />
               ) : (
-                <p>No image available</p>
+                <p>Pas d'images disponibles</p>
               )}
               <Stack mt="2" spacing="3">
                 <Heading size="md">{item.title}</Heading>
                 <Text className="line-clamp-2">{item.description}</Text>
-                {item.reduction && (
+                {item.reduction > 0 && (
                   <Text fontSize="xl" className="text-green-duck font-semibold">
                     <span className="text-red-500 text-md">Promotion : </span>
-                    {item.reduction} €
+                    {item.newPrice !== undefined ? `${item.newPrice} €` : ""}
                   </Text>
                 )}
                 {item.price && (
@@ -90,15 +95,27 @@ const ProductList = () => {
                 <DiscountCalculator
                   price={item.price}
                   reduction={item.reduction}
+                  setNewPrice={(newPrice) => {
+                    setProducts((prevProducts) =>
+                      prevProducts.map((p) =>
+                        p.id === item.id ? { ...p, newPrice } : p
+                      )
+                    );
+                  }}
                 />
               </Stack>
             </CardBody>
             <Divider />
             <CardFooter>
               <ButtonGroup spacing="2">
-                <Button variant="solid" colorScheme="blue">
+                <Link
+                  to={`/product/${categoryTitleEncoded}/${productTitleEncoded}/${encodeURIComponent(
+                    item.id
+                  )}`}
+                  className="bg-blue-500 border p-2 rounded text-white hover:bg-blue-600"
+                >
                   Voir le produit
-                </Button>
+                </Link>
               </ButtonGroup>
             </CardFooter>
           </Card>
@@ -109,27 +126,37 @@ const ProductList = () => {
 };
 
 export default ProductList;
+
 interface Props {
   price: string; // Prix original sous forme de chaîne
-  reduction: string; // Prix réduit sous forme de chaîne
+  reduction: number; // Réduction sous forme d'entier
+  setNewPrice?: (newPrice: number) => void; // Fonction pour mettre à jour le nouveau prix
 }
 
-const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
+const DiscountCalculator: React.FC<Props> = ({
+  price,
+  reduction,
+  setNewPrice,
+}) => {
   const [pourcentage, setPourcentage] = useState<number>(0);
 
   useEffect(() => {
     const calculateDiscount = () => {
       try {
-        const priceInt = parseFloat(price.replace("€", "").replace(",", "."));
-        const reductionInt = parseFloat(
-          reduction.replace("€", "").replace(",", ".")
+        const priceInt = parseFloat(
+          price.replace("€", "").replace(",", ".").trim()
         );
+        const newPrice = priceInt - reduction;
 
-        if (priceInt <= 0 || reductionInt < 0) {
+        if (priceInt <= 0 || reduction < 0 || newPrice <= 0) {
           throw new Error("Les valeurs de prix doivent être positives.");
         }
 
-        const discountPercentage = ((priceInt - reductionInt) / priceInt) * 100;
+        const discountPercentage = ((priceInt - newPrice) / priceInt) * 100;
+
+        if (setNewPrice) {
+          setNewPrice(newPrice);
+        }
 
         setPourcentage(Math.round(discountPercentage));
       } catch (error) {
@@ -142,7 +169,7 @@ const DiscountCalculator: React.FC<Props> = ({ price, reduction }) => {
     };
 
     calculateDiscount();
-  }, [price, reduction]);
+  }, [price, reduction, setNewPrice]);
 
   return (
     <span className="bg-red-500 text-white text-md font-bold uppercase px-2 rounded mt-2 inline-block col-span-12">

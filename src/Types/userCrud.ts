@@ -26,6 +26,7 @@ export interface UserData {
 }
 
 export interface ApiResponse {
+  value: string | ApiResponse | PromiseLike<string | ApiResponse>;
   data: UserData[];
 }
 
