@@ -14,23 +14,20 @@ import {
   ShieldCheck,
   ArrowRightLeft,
   PackageCheck,
-  CircleAlert,
   Zap,
+  Slash,
 } from "lucide-react";
 import Carousel from "../components/Carousel";
+import { Link } from "react-router-dom";
+import CardFixHomePage from "../components/CardFixHomePage";
+import Assistant from "../components/Assistant";
 
 export default function Home() {
   return (
     <div className="bg-slate-100 w-screen min-h-dvh h-auto text-black">
       <Navbar />
       <main className=" h-auto min-w-screen mt-6 px-4 flex flex-col gap-14">
-        <section className="w-full h-auto rounded-md bg-green-emerald text-center flex flex-col md:flex-row gap-3 items-center justify-center py-1">
-          <CircleAlert />
-          <h3 className="font-Gotham">
-            Cette semaine profitez de -10% sur tout l'Électroménager avec le
-            code <span className="font-semibold">Archideco10</span>
-          </h3>
-        </section>
+        <Assistant />
         <section className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
           {[
             {
@@ -41,6 +38,7 @@ export default function Home() {
               bgColor: "bg-white",
               textColor: "text-white",
               borderColor: "border-black",
+              link: "/products/gem",
             },
             {
               title: "Fours et Micro-ondes",
@@ -50,6 +48,7 @@ export default function Home() {
               bgColor: "bg-green-duck",
               textColor: "text-white",
               borderColor: "border-white",
+              link: "/products/pem",
             },
             {
               title: "Machines à Café & Petit Électroménager",
@@ -59,6 +58,7 @@ export default function Home() {
               bgColor: "bg-green-duck",
               textColor: "text-white",
               borderColor: "border-white",
+              link: "/products/pem",
             },
             {
               title: "Réfrigérateurs & Congélateurs",
@@ -68,9 +68,11 @@ export default function Home() {
               bgColor: "bg-white",
               textColor: "text-white",
               borderColor: "border-black",
+              link: "/products/gem",
             },
           ].map((item, index) => (
-            <div
+            <Link
+              to={item.link}
               key={index}
               className={`relative w-full max-w-2xl h-96 rounded-md overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 ${item.bgColor} ${item.borderColor} border hover:shadow-xl hover:cursor-pointer group`}
             >
@@ -100,7 +102,7 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </section>
 
@@ -148,6 +150,15 @@ export default function Home() {
           <Carousel type="items" />
         </section>
 
+        <section className="w-full h-auto py-4 rounded-md">
+          <h2 className="text-red-500 text-2xl font-bold text-center font-Aquawax py-6">
+            Alerte bon plan !
+          </h2>
+          <div className="grid grid-cols-4 gap-4">
+            <CardFixHomePage />
+          </div>
+        </section>
+
         <section className="w-full h-auto bg-white rounded-md py-6">
           <h2 className="text-black text-2xl font-bold text-center font-Aquawax py-6">
             - Nos marques -
@@ -166,7 +177,7 @@ export default function Home() {
             </h2>
           </div>
           <p className="text-center font-Gotham text-xl py-2 tracking-widest">
-            - Une colaboration pétillante -
+            - Une collaboration pétillante -
           </p>
         </section>
 
@@ -174,7 +185,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-2 mb-6 w-full">
             <div className="w-full flex justify-center">
               <h2 className="text-black text-2xl font-bold text-center">
-                - Des créations uniques et innoventes -
+                - Des créations uniques et innovantes -
               </h2>
             </div>
           </div>
@@ -218,6 +229,38 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+        <section className="w-full h-auto py-4 rounded-md font-Aquawax relative">
+          <img
+            src="./src/assets/purete.png"
+            className="w-full h-auto brightness-25 rounded-md"
+          />
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center gap-20 items-center text-white">
+            <div className=" flex flex-row gap-2 items-center justify-center w-full pl-4">
+              <h2 className="text-4xl font-bold -translate-y-2 uppercase">
+                Archideco
+              </h2>
+              <Slash size={40} color="#639d87" className="rotate-40" />
+              <h2 className="text-4xl font-bold translate-y-2 uppercase">
+                Mobalpa
+              </h2>
+            </div>
+            <p className="text-xl font-semibold font-Gotham text-white">
+              RÉALISTE, RÉALISABLE & RÉALISÉ PAR DES ARCHITECTES D'INTÉRIEUR !
+            </p>
+            <div className="flex flex-row items-center justify-center gap-6">
+              <a
+                href="https://www.mobalpa.fr/me-rendre-en-magasin"
+                target="_blank"
+                className="btn btn-primary btn-lg"
+              >
+                Prendre rendez-vous{" "}
+              </a>
+              <Link to="/map" className="btn bg-white btn-lg">
+                Localisez nos magasins
+              </Link>
+            </div>
           </div>
         </section>
       </main>

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 type AccordionItemProps = {
   title: string;
-  content: string;
+  link: string;
 };
 
-const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
+const AccordionItem: React.FC<AccordionItemProps> = ({ title, link }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -14,20 +15,11 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
 
   return (
     <div className="border-b border-gray-300">
-      <button
-        className="w-full text-left p-4 focus:outline-none"
-        onClick={toggleAccordion}
-      >
-        <div className="flex justify-between items-center">
-          <span className="text-lg font-medium">{title}</span>
-          <span>{isOpen ? "-" : "+"}</span>
-        </div>
-      </button>
-      {isOpen && (
-        <div className="p-4">
-          <p>{content}</p>
-        </div>
-      )}
+      <div className="flex justify-between items-center w-full h-10">
+        <Link to={`/${link}`} className="text-lg font-medium">
+          {title}
+        </Link>
+      </div>
     </div>
   );
 };
@@ -38,9 +30,9 @@ type AccordionProps = {
 
 const Accordion: React.FC<AccordionProps> = ({ items }) => {
   return (
-    <div className="max-w-5xl bg-white shadow-md rounded-lg">
+    <div className="max-w-5xl bg-white shadow-md rounded-lg py-2 pt-6">
       {items.map((item, index) => (
-        <AccordionItem key={index} title={item.title} content={item.content} />
+        <AccordionItem key={index} title={item.title} link={item.link} />
       ))}
     </div>
   );
@@ -50,23 +42,15 @@ const Accordions: React.FC = () => {
   const accordionItems: AccordionItemProps[] = [
     {
       title: "Petit électroménager",
-      content: "Contenu de la section 1",
+      link: "products/pem",
     },
     {
       title: "Gros électroménager",
-      content: "Contenu de la section 2",
+      link: "products/gem",
     },
     {
-      title: "Cuisine",
-      content: "Contenu de la section 3",
-    },
-    {
-      title: "Sallon",
-      content: "Contenu de la section 3",
-    },
-    {
-      title: "Dressing",
-      content: "Contenu de la section 3",
+      title: "Aménagement intérieur",
+      link: "meubles",
     },
   ];
 

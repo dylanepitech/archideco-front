@@ -18,7 +18,15 @@ import Faq from "./pages/Faq";
 import CgvCgu from "./pages/CgvCgu";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import HistoirePage from "./pages/HistoirePage";
+// import IndoorFurniture from "./pages/indoorFurniture"; // Capitalized component name
+import Map from "./pages/Map";
+import WishlistPage from "./pages/WishListPage";
+import PaymentForm from "./pages/PaymentForm";
+import Dashboard from "./Admin/Dashboard";
 import IndoorFurniture from "./pages/indoorFurniture";
+import ThankYouPage from "./pages/ThankYouPage";
+import PaymentFailure from "./pages/PaymentFailure";
+
 const AppRoutes: React.FC = () => {
   const { isLoading } = useContext(AuthContext);
 
@@ -43,6 +51,7 @@ const AppRoutes: React.FC = () => {
           element={<Product />}
         />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/envies" element={<WishlistPage />} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/" Component={Home} />
         <Route path="/FAQ" Component={Faq} />
@@ -50,6 +59,10 @@ const AppRoutes: React.FC = () => {
         <Route path="/privaci-politique" Component={PolitiqueConfidentialite} />
         <Route path="/about-us" Component={HistoirePage} />
         <Route path="/meubles" element={<IndoorFurniture />} />
+        <Route path="/map" Component={Map} />
+        <Route path="/payment" Component={PaymentForm} />
+        <Route path="/thankyou" Component={ThankYouPage} />
+        <Route path="/payment-failure" Component={PaymentFailure} />
 
         {/* <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage/>} /> */}
@@ -61,7 +74,8 @@ const AppRoutes: React.FC = () => {
 
         {/* Route administrateur */}
         <Route element={<ProtectedAdminRoute />}>
-          <Route path="/profil/:id" element={<Profil />} />
+          <Route path="/admin/dashboard" element={<Dashboard/>} />
+          <Route path="/admin" element={<Dashboard/>} />
         </Route>
       </Routes>
     </ChakraProvider>

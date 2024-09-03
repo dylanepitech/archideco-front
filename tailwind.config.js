@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import plugin from 'tailwindcss/plugin';
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -8,6 +8,8 @@ export default {
       colors: {
         "green-emerald": "#639d87",
         "green-duck": "#1E4347",
+        "sweet-pink": "#F9429E",
+        "funny-pink": "#FF2A8E",
       },
       width: {
         100: "20rem", // 400px
@@ -22,6 +24,7 @@ export default {
       },
       minHeight: {
         100: "30rem",
+        "2/3": "75vh",
       },
       maxHeight: {
         100: "30rem",
@@ -30,21 +33,24 @@ export default {
         Gotham: ["Gotham", "sans-serif"],
         Aquawax: ["Aquawax", "sans-serif"],
       },
+      brightness: {
+        25: ".25",
+        175: "1.75",
+      },
     },
   },
   plugins: [
     require("rippleui"),
-    plugin(function({ addUtilities }) {
+    plugin(function ({ addUtilities }) {
       const newUtilities = {
-        '.scrollbar-none': {
-          'scrollbar-width': 'none',
-          '&::-webkit-scrollbar': {
-            display: 'none',
+        ".scrollbar-none": {
+          "scrollbar-width": "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
           },
         },
       };
-      addUtilities(newUtilities, ['responsive', 'hover']);
-    })
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    }),
   ],
 };
-
