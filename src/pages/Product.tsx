@@ -108,7 +108,7 @@ export default function Product() {
 
       if (specificProduct) {
         setProduct(specificProduct);
-        console.log(specificProduct)
+        // console.log(specificProduct)
       } else {
         navigate("/sorry/not-found");
       }

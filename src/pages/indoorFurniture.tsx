@@ -92,12 +92,12 @@ export default function IndoorFurniture() {
               <h2 className="text-3xl font-bold absolute top-20 p-6 ">
                 Jusqu'à -10% sur nos meubles de salle de bain
               </h2>
-              <span className="absolute top-[200px] left-8 text-l">
+              <span className="absolute top-[220px] mb-4 left-8 text-l">
                 du 22/08/24 au 02/09/24
               </span>
               <Link
                 to="/products/interieur"
-                className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
+                className="absolute bottom-[100px] mt-4 left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
                 VISITEZ NOS MAGASIN
               </Link>
@@ -155,7 +155,7 @@ export default function IndoorFurniture() {
           <h2 className="text-3xl font-bold mb-8 text-center">
             Personnalisez vos intérieurs
           </h2>
-          <p className="text-lg mb-8 text-center">
+          <p className="text-lg mb-10 text-center">
             Découvrez notre gamme de meubles pour cuisine, salon, dressing, et
             salle de bain. Chaque meuble peut être entièrement personnalisé
             selon vos préférences en termes de couleurs et de matériaux.
@@ -169,11 +169,11 @@ export default function IndoorFurniture() {
                 alt="Meubles de Cuisine"
                 className="w-full h-48 object-cover"
               />
-              <div className="p-6 bg-[#639D87]">
+              <div className="h-full p-6 bg-[#639D87]">
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Cuisine
                 </h3>
-                <p className="text-white mb-4">
+                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Personnalisez vos meubles de cuisine avec des matériaux variés
                   comme le bois, le métal, ou le verre. Choisissez parmi une
                   large palette de couleurs pour correspondre à votre style.
@@ -192,11 +192,11 @@ export default function IndoorFurniture() {
                 alt="Meubles de Salon"
                 className="w-full h-48 object-cover"
               />
-              <div className="p-6 bg-[#1E4347]">
+              <div className="h-full p-6 bg-[#1E4347]">
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Salon
                 </h3>
-                <p className="text-white mb-4">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Découvrez des options de personnalisation pour vos meubles de
                   salon, incluant des tissus, cuirs, et velours, dans une
                   variété de couleurs tendance.
@@ -215,11 +215,11 @@ export default function IndoorFurniture() {
                 alt="Meubles de Dressing"
                 className="w-full h-48 object-cover"
               />
-              <div className="p-6 bg-[#639D87]">
+              <div className="h-full p-6 bg-[#639D87]">
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Dressing
                 </h3>
-                <p className="text-white mb-4">
+                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Personnalisez vos meubles de dressing avec des finitions en
                   bois, métal ou mélaminé. Choisissez les couleurs qui
                   s'harmonisent avec votre espace.
@@ -238,11 +238,11 @@ export default function IndoorFurniture() {
                 alt="Meubles de Salle de Bain"
                 className="w-full h-48 object-cover"
               />
-              <div className="p-6 bg-[#1E4347]">
+              <div className="h-full p-6 bg-[#1E4347]">
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Salle de Bain
                 </h3>
-                <p className="text-white mb-4">
+                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Offrez-vous des meubles de salle de bain personnalisés en
                   céramique, marbre, ou résine. Choisissez des couleurs et
                   finitions qui correspondent à votre style.
