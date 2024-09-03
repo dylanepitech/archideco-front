@@ -27,6 +27,7 @@ import {
 } from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
+import { getWishListItems } from "../hooks/wishListe";
 
 export default function Product() {
   const { category, productTitle, id } = useParams();
