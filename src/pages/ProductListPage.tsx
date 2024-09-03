@@ -46,8 +46,6 @@ export default function ProductListPage() {
     applyFilters();
   }, [filters, products]);
 
-  
-
   const handleCreateCart = async (idProduct: number) => {
     try {
       if (authToken) {
@@ -249,7 +247,6 @@ export default function ProductListPage() {
                 note={9}
                 reduction={product.reduction}
                 product={product}
-                onAddToCart={() => handleAddToCart(product.id)}
               />
             ))}
           </div>

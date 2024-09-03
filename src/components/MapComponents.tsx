@@ -15,6 +15,13 @@ const MapComponents: FC = () => {
     );
   };
 
+  const handleOpenRDV = () => {
+    window.open(
+      "https://www.mobalpa.fr/me-rendre-en-magasin/magasins-les-plus-proches",
+      "_blank"
+    );
+  };
+
   return (
     <div style={{ height: "600px", width: "100%" }}>
       <MapContainer
@@ -53,6 +60,12 @@ const MapComponents: FC = () => {
                   className="px-3 py-1 text-white bg-green-duck rounded-lg text-sm"
                 >
                   Ouvrir dans Maps
+                </button>
+                <button
+                  onClick={handleOpenRDV}
+                  className="px-3 py-1 text-white bg-green-duck rounded-lg text-sm"
+                >
+                  Prendre RDV
                 </button>
               </div>
             </div>

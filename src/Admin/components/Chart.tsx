@@ -254,7 +254,7 @@ const Chart: React.FC = () => {
             <Bar data={orderStatusData} options={{ maintainAspectRatio: false }} />
           </div>
           <div style={{ width: '45%', height: '300px' }}>
-            <h3>Top 5 des categories</h3>
+            <h3>Top 5 des catégories</h3>
             <Pie data={topProductsData} options={{ maintainAspectRatio: false }} />
           </div>
         </div>

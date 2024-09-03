@@ -21,8 +21,11 @@ import HistoirePage from "./pages/HistoirePage";
 // import IndoorFurniture from "./pages/indoorFurniture"; // Capitalized component name
 import Map from "./pages/Map";
 import WishlistPage from "./pages/WishListPage";
+import PaymentForm from "./pages/PaymentForm";
 import Dashboard from "./Admin/Dashboard";
 import IndoorFurniture from "./pages/indoorFurniture";
+import ThankYouPage from "./pages/ThankYouPage";
+import PaymentFailure from "./pages/PaymentFailure";
 
 const AppRoutes: React.FC = () => {
   const { isLoading } = useContext(AuthContext);
@@ -57,6 +60,9 @@ const AppRoutes: React.FC = () => {
         <Route path="/about-us" Component={HistoirePage} />
         <Route path="/meubles" element={<IndoorFurniture />} />
         <Route path="/map" Component={Map} />
+        <Route path="/payment" Component={PaymentForm} />
+        <Route path="/thankyou" Component={ThankYouPage} />
+        <Route path="/payment-failure" Component={PaymentFailure} />
 
         {/* <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage/>} /> */}
