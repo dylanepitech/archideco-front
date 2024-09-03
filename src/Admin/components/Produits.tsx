@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../hooks/AuthContext";
-import { getAllProducts, getCategories } from '../../Requests/ProductsRequest';
+import { createSousCategory, getAllProducts, getCategories, getSousCategory, updateSousCategory } from '../../Requests/ProductsRequest';
 import { Search, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createReduction } from '../../Requests/ReductionRequest';
@@ -20,19 +20,106 @@ export default function Produits() {
   const productsPerPage = 20;
   const [endDate, setEndDate] = useState<string>('');
   const [reduction, setReduction] = useState<number>();
-
+  const [title, setTitle] = useState<string>('')
+  const [link, setLink] = useState<string>('')
+  const [sousCategories, setSouscategories] = useState<any[]>([]);
+  const [selectedSousCategory, setSelectedSousCategory] = useState<any | null>(null);
+  const [checkedCategories, setCheckedCategories] = useState<{ [key: number]: boolean }>({});
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     fetchCategories();
     fetchProducts();
+    fetchSousCat();
   }, []);
 
   const fetchCategories = async () => {
     try {
       const data: any = await getCategories();
       setCategories(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchSousCat = async () => {
+    try {
+      if (authToken) {
+        const data: any = await getSousCategory(authToken);
+        if (typeof data === "string") {
+          console.error(data)
+        } else {
+          setSouscategories(data.data)
+          console.log(data.data)
+        }
+
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSousCategorySelect = (sousCategory: any) => {
+    setSelectedSousCategory(sousCategory);
+
+    const newCheckedCategories = sousCategory.categories.reduce((acc: any, category: any) => {
+      acc[category.id] = true;
+      return acc;
+    }, {});
+
+    setCheckedCategories(newCheckedCategories);
+    setSelectedCategoryIds(sousCategory.categories.map((category: any) => category.id));
+  };
+
+  const handleCategoryCheck = (categoryId: number) => {
+    setCheckedCategories(prevState => ({
+      ...prevState,
+      [categoryId]: !prevState[categoryId],
+    }));
+
+    setSelectedCategoryIds(prevState =>
+      prevState.includes(categoryId)
+        ? prevState.filter(id => id !== categoryId)
+        : [...prevState, categoryId]
+    );
+  };
+
+
+
+
+  const handleCreateSousCat = async (sousCat: any) => {
+    try {
+      if (authToken) {
+        const data: any = await createSousCategory(authToken, sousCat);
+        console.log(data)
+        if (typeof data === "string") {
+          console.error(data)
+        } else {
+          fetchSousCat()
+        }
+
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleUpdateSousCat = async () => {
+    try {
+      if (authToken) {
+        const data: any = await updateSousCategory(authToken, selectedSousCategory.id, selectedCategoryIds);
+        if (typeof data === "string") {
+          console.error(data)
+        } else {
+          console.log(data)
+          // setSouscategories(data)
+        }
+        console.log(selectedCategoryIds)
+
+  
+      }
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +144,7 @@ export default function Produits() {
           id: product.id,
           weight: newWeight,
           price: newPrice,
-          reduction:product.reduction,
+          reduction: product.reduction,
         };
       });
 
@@ -70,7 +157,7 @@ export default function Produits() {
 
   useEffect(() => {
     let filtered: any[] = products;
- 
+
     if (categoryFilter) {
       filtered = filtered.filter((product: any) => product.categoryTitle === categoryFilter);
     }
@@ -166,8 +253,25 @@ export default function Produits() {
 
   const allProductsSelected = currentProducts.every((product: any) => selectedProductIds.has(product.id));
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (title && link) {
+
+      const sousCat = {
+        "title": title,
+        "link": link
+      }
+      handleCreateSousCat(sousCat)
+      console.log(sousCat)
+    } else {
+      console.log("Remplir tous les champs")
+    }
+  }
+
   return (
     <div>
+
       <div className="flex justify-center p-4 text-white">
         <div
           className={`px-4 py-2 rounded-tl-md rounded-bl-md ${selectedOnglet === "Categories" ? 'bg-red-500' : 'bg-gray-300 text-black'}`}
@@ -184,28 +288,156 @@ export default function Produits() {
       </div>
 
       {selectedOnglet === "Categories" ? (
-        <div className="flex justify-center">
-          <div className="flex items-center space-x-2">
-            <Filter className="text-gray-700" />
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="border p-2 rounded-md"
-            >
-              <option value="">Toutes les catégories</option>
-              {categories.map((category: any) => (
-                <option key={category.id} value={category.title}>
-                  {category.title}
-                </option>
-              ))}
-            </select>
+        <div className="">
+          <div className="flex justify-center">
+
+            <div>
+              <h1 className="flex justify-center text-xl text-teal-500 font-bold p-4">Gestion des sous categories</h1>
+              <div className="flex flex-col gap-2">
+                <form className="flex w-full justify-center gap-2 mb-4" action="" onSubmit={handleSubmit}>
+                  <div>
+                    <input
+                      className="flex border border-sm rounded-md p-1.5"
+                      type="text"
+                      name="" placeholder="Sous categorie"
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      className="flex border border-sm rounded-md p-1.5"
+                      type="text"
+                      name=""
+                      placeholder="Link"
+                      onChange={(e) => setLink(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <button className="flex bg-teal-500 text-white w-full justify-center p-1.5 rounded-md">Creer</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-          <div>
-            <input className="flex border border-sm rounded-md p-1.5" type="text" name="" placeholder="Sous categorie" id="" />
+
+
+          {/* <div className="flex p-4 gap-2">
+
+            <div className="bg-slate-100 shadow-xl py-2">
+              <ul className="flex flex-col gap-2">
+                {sousCategories.map((sousCategory: any) => (
+                  <li
+                    key={sousCategory.id}
+                    className={`cursor-pointer px-4 ${selectedSousCategory?.id === sousCategory.id ? 'bg-slate-300 rounded-md' : ''}`}
+                    onClick={() => handleSousCategorySelect(sousCategory)}
+                  >
+                    {sousCategory.title}
+                  </li>
+                ))}
+
+              </ul>
+            </div>
+
+            <div>
+              <table className="min-w-full border-collapse">
+                <thead>
+                  <tr className="bg-muted text-muted-foreground">
+                    <th className="py-2 px-4 border-b text-left">
+                      <input
+                        type="checkbox"
+
+                      />
+                    </th>
+                    <th className="py-2 px-4 border-b text-left">id</th>
+                    <th className="py-2 px-4 border-b text-left">Categorie</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map((category: any) => (
+                    <tr key={category.id} className="hover:bg-muted/20">
+                      <td className="py-2 px-4 border-b">
+                        <input
+                          type="checkbox"
+                          checked={!!checkedCategories[category.id]}
+                          onChange={() => handleCategoryCheck(category.id)}
+                        />
+                      </td>
+                      <td className="py-2 px-4 border-b">{category.id}</td>
+                      <td className="py-2 px-4 border-b">{category.title}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div> */}
+
+          <div className="flex p-4 gap-2">
+            <div className="bg-slate-100 shadow-xl py-2">
+
+              <ul className="flex flex-col gap-2">
+                {sousCategories.map((sousCategory: any) => (
+                  <li
+                    key={sousCategory.id}
+                    className={`cursor-pointer px-4 ${selectedSousCategory?.id === sousCategory.id ? 'bg-slate-300 rounded-md' : ''}`}
+                    onClick={() => handleSousCategorySelect(sousCategory)}
+                  >
+                    {sousCategory.title}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <table className="min-w-full border-collapse">
+                <thead>
+                  <tr className="bg-muted text-muted-foreground">
+                    <th className="py-2 px-4 border-b text-left">
+                      <input
+                        type="checkbox"
+
+                      />
+                    </th>
+                    <th className="py-2 px-4 border-b text-left">id</th>
+                    <th className="py-2 px-4 border-b text-left">Categorie</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map((category: any) => (
+                    <tr key={category.id} className="hover:bg-muted/20">
+                      <td className="py-2 px-4 border-b">
+                        <input
+                          type="checkbox"
+                          checked={!!checkedCategories[category.id]}
+                          onChange={() => handleCategoryCheck(category.id)}
+                        />
+                      </td>
+                      <td className="py-2 px-4 border-b">{category.id}</td>
+                      <td className="py-2 px-4 border-b">{category.title}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div>
+              <ul>
+                {selectedCategoryIds.map(id => (
+                  <li key={id}>{id}</li>
+                ))}
+              </ul>
+              <div>
+                <button
+                  className="bg-teal-500 text-white"
+                  onClick={()=>handleUpdateSousCat()}
+                >Lier les donnees</button>
+              </div>
+            </div>
           </div>
         </div>
       ) : (
+
         <div className="p-6 my-4 bg-card text-card-foreground rounded-lg shadow-md">
+          <h1 className="flex justify-center text-xl text-teal-500 font-bold p-4">Gestion des sous categories</h1>
           <div className="flex flex-col md:flex-row mb-4 space-y-4 md:space-y-0 md:space-x-4">
             <div className="flex items-center space-x-4">
               <Search className="text-gray-700" />
@@ -296,7 +528,7 @@ export default function Produits() {
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              className={`px-4 py-1 rounded ${currentPage === 1 ? 'bg-gray-200' : 'bg-blue-500 text-white'
+              className={`px-4 py-1 rounded ${currentPage === 1 ? 'bg-gray-200' : 'bg-teal-500 text-white'
                 }`}
             >
               Précédent
@@ -305,7 +537,7 @@ export default function Produits() {
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className={`px-4 py-1 rounded ${currentPage === totalPages ? 'bg-gray-200' : 'bg-blue-500 text-white'
+              className={`px-4 py-1 rounded ${currentPage === totalPages ? 'bg-gray-200' : 'bg-teal-500 text-white'
                 }`}
             >
               Suivant
@@ -314,16 +546,17 @@ export default function Produits() {
 
           <div className="flex justify-center mt-4">
             {
-              selectedProductIds.size>0?
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 bg-red-500 text-white rounded-md"
-              // disabled={selectedProductIds.size === 0}
-            >
-              Créer une réduction
-            </button>:""
+              selectedProductIds.size > 0 ?
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="px-4 py-2 bg-red-500 text-white rounded-md"
+                // disabled={selectedProductIds.size === 0}
+                >
+                  Créer une réduction
+                </button> : ""
             }
           </div>
+
         </div>
       )}
 
@@ -331,7 +564,7 @@ export default function Produits() {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md shadow-lg">
             <h2 className="text-lg font-semibold mb-4"
-             
+
             >
               Créer une Réduction
             </h2>

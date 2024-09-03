@@ -156,30 +156,31 @@ export default function Profile({ client, onBack, onLoad }: { client: any, onBac
 
     const infoClient = () => {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-gray-50 rounded-xl shadow-md">
-                <div>
-                    <p className="text-gray-700 text-lg">
-                        <span className="font-semibold text-gray-900">Utilisateur:</span> {client.client}
-                    </p>
-                    <p className="text-gray-700 text-lg">
-                        <span className="font-semibold text-gray-900">Id:</span> {client.id}
-                    </p>
-                </div>
-                <div>
-                    <p className="text-gray-700 text-lg">
-                        <span className="font-semibold text-gray-900">Email:</span> {client.email}
-                    </p>
-                    <p className="text-gray-700 text-lg">
-                        <span className="font-semibold text-gray-900">Roles:</span> {client.roles}
-                    </p>
-                </div>
-                <div>
-                    <p className="text-gray-700 text-lg">
-                        <span className="font-semibold text-gray-900">Status:</span> {client.status}
-                    </p>
-                    <p className="text-gray-700 text-lg">
-                        <span className="font-semibold text-gray-900">Date d'inscription:</span> {client.date}
-                    </p>
+            <div className="w-full flex justify-center">
+                <div className=" w-1/2 justify-center grid grid-cols-1 gap-8 p-6 bg-gray-50 rounded-xl shadow-md">
+                    <div className="flex flex-col gap-2">
+                        <p className="text-gray-700 text-lg">
+                            <span className="font-semibold  text-teal-500">Id:</span> {client.id}
+                        </p>
+                        <p className="text-gray-700 text-lg">
+                            <span className="font-semibold text-teal-500">Utilisateur:</span> {client.client}
+                        </p>
+
+                        <p className="text-gray-700 text-lg">
+                            <span className="font-semibold  text-teal-500">Email:</span> {client.email}
+                        </p>
+                        <p className="text-gray-700 text-lg">
+                            <span className="font-semibold  text-teal-500">Roles:</span> {client.roles}
+                        </p>
+
+                        <p className="text-gray-700 text-lg">
+                            <span className="font-semibold  text-teal-500">Status:</span> {client.status}
+                        </p>
+                        <p className="text-gray-700 text-lg">
+                        <span className="font-semibold text-teal-500">Date d'inscription:</span> {client.date.split(' ')[0]}
+
+                        </p>
+                    </div>
                 </div>
             </div>
         );
