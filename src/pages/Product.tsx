@@ -18,7 +18,6 @@ import {
   ShoppingBasket,
   HeartCrack,
   ShoppingCart,
-  Save,
 } from "lucide-react";
 import {
   getMyWishlist,

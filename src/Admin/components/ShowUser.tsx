@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { BadgeCheck, BadgeX, DatabaseIcon } from 'lucide-react';
 import Profile from './Profile';
-import { deleteUser, getAllUser, updateUser } from '../../Requests/UserCrudRequests';
+import { deleteUser, updateUser } from '../../Requests/UserCrudRequests';
 import { AuthContext } from '../../hooks/AuthContext';
 
 type Client = {
