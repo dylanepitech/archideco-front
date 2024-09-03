@@ -95,12 +95,12 @@ export default function IndoorFurniture() {
               <span className="absolute top-[200px] left-8 text-l">
                 du 22/08/24 au 02/09/24
               </span>
-              <a
-                href=""
+              <Link
+                to="/products/interieur"
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
                 VISITEZ NOS MAGASIN
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -117,12 +117,12 @@ export default function IndoorFurniture() {
               <span className="absolute top-[200px] left-8 text-l">
                 du 22/08/24 au 02/09/24
               </span>
-              <a
-                href=""
+              <Link
+                to="/products/interieur"
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
                 VISITEZ NOS MAGASIN
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -139,12 +139,12 @@ export default function IndoorFurniture() {
               <span className="absolute top-[200px] left-8 text-l">
                 du 22/08/24 au 02/09/24
               </span>
-              <a
-                href=""
+              <Link
+                to="/products/interieur"
                 className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
               >
                 VISITEZ NOS MAGASIN
-              </a>
+              </Link>
             </div>
           </div>
         </Slider>
@@ -178,12 +178,12 @@ export default function IndoorFurniture() {
                   comme le bois, le métal, ou le verre. Choisissez parmi une
                   large palette de couleurs pour correspondre à votre style.
                 </p>
-                <a
-                  href="/cuisine"
+                <Link
+                  href="/products/interieur"
                   className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#1E4347] hover:text-white"
                 >
                   Explorer
-                </a>
+                </Link>
               </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -201,12 +201,12 @@ export default function IndoorFurniture() {
                   salon, incluant des tissus, cuirs, et velours, dans une
                   variété de couleurs tendance.
                 </p>
-                <a
-                  href="/salon"
+                <Link
+                  to="/products/interieur"
                   className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#639D87] hover:text-white"
                 >
                   Explorer
-                </a>
+                </Link>
               </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -224,12 +224,12 @@ export default function IndoorFurniture() {
                   bois, métal ou mélaminé. Choisissez les couleurs qui
                   s'harmonisent avec votre espace.
                 </p>
-                <a
-                  href="/dressing"
+                <Link
+                  href="/products/interieur"
                   className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#1E4347] hover:text-white"
                 >
                   Explorer
-                </a>
+                </Link>
               </div>
             </div>
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -247,12 +247,12 @@ export default function IndoorFurniture() {
                   céramique, marbre, ou résine. Choisissez des couleurs et
                   finitions qui correspondent à votre style.
                 </p>
-                <a
-                  href="/salle-de-bain"
+                <Link
+                  to="/products/interieur"
                   className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#639D87] hover:text-white"
                 >
                   Explorer
-                </a>
+                </Link>
               </div>
             </div>
           </div>
