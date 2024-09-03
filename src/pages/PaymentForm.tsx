@@ -186,11 +186,6 @@ const PaymentForm: React.FC = () => {
     }
   };
 
-  const itemWithMaxDelay = cartItems.reduce((max, item) => {
-    const maxDays = parseInt(max.delivery_delai.split(" ")[0], 10) || 0;
-    const itemDays = parseInt(item.delivery_delai.split(" ")[0], 10) || 0;
-    return itemDays > maxDays ? item : max;
-  }, cartItems[0]);
   async function handlesuccess(e: any): Promise<void> {
     // Marquer la fonction comme `async`
     try {

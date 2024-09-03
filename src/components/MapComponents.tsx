@@ -98,6 +98,12 @@ const MapComponents: FC = () => {
                 >
                   Ouvrir dans Maps
                 </button>
+                <button
+                  onClick={handleOpenRDV}
+                  className="px-3 py-1 text-white bg-green-duck rounded-lg text-sm"
+                >
+                  Prendre RDV
+                </button>
               </div>
             </div>
           </Popup>
@@ -129,6 +135,12 @@ const MapComponents: FC = () => {
                 >
                   Ouvrir dans Maps
                 </button>
+                <button
+                  onClick={handleOpenRDV}
+                  className="px-3 py-1 text-white bg-green-duck rounded-lg text-sm"
+                >
+                  Prendre RDV
+                </button>
               </div>
             </div>
           </Popup>
@@ -137,9 +149,5 @@ const MapComponents: FC = () => {
     </div>
   );
 };
-
-//paradis 43,2857363 ; 5,3799329
-// la valentine 43.30364194803836, 5.472092558651513
-//aubagne 43,2774855 ; 5,6160392
 
 export default MapComponents;
