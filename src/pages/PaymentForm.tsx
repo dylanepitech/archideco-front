@@ -123,7 +123,7 @@ const PaymentForm: React.FC = () => {
       }
 
       const response = await fetch(
-        "http://localhost:8000/api/users/complements",
+        "/api/users/complements",
         {
           method: "POST",
           headers: {
@@ -148,7 +148,7 @@ const PaymentForm: React.FC = () => {
       }
 
       const paymentResponse = await fetch(
-        "http://localhost:8000/api/process-payment",
+        "/api/process-payment",
         {
           method: "POST",
           headers: {
@@ -186,20 +186,25 @@ const PaymentForm: React.FC = () => {
     }
   };
 
-  const itemWithMaxDelay = cartItems.reduce((max, item) => {
-    const maxDays = parseInt(max.delivery_delai.split(" ")[0], 10) || 0;
-    const itemDays = parseInt(item.delivery_delai.split(" ")[0], 10) || 0;
-    return itemDays > maxDays ? item : max;
-  }, cartItems[0]);
   async function handlesuccess(e: any): Promise<void> {
     // Marquer la fonction comme `async`
     try {
       // Appeler l'API pour créer la commande et attendre la réponse
-      const data = await createOrder(authToken, cartItems);
-      console.log(data);
+      if (authToken) {
+        const prodIds = cartItems.map((produit:any) => produit.id);
+        console.log(prodIds);
+
+        const field = {
+          "productIds":prodIds
+        }
+
+        const data = await createOrder(authToken, field);
+        console.log(data);
+
+      }
 
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
-      navigate("/thankyou");
+      // navigate("/thankyou");
     } catch (error) {
       // Gérer l'erreur si l'appel de l'API échoue
       console.error("Erreur lors de la création de la commande:", error);

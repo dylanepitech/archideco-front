@@ -94,12 +94,15 @@ const CartPage: React.FC = () => {
 
   const handlePromoCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await VerifyCodePromo(promoCode, authToken);
-    if (response > 0) {
-      setPromotion(response);
-      localStorage.setItem("codePromo", `${promoCode}|${response}`);
+    if (authToken) {
+
+      const response:any = await VerifyCodePromo(promoCode, authToken);
+      if (response > 0) {
+        setPromotion(response);
+        localStorage.setItem("codePromo", `${promoCode}|${response}`);
+      }
+      console.log(response);
     }
-    console.log(response);
   };
 
   const handleGetMyCart = async () => {
@@ -132,7 +135,7 @@ const CartPage: React.FC = () => {
             let idStr: any = id.toString();
             idCountMap[idStr] = (idCountMap[idStr] || 0) + 1;
           });
-          console.log("les data", data);
+          // console.log("les data", data);
 
           let inCart: any = data
             .filter((product: any) => idCountMap[product.id])

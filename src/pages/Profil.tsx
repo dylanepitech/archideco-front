@@ -114,6 +114,8 @@ function Profile() {
     } else if (section === "orders") {
       setShowOrders(true);
       setShowPersonalInfo(false);
+      // console.log(profile)
+      setOrders(profile?.data.commandes)
     }
   };
 
@@ -147,13 +149,12 @@ function Profile() {
               </li>
               <li className="flex flex-col items-center">
                 <ListOrdered className="mb-2" />
-                <a
-                  href="#orders"
+                <div
                   className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
                   onClick={() => handleSectionClick("orders")}
                 >
                   Mes commandes
-                </a>
+                </div>
               </li>
               <li className="flex flex-col items-center">
                 <LogOut className="mb-2" />
