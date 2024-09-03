@@ -13,6 +13,7 @@ import {
 import { getPromotion } from "../Requests/ProductsRequest";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { localhost } from "../constants/Localhost";
 
 interface Product {
   categoriesTitle: string;
@@ -54,11 +55,24 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  
+  function removeBaseUrl(url: any) {
+    if (localhost == "") {
+      if (typeof url == "string") {
+        const baseUrl = "http://localhost:8000";
+        return url.replace(baseUrl, "");
+      }
+    } else {
+      return url;
+    }
+  }
+
   return (
     <>
       {products.map((item: Product) => {
         const imageKey = Object.keys(item.images)[0];
         const imageUrl = item.images[imageKey]?.[0]?.image;
+        // console.log(removeBaseUrl(imageUrl))
 
         // Encode the category title and product title
         const categoryTitleEncoded = encodeURIComponent(item.categoriesTitle);
@@ -71,7 +85,7 @@ const ProductList = () => {
             </div>
             <CardBody>
               {imageUrl ? (
-                <Image src={imageUrl} alt={item.title} borderRadius="lg" />
+                <Image src={removeBaseUrl(imageUrl)} alt={item.title} borderRadius="lg" />
               ) : (
                 <p>Pas d'images disponibles</p>
               )}

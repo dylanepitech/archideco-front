@@ -10,6 +10,7 @@ import {
   Heart,
   ShieldCheck,
   DoorOpen,
+  CircleUserRound
 } from "lucide-react";
 import Accordions from "../UI/Accordion";
 import { useState, useContext, useEffect } from "react";
@@ -98,7 +99,7 @@ export default function Navbar() {
           {connected && roles.includes("ROLE_USER") ? (
             <>
               <Link to="/profil" className="flex flex-col items-center">
-                <ShieldCheck color="#639d87" />
+                <CircleUserRound color="#639d87" />
                 <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
                   Profil
                 </div>

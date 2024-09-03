@@ -10,7 +10,6 @@ import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import {
   getCategories,
   getProductByCategoryId,
-  getSimilarProducts,
 } from "../Requests/ProductsRequest";
 import { localhost } from "../constants/Localhost";
 import { CreateCartBody } from "../Types/cartCrud";
