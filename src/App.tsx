@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import { AuthContext, AuthProvider } from "./hooks/AuthContext";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import Profile from "./pages/Profile";
+import Profil from "./pages/Profil";
 import ProtectedAdminRoute from "./hooks/ProtectedAdminRoute";
 import ProtectedRoute from "./hooks/ProtectedRoute";
 import RestrictedRoute from "./hooks/RestrictedRoute";
@@ -69,12 +69,11 @@ const AppRoutes: React.FC = () => {
 
         {/* Route utilisateur connecter */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profil" element={<Profil />} />
         </Route>
 
         {/* Route administrateur */}
         <Route element={<ProtectedAdminRoute />}>
-          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/admin/dashboard" element={<Dashboard/>} />
           <Route path="/admin" element={<Dashboard/>} />
         </Route>

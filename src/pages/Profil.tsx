@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../hooks/AuthContext";
 import { getMe, getUser, updateUser } from "../Requests/UserCrudRequests";
 import { ApiResponse } from "../Types/userCrud";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import {
@@ -14,22 +14,24 @@ import {
 } from "lucide-react";
 
 function Profile() {
-  const { authToken } = useContext(AuthContext);
+  const { authToken, logout } = useContext(AuthContext);
   const [profile, setProfile] = useState<ApiResponse | null>(null);
+  const [orders, setOrders] = useState<any[]>([]); // Nouvel état pour les commandes
   const [error, setError] = useState<string | null>(null);
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
-  const [showOrders, setShowOrders] = useState(false); // Nouvel état pour les commandes
+  const [showOrders, setShowOrders] = useState(false);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showLogoutForm, setShowLogoutForm] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         if (authToken) {
-          const data: ApiResponse = id
+          const data: any = id
             ? await getUser(authToken, Number(id))
             : await getMe(authToken);
           setProfile(data);
@@ -43,6 +45,24 @@ function Profile() {
 
     fetchProfile();
   }, [authToken, id]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        if (authToken) {
+          const data = await getOrders(authToken);
+          setOrders(data.orders);
+        }
+      } catch (err) {
+        setError("Erreur lors de la récupération des commandes");
+        console.error("Erreur:", err);
+      }
+    };
+
+    if (showOrders) {
+      fetchOrders();
+    }
+  }, [authToken, showOrders]);
 
   const handleEditClick = (field: string) => {
     setEditingField(field);
@@ -77,13 +97,16 @@ function Profile() {
     setShowLogoutForm(true);
   };
 
-  const handleLogoutSubmit = (e: React.FormEvent) => {
+  const handleLogoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Déconnexion effectuée");
-    setShowLogoutForm(false);
+    try {
+      logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+    }
   };
 
-  // Fonction pour gérer l'affichage des sections
   const handleSectionClick = (section: "personalInfo" | "orders") => {
     if (section === "personalInfo") {
       setShowPersonalInfo(true);
@@ -279,23 +302,35 @@ function Profile() {
                       <th className="p-2 sm:p-4 text-center">Date</th>
                       <th className="p-2 sm:p-4 text-center">Total</th>
                       <th className="p-2 sm:p-4 text-center">Statut</th>
+                      <th className="p-2 sm:p-4 text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-gray-200 hover:bg-gray-50 transition duration-300">
-                      <td className="p-2 sm:p-4 text-center ">1</td>
-                      <td className="p-2 sm:p-4 text-center">Frigot samsung</td>
-                      <td className="p-2 sm:p-4 text-center">2024-01-01</td>
-                      <td className="p-2 sm:p-4 text-center">700 €</td>
-                      <td className="p-2 sm:p-4 text-center">
-                        En cours de préparation
-                      </td>
-                      <td className="p-2 sm:p-4 text-center">
-                        <button className="p-2 rounded-full hover:bg-[#639D87] transition duration-300 focus:outline-none">
-                          <Download className="text-[#639D87] hover:text-white" />
-                        </button>{" "}
-                      </td>
-                    </tr>
+                    {orders.map((order) => (
+                      <tr
+                        key={order.id}
+                        className="border-b border-gray-200 hover:bg-gray-50 transition duration-300"
+                      >
+                        <td className="p-2 sm:p-4 text-center">{order.id}</td>
+                        <td className="p-2 sm:p-4 text-center">
+                          {order.items.join(", ")}
+                        </td>
+                        <td className="p-2 sm:p-4 text-center">
+                          {new Date(order.date).toLocaleDateString()}
+                        </td>
+                        <td className="p-2 sm:p-4 text-center">
+                          {order.total} €
+                        </td>
+                        <td className="p-2 sm:p-4 text-center">
+                          {order.status}
+                        </td>
+                        <td className="p-2 sm:p-4 text-center">
+                          <button className="p-2 rounded-full hover:bg-[#639D87] transition duration-300 focus:outline-none">
+                            <Download className="text-[#639D87] hover:text-white" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
