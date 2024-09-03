@@ -64,6 +64,49 @@ export default function Navbar() {
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
+          <Link to="/envies" className="flex flex-col items-center">
+            <Heart color="#639d87" />
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+              Mes envies
+            </div>
+          </Link>
+          <p className="bg-black/20 w-0.5 h-8"></p>
+
+          <Link to="/cart" className="flex flex-col items-center">
+            <ShoppingBasket color="#639d87" />
+            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+              Mon panier
+            </div>
+          </Link>
+          <p className="bg-black/20 w-0.5 h-8"></p>
+
+          {roles.includes("ROLE_ADMIN") && connected ? (
+            <>
+              <Link
+                to="/admin/dashboard"
+                className="flex flex-col items-center"
+              >
+                <ShieldCheck color="#639d87" />
+                <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                  Dashboard
+                </div>
+              </Link>
+              <p className="bg-black/20 w-0.5 h-8"></p>
+            </>
+          ) : null}
+
+          {connected && roles.includes("ROLE_USER") ? (
+            <>
+              <Link to="/profil" className="flex flex-col items-center">
+                <ShieldCheck color="#639d87" />
+                <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                  Profil
+                </div>
+              </Link>
+              <p className="bg-black/20 w-0.5 h-8"></p>
+            </>
+          ) : null}
+
           {connected ? (
             <div
               className="flex flex-col items-center hover:cursor-pointer"
@@ -81,35 +124,6 @@ export default function Navbar() {
                 Connectez-vous!
               </div>
             </Link>
-          )}
-
-          <p className="bg-black/20 w-0.5 h-8"></p>
-
-          <Link to="/envies" className="flex flex-col items-center">
-            <Heart color="#639d87" />
-            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-              Mes envies
-            </div>
-          </Link>
-          <p className="bg-black/20 w-0.5 h-8"></p>
-
-          <Link to="/cart" className="flex flex-col items-center">
-            <ShoppingBasket color="#639d87" />
-            <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-              Mon panier
-            </div>
-          </Link>
-          <p className="bg-black/20 w-0.5 h-8"></p>
-
-          {roles.includes("ROLE_ADMIN") ? (
-            <Link to="/admin/dashboard" className="flex flex-col items-center">
-              <ShieldCheck color="#639d87" />
-              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-                Dashboard
-              </div>
-            </Link>
-          ) : (
-            ""
           )}
         </section>
         <section className="flex flex-row w-full items-center justify-start gap-10 px-8 pt-6">
@@ -235,6 +249,17 @@ export default function Navbar() {
             ) : (
               ""
             )}
+            {connected && roles.includes("ROLE_USER") ? (
+              <>
+                <Link to="/profil" className="flex flex-col items-center">
+                  <ShieldCheck color="#639d87" />
+                  <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                    Profil
+                  </div>
+                </Link>
+                <p className="bg-black/20 w-0.5 h-8"></p>
+              </>
+            ) : null}
           </div>
           <Accordions />
         </section>
