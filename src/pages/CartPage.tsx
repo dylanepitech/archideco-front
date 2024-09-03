@@ -207,7 +207,7 @@ const CartPage: React.FC = () => {
                     .trim();
                   const price = parseFloat(numPrice);
                   const reducedPrice =
-                    item.reduction > 0 ? price - item.reduction : price; // Calcule le prix réduit
+                    item.reduction > 0 ? price - item.reduction : price;
 
                   return (
                     <div
@@ -315,7 +315,7 @@ const CartPage: React.FC = () => {
                       <span>
                         {" "}
                         <span className="font-semibold">
-                          Code promotionel :{" "}
+                          Code promotionel :
                         </span>{" "}
                         {promoCode}
                       </span>

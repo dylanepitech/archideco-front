@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, Key } from "react";
 import { AuthContext } from "../hooks/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -10,6 +10,7 @@ import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import {
   getCategories,
   getProductByCategoryId,
+  getSimilarProducts,
 } from "../Requests/ProductsRequest";
 import { localhost } from "../constants/Localhost";
 import { CreateCartBody } from "../Types/cartCrud";
@@ -27,7 +28,6 @@ import {
 } from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
-import { getWishListItems, putWishList } from "../hooks/wishListe";
 
 export default function Product() {
   const { category, productTitle, id } = useParams();
@@ -41,6 +41,8 @@ export default function Product() {
   const [cart, setCart] = useState<any | null>(null);
   const [wishlists, setWishlists] = useState<any | null>(null);
   const connected = useConnected();
+  const [otherProduct, setOtherProduct] = useState<any | null>([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -103,7 +105,6 @@ export default function Product() {
 
       if (specificProduct) {
         setProduct(specificProduct);
-        console.log(specificProduct);
       } else {
         navigate("/sorry/not-found");
       }
@@ -389,7 +390,7 @@ export default function Product() {
               {product?.title}
             </h2>
             <p className="text-lg text-gray-700 mb-2">{product?.description}</p>
-            <p className="flex gap-4 text-lg text-green-500 mb-4">
+            <p className="flex gap-4 text-lg text-red-500 font-bold mb-4">
               {product?.reduction > 0 ? (
                 <>
                   <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
@@ -421,12 +422,9 @@ export default function Product() {
               <span className="bg-red-500 text-white px-2 py-1 rounded">T</span>
             </div>
 
-            <p className="text-gray-600 mb-2">Comment obtenir:</p>
             <p className="text-gray-600 mb-2">
-              Livraison: Vérifier la disponibilité pour une livraison
-            </p>
-            <p className="text-gray-600 mb-4">
-              En magasin: Vérifier le stock en magasin
+              <span className="font-bold">Delai de livraison :</span>{" "}
+              {product?.delivery_delai}
             </p>
             <Accordion title="Carateristiques">
               <ul className="list-disc pl-5">
@@ -491,6 +489,7 @@ export default function Product() {
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );

@@ -57,21 +57,44 @@ export const getPromotion = async (): Promise<Product[] | string> => {
   }
 };
 
-
 export const getSousCategory = async (token: string): Promise<any | string> => {
-    try {
-      const response = await axios.get(`${localhost}/api/sous-category`, {
+  try {
+    const response = await axios.get(`${localhost}/api/sous-category`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response.data.message || "Une erreur est survenue";
+    } else {
+      return "Une erreur est survenue";
+    }
+  }
+};
+
+export const getSimilarProducts = async (
+  token: string,
+  categoryId: number
+): Promise<any | string> => {
+  try {
+    const response = await axios.post(
+      `${localhost}/api/getsimilar/${categoryId}`,
+      {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      });
-      return response.data;
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        return error.response.data.message || 'Une erreur est survenue';
-      } else {
-        return 'Une erreur est survenue';
       }
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response.data.message || "Une erreur est survenue";
+    } else {
+      return "Une erreur est survenue";
     }
-  };
+  }
+};
