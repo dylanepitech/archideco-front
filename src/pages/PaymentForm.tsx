@@ -185,6 +185,12 @@ const PaymentForm: React.FC = () => {
     }
   };
 
+  const itemWithMaxDelay = cartItems.reduce((max, item) => {
+    const maxDays = parseInt(max.delivery_delai.split(" ")[0], 10) || 0;
+    const itemDays = parseInt(item.delivery_delai.split(" ")[0], 10) || 0;
+    return itemDays > maxDays ? item : max;
+  }, cartItems[0]);
+
   return (
     <div className="grid md:grid-cols-2 h-screenbg-white ">
       <div className="p-4 bg-gray-100 flex flex-col">
@@ -242,6 +248,47 @@ const PaymentForm: React.FC = () => {
             </div>
           ) : null}
 
+          <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mt-4">
+            <span className="font-bold">Délai de livraison estimé: </span>
+            <span>
+              {(() => {
+                // Calculate the date 30 days from now
+                const today = new Date();
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + 30);
+
+                // Format the future date in French format (e.g., 1er septembre 2024)
+                const options: Intl.DateTimeFormatOptions = {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                };
+                const formattedDate = new Intl.DateTimeFormat(
+                  "fr-FR",
+                  options
+                ).format(futureDate);
+
+                if (cartItems.length === 0) {
+                  return "No items in cart";
+                }
+
+                // Find the item with the maximum delivery delay
+                const itemWithMaxDelay = cartItems.reduce((max, item) => {
+                  const maxDays =
+                    parseInt(max.delivery_delai.split(" ")[0], 10) || 0;
+                  const itemDays =
+                    parseInt(item.delivery_delai.split(" ")[0], 10) || 0;
+                  return itemDays > maxDays ? item : max;
+                }, cartItems[0]);
+
+                // Return the item name with the maximum delay and future date
+                return ` ${parseInt(
+                  itemWithMaxDelay.delivery_delai.split(" ")[0],
+                  10
+                )} jours (Date de livraison estimée : ${formattedDate})`;
+              })()}
+            </span>
+          </div>
           <div className="mt-4 font-bold flex justify-between">
             <span>Total : </span>
             <span>
@@ -258,7 +305,6 @@ const PaymentForm: React.FC = () => {
               €
             </span>
           </div>
-
           <div className="mt-4 font-bold flex justify-between">
             <div className="flex flex-col items-center justify-center w-full max-w-lg mx-auto p-4 bg-gray-100 shadow-lg rounded-lg">
               <h2 className="text-xl font-bold mb-4">
@@ -455,5 +501,16 @@ const Payment: React.FC = () => (
     <Footer />
   </Elements>
 );
+
+const HighestDeliveryDelai: React.FC = () => {
+  // Find the item with the highest delivery_delai
+
+  // Step 3: Render the result
+  return (
+    <span>
+      {`Item with highest delivery delay: ${itemWithHighestDelai.name}, Delivery Delay: ${itemWithHighestDelai.delivery_delai} days`}
+    </span>
+  );
+};
 
 export default Payment;

@@ -80,7 +80,9 @@ const ProductList = () => {
                 <Text className="line-clamp-2">{item.description}</Text>
                 {item.reduction > 0 && (
                   <Text fontSize="xl" className="text-green-duck font-semibold">
-                    <span className="text-red-500 text-md">Promotion : </span>
+                    <span className="text-red-500 text-md">
+                      Nouveau prix :{" "}
+                    </span>
                     {item.newPrice !== undefined ? `${item.newPrice} €` : ""}
                   </Text>
                 )}
