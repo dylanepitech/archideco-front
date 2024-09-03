@@ -52,7 +52,7 @@ const Footer = () => {
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
                 <Link
-                  to="/category/cuisines"
+                  to="/meubles"
                   className="text-gray-600 hover:text-gray-900"
                 >
                   Nos Cuisines
@@ -60,7 +60,7 @@ const Footer = () => {
               </li>
               <li className="mb-6">
                 <Link
-                  to="/category/gros-electromenager"
+                  to="/products/gem"
                   className=" text-gray-600 hover:text-gray-900"
                 >
                   Gros électroménager
@@ -68,7 +68,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/category/petit-electromenager"
+                  to="/products/pem"
                   className=" text-gray-600 hover:text-gray-900"
                 >
                   Petit électroménager

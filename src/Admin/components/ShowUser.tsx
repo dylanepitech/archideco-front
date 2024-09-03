@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
-import { BadgeCheck, BadgeX } from 'lucide-react';
+import { BadgeCheck, BadgeX, DatabaseIcon } from 'lucide-react';
 import Profile from './Profile';
-import { deleteUser, getAllUser } from '../../Requests/UserCrudRequests';
+import { deleteUser, updateUser } from '../../Requests/UserCrudRequests';
 import { AuthContext } from '../../hooks/AuthContext';
 
 type Client = {
@@ -94,6 +94,27 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
             console.log(error);
         }
     };
+
+    const handleChangeRole = async (id:number ,role:string)=>{
+        try {
+
+            if (authToken) {
+                const fields={
+                    "roles":role
+                }
+                const data: any = await updateUser(authToken, id, fields)
+
+                if(typeof data == "string"){
+                    console.log(DatabaseIcon)
+                }else{
+                    onUserDeleted();
+                }
+                
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const filteredData = initialData.filter((item) => {
         const matchesNameOrEmail =
@@ -221,14 +242,14 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
                                     <td className="py-2 px-4 border-b text-white">
                                         {item.roles === 'Admin' ? (
                                             <button
-                                                onClick={() => console.log('to user')}
+                                                onClick={() => handleChangeRole(item.id, "user")}
                                                 className="flex items-center justify-center bg-teal-500 px-2 rounded-full"
                                             >
                                                 To user
                                             </button>
                                         ) : (
                                             <button
-                                                onClick={() => console.log('to admin')}
+                                                onClick={() => handleChangeRole(item.id, "admin")}
                                                 className="flex items-center justify-center bg-green-500 px-2 rounded-full"
                                             >
                                                 To admin
