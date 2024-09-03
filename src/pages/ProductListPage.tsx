@@ -75,7 +75,7 @@ export default function ProductListPage() {
           toast({
             title: "Félicitations",
             position: "top",
-            description: `${currentProduct?.title} ajouté au panier`, // Utilisez le titre du produit ici
+            description: `${currentProduct?.title} ajouté au panier`, 
             status: "success",
             duration: 4000,
             isClosable: true,

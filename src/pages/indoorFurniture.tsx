@@ -179,7 +179,7 @@ export default function IndoorFurniture() {
                   large palette de couleurs pour correspondre à votre style.
                 </p>
                 <Link
-                  href="/products/interieur"
+                  to="/products/interieur"
                   className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#1E4347] hover:text-white"
                 >
                   Explorer
@@ -225,7 +225,7 @@ export default function IndoorFurniture() {
                   s'harmonisent avec votre espace.
                 </p>
                 <Link
-                  href="/products/interieur"
+                  to="/products/interieur"
                   className="inline-block bg-white text-black p-3 rounded-md hover:bg-[#1E4347] hover:text-white"
                 >
                   Explorer

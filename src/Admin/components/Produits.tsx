@@ -19,7 +19,7 @@ export default function Produits() {
   const { authToken } = useContext(AuthContext);
   const productsPerPage = 20;
   const [endDate, setEndDate] = useState<string>('');
-  const [reduction, setReduction] = useState<number>();
+  const [reduction, setReduction] = useState<number>(0);
   const [title, setTitle] = useState<string>('')
   const [link, setLink] = useState<string>('')
   const [sousCategories, setSouscategories] = useState<any[]>([]);
@@ -197,7 +197,7 @@ export default function Produits() {
   const handleCreateReduction = async () => {
     if (authToken && selectedProductIds.size > 0 && reduction > 0 && endDate) {
       try {
-        const reductionData = {
+        const reductionData:any = {
           reduction,
           id_products: Array.from(selectedProductIds),
           end_at: endDate
@@ -211,6 +211,7 @@ export default function Produits() {
           setSelectedProductIds(new Set())
           setReduction(0)
           setEndDate('')
+          fetchProducts();
         }
       } catch (error) {
         console.log(error);
@@ -319,57 +320,6 @@ export default function Produits() {
               </div>
             </div>
           </div>
-
-
-          {/* <div className="flex p-4 gap-2">
-
-            <div className="bg-slate-100 shadow-xl py-2">
-              <ul className="flex flex-col gap-2">
-                {sousCategories.map((sousCategory: any) => (
-                  <li
-                    key={sousCategory.id}
-                    className={`cursor-pointer px-4 ${selectedSousCategory?.id === sousCategory.id ? 'bg-slate-300 rounded-md' : ''}`}
-                    onClick={() => handleSousCategorySelect(sousCategory)}
-                  >
-                    {sousCategory.title}
-                  </li>
-                ))}
-
-              </ul>
-            </div>
-
-            <div>
-              <table className="min-w-full border-collapse">
-                <thead>
-                  <tr className="bg-muted text-muted-foreground">
-                    <th className="py-2 px-4 border-b text-left">
-                      <input
-                        type="checkbox"
-
-                      />
-                    </th>
-                    <th className="py-2 px-4 border-b text-left">id</th>
-                    <th className="py-2 px-4 border-b text-left">Categorie</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categories.map((category: any) => (
-                    <tr key={category.id} className="hover:bg-muted/20">
-                      <td className="py-2 px-4 border-b">
-                        <input
-                          type="checkbox"
-                          checked={!!checkedCategories[category.id]}
-                          onChange={() => handleCategoryCheck(category.id)}
-                        />
-                      </td>
-                      <td className="py-2 px-4 border-b">{category.id}</td>
-                      <td className="py-2 px-4 border-b">{category.title}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div> */}
 
           <div className="flex p-4 gap-2">
             <div className="bg-slate-100 shadow-xl py-2">
