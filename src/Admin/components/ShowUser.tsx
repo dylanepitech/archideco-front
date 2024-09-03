@@ -48,7 +48,7 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
     const [searchActivity, setSearchActivity] = useState('');
     const [selectedClient, setSelectedClient] = useState<Client | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const clientsPerPage = 4;
+    const clientsPerPage = 5;
     const { authToken } = useContext(AuthContext);
     const [initialData, setInitialData] = useState<Client[]>([]);
 
