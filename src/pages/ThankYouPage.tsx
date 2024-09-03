@@ -5,44 +5,81 @@ import { Link } from "react-router-dom";
 const ThankYouPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center mt-22">
-      <Link to="/" className="text-black"><img src={Logo} alt="Thank you" className="w-48"
-      /></Link>
+      <Link to="/" className="text-black">
+        <img src={Logo} alt="Thank you" className="w-48" />
+      </Link>
       <div className="flex items-center justify-center text-center">
         <div className="p-1 rounded shadow-lg bg-[#16a34a]">
           <div className="flex flex-col items-center p-4 space-y-2 bg-white">
-            <svg xmlns="http://www.w3.org/2000/svg" className="text-green-600 w-28 h-28" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" strokeWidth="1">
-              <path strokeLinecap="round" strokeLinejoin="round"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-green-600 w-28 h-28"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
-            <h1
-              className="text-4xl font-extrabold text-black">
-              Merci pour votre achat !</h1>
-            <p className="text-black">Vous recevrez un email contenant la facture de votre achat.</p>
-            <Link to="/"
-              className="inline-flex items-center px-4 py-2 text-white bg-[#639d87] border border-white rounded-full focus:outline-none focus:ring">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mr-2" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+            <h1 className="text-4xl font-extrabold text-black">
+              Merci pour votre achat !
+            </h1>
+            <p className="text-black">
+              Vous recevrez un email contenant la facture de votre achat ou{" "}
+              <br />
+              retrouver la directement sur votre espace client.
+            </p>
+            <Link
+              to="/"
+              className="inline-flex items-center px-4 py-2 text-white bg-[#639d87] border border-white rounded-full focus:outline-none focus:ring"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-3 h-3 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M7 16l-4-4m0 0l4-4m-4 4h18"
+                />
               </svg>
-              <span className="text-sm font-medium">
-                Accueil
-              </span>
+              <span className="text-sm font-medium">Accueil</span>
             </Link>
           </div>
         </div>
       </div>
       <div className="text-center">
-        <p className="mt-12 mb-4">Vous avez la moindre question concernant votre achat ? Contactez-nous !</p>
-        <Link to="/sav"
-          className="inline-flex items-center px-4 py-2 text-white bg-[#639d87] border border-white rounded-full focus:outline-none focus:ring">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 mr-2" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        <p className="mt-12 mb-4">
+          Vous avez la moindre question concernant votre achat ? Contactez-nous
+          !
+        </p>
+        <Link
+          to="/sav"
+          className="inline-flex items-center px-4 py-2 text-white bg-[#639d87] border border-white rounded-full focus:outline-none focus:ring"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-3 h-3 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7 16l-4-4m0 0l4-4m-4 4h18"
+            />
           </svg>
-          <span className="text-sm font-medium">
-            Contactez-nous
-          </span>
+          <span className="text-sm font-medium">Contactez-nous</span>
         </Link>
       </div>
       <div className="flex space-x-4 sm:justify-center mt-8 ">

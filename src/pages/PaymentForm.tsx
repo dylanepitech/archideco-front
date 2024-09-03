@@ -10,9 +10,10 @@ import { AuthContext } from "../hooks/AuthContext";
 import { getMyCart } from "../Requests/CartRequest";
 import { getAllProducts } from "../Requests/ProductsRequest";
 import Logo from "../assets/LogoArchideco.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { localhost } from "../constants/Localhost";
 import Footer from "../components/Footer";
+import { createOrder } from "../Requests/OrderRequest";
 
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
@@ -34,7 +35,7 @@ const PaymentForm: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [Promocode, setPromoCode] = useState<string | null>(null);
   const [valuePromoCode, setValuePromoCode] = useState<number>(0);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (authToken) {
       fetchCartItems();
@@ -190,6 +191,20 @@ const PaymentForm: React.FC = () => {
     const itemDays = parseInt(item.delivery_delai.split(" ")[0], 10) || 0;
     return itemDays > maxDays ? item : max;
   }, cartItems[0]);
+  async function handlesuccess(e: any): Promise<void> {
+    // Marquer la fonction comme `async`
+    try {
+      // Appeler l'API pour créer la commande et attendre la réponse
+      const data = await createOrder(authToken, cartItems);
+      console.log(data);
+
+      // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
+      navigate("/thankyou");
+    } catch (error) {
+      // Gérer l'erreur si l'appel de l'API échoue
+      console.error("Erreur lors de la création de la commande:", error);
+    }
+  }
 
   return (
     <div className="grid md:grid-cols-2 h-screenbg-white ">
@@ -485,6 +500,7 @@ const PaymentForm: React.FC = () => {
           </div>
           <button
             type="submit"
+            onClick={(e: any) => handlesuccess(e)}
             className="w-full mt-4 border border-gray-300 text-white font-bold px-6 py-2 rounded bg-[#639d87]"
           >
             Payer {total.toFixed(2)} €
@@ -501,16 +517,4 @@ const Payment: React.FC = () => (
     <Footer />
   </Elements>
 );
-
-const HighestDeliveryDelai: React.FC = () => {
-  // Find the item with the highest delivery_delai
-
-  // Step 3: Render the result
-  return (
-    <span>
-      {`Item with highest delivery delay: ${itemWithHighestDelai.name}, Delivery Delay: ${itemWithHighestDelai.delivery_delai} days`}
-    </span>
-  );
-};
-
 export default Payment;
