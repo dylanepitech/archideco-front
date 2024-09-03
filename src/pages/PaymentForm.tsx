@@ -122,21 +122,18 @@ const PaymentForm: React.FC = () => {
         return;
       }
 
-      const response = await fetch(
-        "/api/users/complements",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            zip_code: zipCode,
-            adresse,
-            phone,
-          }),
-        }
-      );
+      const response = await fetch("/api/users/complements", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          zip_code: zipCode,
+          adresse,
+          phone,
+        }),
+      });
 
       const data = await response.json();
 
@@ -147,22 +144,19 @@ const PaymentForm: React.FC = () => {
         return;
       }
 
-      const paymentResponse = await fetch(
-        "/api/process-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            payment_method_id: paymentMethod.id,
-            zip_code: zipCode,
-            adresse,
-            phone,
-            amount: Math.round(total * 100), // Convertir en centimes
-          }),
-        }
-      );
+      const paymentResponse = await fetch("/api/process-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          payment_method_id: paymentMethod.id,
+          zip_code: zipCode,
+          adresse,
+          phone,
+          amount: Math.round(total * 100), // Convertir en centimes
+        }),
+      });
 
       const paymentData = await paymentResponse.json();
 
@@ -191,16 +185,15 @@ const PaymentForm: React.FC = () => {
     try {
       // Appeler l'API pour créer la commande et attendre la réponse
       if (authToken) {
-        const prodIds = cartItems.map((produit:any) => produit.id);
+        const prodIds = cartItems.map((produit: any) => produit.id);
         console.log(prodIds);
 
         const field = {
-          "productIds":prodIds
-        }
+          productIds: prodIds,
+        };
 
         const data = await createOrder(authToken, field);
         console.log(data);
-
       }
 
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
@@ -508,7 +501,18 @@ const PaymentForm: React.FC = () => {
             onClick={(e: any) => handlesuccess(e)}
             className="w-full mt-4 border border-gray-300 text-white font-bold px-6 py-2 rounded bg-[#639d87]"
           >
-            Payer {total.toFixed(2)} €
+            Payer{" "}
+            {cartItems
+              .reduce((acc, item) => {
+                const priceInt = parseFloat(
+                  item.price.replace("€", "").replace(",", ".")
+                );
+                const reducedPrice =
+                  item.reduction > 0 ? priceInt - item.reduction : priceInt;
+                return acc + reducedPrice;
+              }, 0)
+              .toFixed(2) - valuePromoCode}{" "}
+            €
           </button>
         </form>
       </div>
