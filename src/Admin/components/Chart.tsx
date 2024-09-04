@@ -68,8 +68,8 @@ const Chart: React.FC = () => {
     const filterData = (data: SalesData[], startDate: string, endDate: string) =>
       data.filter(d => d.date >= startDate && d.date <= endDate);
 
-    const sales1 = filterData(data.august.sales, startDateStr1, endDateStr1);
-    const sales2 = filterData(data.july.sales, startDateStr2, endDateStr2);
+    const sales1 = filterData(data.september.sales, startDateStr1, endDateStr1);
+    const sales2 = filterData(data.august.sales, startDateStr2, endDateStr2);
 
     setSalesData1(sales1);
     setSalesData2(sales2);
@@ -254,7 +254,7 @@ const Chart: React.FC = () => {
             <Bar data={orderStatusData} options={{ maintainAspectRatio: false }} />
           </div>
           <div style={{ width: '45%', height: '300px' }}>
-            <h3>Top 5 des categories</h3>
+            <h3>Top 5 des catégories</h3>
             <Pie data={topProductsData} options={{ maintainAspectRatio: false }} />
           </div>
         </div>

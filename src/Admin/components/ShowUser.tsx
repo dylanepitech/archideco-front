@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
-import { BadgeCheck, BadgeX } from 'lucide-react';
+import { BadgeCheck, BadgeX, DatabaseIcon } from 'lucide-react';
 import Profile from './Profile';
-import { deleteUser, getAllUser } from '../../Requests/UserCrudRequests';
+import { deleteUser, updateUser } from '../../Requests/UserCrudRequests';
 import { AuthContext } from '../../hooks/AuthContext';
 
 type Client = {
@@ -14,6 +14,7 @@ type Client = {
     roles: string;
     id: number;
     code_promo?:any;
+    commande:any;
 };
 
 const statusOptions = [
@@ -48,7 +49,7 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
     const [searchActivity, setSearchActivity] = useState('');
     const [selectedClient, setSelectedClient] = useState<Client | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const clientsPerPage = 4;
+    const clientsPerPage = 5;
     const { authToken } = useContext(AuthContext);
     const [initialData, setInitialData] = useState<Client[]>([]);
 
@@ -66,6 +67,7 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
                     email: user.email,
                     activity: user.is_actif,
                     id: user.id,
+                    commandes:user.commandes,
                     date: user.updated_at.date,
                     complements: user.user_complements,
                     code_promo: user.code_promo,
@@ -94,6 +96,27 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
             console.log(error);
         }
     };
+
+    const handleChangeRole = async (id:number ,role:string)=>{
+        try {
+
+            if (authToken) {
+                const fields={
+                    "roles":role
+                }
+                const data: any = await updateUser(authToken, id, fields)
+
+                if(typeof data == "string"){
+                    console.log(DatabaseIcon)
+                }else{
+                    onUserDeleted();
+                }
+                
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const filteredData = initialData.filter((item) => {
         const matchesNameOrEmail =
@@ -221,14 +244,14 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
                                     <td className="py-2 px-4 border-b text-white">
                                         {item.roles === 'Admin' ? (
                                             <button
-                                                onClick={() => console.log('to user')}
+                                                onClick={() => handleChangeRole(item.id, "user")}
                                                 className="flex items-center justify-center bg-teal-500 px-2 rounded-full"
                                             >
                                                 To user
                                             </button>
                                         ) : (
                                             <button
-                                                onClick={() => console.log('to admin')}
+                                                onClick={() => handleChangeRole(item.id, "admin")}
                                                 className="flex items-center justify-center bg-green-500 px-2 rounded-full"
                                             >
                                                 To admin

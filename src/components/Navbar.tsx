@@ -10,6 +10,7 @@ import {
   Heart,
   ShieldCheck,
   DoorOpen,
+  CircleUserRound
 } from "lucide-react";
 import Accordions from "../UI/Accordion";
 import { useState, useContext, useEffect } from "react";
@@ -50,7 +51,7 @@ export default function Navbar() {
           <Link to="/FAQ" className="flex flex-col items-center">
             <CircleHelp color="#639d87" />
             <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-              Foire au questions
+              Foire aux questions
             </div>
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
@@ -62,27 +63,6 @@ export default function Navbar() {
               Nous localiser
             </div>
           </Link>
-          <p className="bg-black/20 w-0.5 h-8"></p>
-
-          {connected ? (
-            <div
-              className="flex flex-col items-center hover:cursor-pointer"
-              onClick={() => deconnexion()}
-            >
-              <DoorOpen color="#639d87" />
-              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline text-red-500">
-                Déconnexion
-              </div>
-            </div>
-          ) : (
-            <Link to="/login" className="flex flex-col items-center">
-              <User color="#639d87" />
-              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-                Connectez-vous!
-              </div>
-            </Link>
-          )}
-
           <p className="bg-black/20 w-0.5 h-8"></p>
 
           <Link to="/envies" className="flex flex-col items-center">
@@ -101,15 +81,50 @@ export default function Navbar() {
           </Link>
           <p className="bg-black/20 w-0.5 h-8"></p>
 
-          {roles.includes("ROLE_ADMIN") ? (
-            <Link to="/admin/dashboard" className="flex flex-col items-center">
-              <ShieldCheck color="#639d87" />
+          {roles.includes("ROLE_ADMIN") && connected ? (
+            <>
+              <Link
+                to="/admin/dashboard"
+                className="flex flex-col items-center"
+              >
+                <ShieldCheck color="#639d87" />
+                <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                  Dashboard
+                </div>
+              </Link>
+              <p className="bg-black/20 w-0.5 h-8"></p>
+            </>
+          ) : null}
+
+          {connected && roles.includes("ROLE_USER") ? (
+            <>
+              <Link to="/profil" className="flex flex-col items-center">
+                <CircleUserRound color="#639d87" />
+                <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                  Profil
+                </div>
+              </Link>
+              <p className="bg-black/20 w-0.5 h-8"></p>
+            </>
+          ) : null}
+
+          {connected ? (
+            <div
+              className="flex flex-col items-center hover:cursor-pointer"
+              onClick={() => deconnexion()}
+            >
+              <DoorOpen color="#639d87" />
+              <div className="font-semibold text-sm hover:underline-offset-4 hover:underline text-red-500">
+                Déconnexion
+              </div>
+            </div>
+          ) : (
+            <Link to="/login" className="flex flex-col items-center">
+              <User color="#639d87" />
               <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
-                Dashboard
+                Connectez-vous!
               </div>
             </Link>
-          ) : (
-            ""
           )}
         </section>
         <section className="flex flex-row w-full items-center justify-start gap-10 px-8 pt-6">
@@ -176,7 +191,7 @@ export default function Navbar() {
                 className="font-semibold text-xs hover:underline-offset-4 hover:underline"
                 to="/FAQ"
               >
-                Foire au questions
+                Foire aux questions
               </Link>
             </div>
             <div className="flex flex-col items-center">
@@ -235,6 +250,17 @@ export default function Navbar() {
             ) : (
               ""
             )}
+            {connected && roles.includes("ROLE_USER") ? (
+              <>
+                <Link to="/profil" className="flex flex-col items-center">
+                  <ShieldCheck color="#639d87" />
+                  <div className="font-semibold text-sm hover:underline-offset-4 hover:underline">
+                    Profil
+                  </div>
+                </Link>
+                <p className="bg-black/20 w-0.5 h-8"></p>
+              </>
+            ) : null}
           </div>
           <Accordions />
         </section>

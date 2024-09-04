@@ -1,5 +1,4 @@
-import React from "react";
-import { Boxes, CircleDollarSign, LayoutDashboard, ScanBarcode, Users } from "lucide-react";
+import { Boxes, LayoutDashboard, ScanBarcode, Users } from "lucide-react";
 import logo from "../../assets/LogoArchideco.png";
 import { Link } from "react-router-dom";
 
@@ -48,16 +47,7 @@ export default function Aside({ selectedItem, onSelect }: AsideProps) {
                             <span className="ml-2 hidden md:inline">Commandes</span>
                         </div>
                     </li>
-                    <li>
-                        <div
-                            className={`flex items-center p-2 text-muted rounded-lg cursor-pointer transition-colors 
-                            ${selectedItem === 'Chiffres' ? 'bg-gray-300' : 'hover:bg-gray-200'}`}
-                            onClick={() => onSelect('Chiffres')}
-                        >
-                            <CircleDollarSign />
-                            <span className="ml-2 hidden md:inline">Chiffres</span>
-                        </div>
-                    </li>
+                   
                     <li>
                         <div
                             className={`flex items-center p-2 text-muted rounded-lg cursor-pointer transition-colors 

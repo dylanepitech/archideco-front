@@ -23,9 +23,11 @@ export interface UserData {
   updated_at: DateTime;
   is_actif: boolean;
   user_complements: UserComplement[];
+  commandes:any
 }
 
 export interface ApiResponse {
+  value: string | ApiResponse | PromiseLike<string | ApiResponse>;
   data: UserData[];
 }
 

@@ -46,11 +46,6 @@ export default function ProductListPage() {
     applyFilters();
   }, [filters, products]);
 
-  // useEffect(() => {
-  //   handleGetMyCart()
-  //   console.log(cart)
-  // }, [cart]);
-
   const handleCreateCart = async (idProduct: number) => {
     try {
       if (authToken) {
@@ -78,7 +73,7 @@ export default function ProductListPage() {
           toast({
             title: "Félicitations",
             position: "top",
-            description: `${currentProduct?.title} ajouté au panier`, // Utilisez le titre du produit ici
+            description: `${currentProduct?.title} ajouté au panier`, 
             status: "success",
             duration: 4000,
             isClosable: true,
@@ -144,7 +139,7 @@ export default function ProductListPage() {
           setError(data);
         } else {
           setCart(data.data);
-          console.log(data.data);
+          // console.log(data.data);
         }
       }
     } catch (err) {
@@ -159,6 +154,7 @@ export default function ProductListPage() {
       switch (category) {
         case "gem":
           data = await getGem();
+          // console.log(data)
           break;
         case "pem":
           data = await getPem();
@@ -251,7 +247,6 @@ export default function ProductListPage() {
                 note={9}
                 reduction={product.reduction}
                 product={product}
-                onAddToCart={() => handleAddToCart(product.id)}
               />
             ))}
           </div>

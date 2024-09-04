@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, Key } from "react";
+import { AuthContext } from "../hooks/AuthContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Accordion from "../components/Accordion";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { AuthContext } from "../hooks/AuthContext";
 import { useToast } from "@chakra-ui/react";
 import { getMyCart, createCart, updateCart } from "../Requests/CartRequest";
 import {
@@ -18,7 +18,6 @@ import {
   ShoppingBasket,
   HeartCrack,
   ShoppingCart,
-  Save,
 } from "lucide-react";
 import {
   getMyWishlist,
@@ -27,7 +26,7 @@ import {
 } from "../Requests/WishlistRequest";
 import { CreateWishlistBody, UpdateWishlistBody } from "../Types/wishlist";
 import { useConnected } from "../hooks/Connected";
-import { getWishListItems, putWishList } from "../hooks/wishListe";
+import { getWishListItems } from "../hooks/wishListe";
 
 export default function Product() {
   const { category, productTitle, id } = useParams();
@@ -41,7 +40,8 @@ export default function Product() {
   const [cart, setCart] = useState<any | null>(null);
   const [wishlists, setWishlists] = useState<any | null>(null);
   const connected = useConnected();
-  const wishListItems = getWishListItems();
+  const [otherProduct, setOtherProduct] = useState<any | null>([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -89,10 +89,6 @@ export default function Product() {
   useEffect(() => {
     handleGetMyCart();
   }, [cart]);
-
-  if (error) {
-    console.log(error);
-  }
 
   const handleGetProduct = async (categoryId: number) => {
     try {
@@ -177,7 +173,7 @@ export default function Product() {
         } else {
           setCart(data);
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: "top",
             description: `${product?.title} ajouté au panier`,
             status: "success",
@@ -229,7 +225,7 @@ export default function Product() {
         } else {
           setWishlists(data.data);
           toast({
-            title: "Felicitation",
+            title: "Félicitations",
             position: "top",
             description: `${product?.title} ajouté au panier`,
             status: "success",
@@ -248,53 +244,52 @@ export default function Product() {
   const handleUpdateWishlist = async (idProduct: number) => {
     try {
       if (authToken) {
-        let newProducts = wishlists?.id_products;
+        let newProducts = wishlists?.id_products
+          ? [...wishlists.id_products]
+          : []; // Ensuring newProducts is always an array
         let add: boolean = true;
-        if (wishlists?.id_products.includes(idProduct)) {
-          newProducts = newProducts.filter((item: any) => item !== idProduct);
+
+        if (newProducts.includes(idProduct)) {
+          newProducts = newProducts.filter(
+            (item: number) => item !== idProduct
+          ); // Assuming id_products is an array of numbers
           add = false;
         } else {
           newProducts.push(idProduct);
         }
+
         const wishlistData: UpdateWishlistBody = {
           idProducts: newProducts,
         };
+
         const id = wishlists?.id;
-        console.log(idProduct, wishlists.id_products);
+        console.log(idProduct, wishlists?.id_products); // Use optional chaining to avoid potential errors if wishlists is undefined
+
         const data: any | string = await updateWishlist(
           authToken,
           id,
           wishlistData
         );
+
         if (typeof data === "string") {
           setError(data);
         } else {
           setWishlists(data.data);
 
-          if (add) {
-            toast({
-              title: "Felicitation",
-              position: "top",
-              description: `${product?.title} ajouté au panier`,
-              status: "success",
-              duration: 2000,
-              isClosable: true,
-            });
-          } else {
-            toast({
-              title: "Felicitation",
-              position: "top",
-              description: `${product?.title} retiré a la wishlist`,
-              status: "warning",
-              duration: 2000,
-              isClosable: true,
-            });
-          }
+          toast({
+            title: "Félicitations",
+            position: "top",
+            description: `${product?.title} ${
+              add ? "ajouté à" : "retiré de"
+            } la wishlist`,
+            status: add ? "success" : "warning",
+            duration: 2000,
+            isClosable: true,
+          });
         }
       }
-    } catch (err) {
-      setError("Erreur lors de la mise à jour de la liste de souhaits");
-      console.error("Erreur:", err);
+    } catch (error) {
+      console.error("Error updating wishlist:", error); // Improved logging message
     }
   };
 
@@ -311,7 +306,7 @@ export default function Product() {
         }
       }
     } catch (err) {
-      setError("Erreur lors de la recuperation de la liste de souhaits");
+      setError("Erreur lors de la récuperation de la liste de souhaits");
       console.error("Erreur:", err);
     }
   };
@@ -394,7 +389,28 @@ export default function Product() {
               {product?.title}
             </h2>
             <p className="text-lg text-gray-700 mb-2">{product?.description}</p>
-            <p className="text-lg text-green-500 mb-4">{product?.price}</p>
+            <p className="flex gap-4 text-lg text-red-500 font-bold mb-4">
+              {product?.reduction > 0 ? (
+                <>
+                  <span className="line-through text-zinc-700 text-xl col-span-6 decoration-red-500">
+                    {parseFloat(
+                      product?.price.replace("€", "").replace(",", ".")
+                    )}
+                    €
+                  </span>
+                  <span>
+                    {(
+                      parseFloat(
+                        product?.price.replace("€", "").replace(",", ".")
+                      ) - product?.reduction
+                    ).toFixed(2)}
+                    €
+                  </span>
+                </>
+              ) : (
+                <span>{product?.price}</span>
+              )}
+            </p>
             <div className="flex flex-wrap items-center space-x-2 mb-4">
               <span className="bg-green-500 text-white px-2 py-1 rounded">
                 G
@@ -405,12 +421,9 @@ export default function Product() {
               <span className="bg-red-500 text-white px-2 py-1 rounded">T</span>
             </div>
 
-            <p className="text-gray-600 mb-2">Comment obtenir:</p>
             <p className="text-gray-600 mb-2">
-              Livraison: Vérifier la disponibilité pour une livraison
-            </p>
-            <p className="text-gray-600 mb-4">
-              En magasin: Vérifier le stock en magasin
+              <span className="font-bold">Delai de livraison :</span>{" "}
+              {product?.delivery_delai}
             </p>
             <Accordion title="Carateristiques">
               <ul className="list-disc pl-5">
@@ -475,6 +488,7 @@ export default function Product() {
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );

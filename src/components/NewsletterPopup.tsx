@@ -53,7 +53,7 @@ const NewsletterPopup = () => {
                 validate ? "text-red-500 font-semiboldj" : ""
               }`}
             >
-              {validate ? "Merci !" : "Suivez la tendance !"}
+              {validate ? "Merci ! (Pensez à vérifier vos spams !)" : "Suivez la tendance !"}
             </h2>
             <p
               className={`text-base text-gray-700 mb-6 ${
@@ -61,7 +61,7 @@ const NewsletterPopup = () => {
               }`}
             >
               {validate
-                ? "Merci d'avoir souscris a notre newsletter, promis nous n'allons pas vous spamer mais juste vous envoyer les tendances et promotion."
+                ? "Merci d'avoir souscrit à notre newsletter. Promis, nous ne allons pas vous spammer, mais simplement vous envoyer les tendances et les promotions."
                 : "Écoutez vos envies et abonnez-vous à notre newsletter pour ne rien manquer des dernières tendances."}
             </p>
             <form className="flex flex-col space-y-4">
