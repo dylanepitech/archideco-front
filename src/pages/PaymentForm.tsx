@@ -241,6 +241,10 @@ const PaymentForm: React.FC = () => {
       const deletePromo = await deleteCodePromo(authToken, Promocode);
       localStorage.removeItem("codePromo");
       navigate("/thankyou");
+      // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
+      setTimeout(() => {
+        navigate("/thankyou");
+      }, 3000);
     } catch (error) {
       console.error("Erreur lors de la création de la commande:", error);
     }
