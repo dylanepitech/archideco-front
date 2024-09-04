@@ -113,90 +113,63 @@ export default function IndoorFurniture() {
       <Navbar />
       <div className="w-full h-full p-4">
         <Slider {...sliderSettings} className="h-full">
-          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]">
-            <img
-              className="w-full h-full object-cover"
-              src={picture1}
-              alt="Description 1"
-            />
-            <div className="absolute top-4 sm:top-6 lg:top-20 right-4 sm:right-6 lg:right-20 bg-[#1E4347] bg-opacity-85 text-white p-4 sm:p-6 lg:p-8 h-auto w-[90%] sm:w-[80%] lg:w-[400px] flex flex-col items-center justify-center">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center">
-                Jusqu'à -10% sur nos meubles de cuisine
-              </h2>
-              <span className="mt-2 text-sm sm:text-base md:text-lg">
-                du 22/08/24 au 02/09/24
-              </span>
-              <Link
-                to="/map"
-                className="mt-4 underline bg-red-600 p-2 sm:p-4 text-white hover:bg-red-700 rounded-md no-underline"
+          {[
+            {
+              src: picture1,
+              text: "Jusqu'à -10% sur nos meubles de cuisine",
+              date: "du 22/08/24 au 02/09/24",
+              link: "/map",
+              bgColor: "#1E4347",
+            },
+            {
+              src: picture2,
+              text: "Jusqu'à -10% sur nos meubles de salle de bain",
+              date: "du 22/08/24 au 02/09/24",
+              link: "/map",
+              bgColor: "#639D87",
+            },
+            {
+              src: picture3,
+              text: "Jusqu'à -10% sur nos meubles de salon",
+              date: "du 22/08/24 au 02/09/24",
+              link: "/map",
+              bgColor: "#1E4347",
+            },
+            {
+              src: picture4,
+              text: "Jusqu'à -10% sur nos dressings",
+              date: "du 22/08/24 au 02/09/24",
+              link: "/map",
+              bgColor: "#1E4347",
+            },
+          ].map((slide, index) => (
+            <div
+              key={index}
+              className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]"
+            >
+              <img
+                className="w-full h-full object-cover"
+                src={slide.src}
+                alt={`Description ${index + 1}`}
+              />
+              <div
+                className={`absolute top-4 sm:top-6 lg:top-20 right-4 sm:right-6 lg:right-20 bg-[${slide.bgColor}] bg-opacity-85 text-white p-4 sm:p-6 lg:p-8 h-auto w-[90%] sm:w-[80%] lg:w-[400px] flex flex-col items-center justify-center`}
               >
-                VISITEZ NOS MAGASINS
-              </Link>
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center">
+                  {slide.text}
+                </h2>
+                <span className="mt-2 text-sm sm:text-base md:text-lg">
+                  {slide.date}
+                </span>
+                <Link
+                  to={slide.link}
+                  className="mt-4 underline bg-red-600 p-2 sm:p-4 text-white hover:bg-red-700 rounded-md no-underline"
+                >
+                  VISITEZ NOS MAGASINS
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]">
-            <img
-              className="w-full h-full object-cover"
-              src={picture2}
-              alt="Description 2"
-            />
-            <div className="absolute top-4 sm:top-6 lg:top-20 right-4 sm:right-6 lg:right-20 bg-[#639D87] bg-opacity-85 text-white p-4 sm:p-6 lg:p-8 h-auto w-[90%] sm:w-[80%] lg:w-[400px] flex flex-col items-center justify-center">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center">
-                Jusqu'à -10% sur nos meubles de salle de bain
-              </h2>
-              <span className="absolute top-[220px] mb-4 left-8 text-l">
-                du 22/08/24 au 02/09/24
-              </span>
-              <Link
-                to="/products/interieur"
-                className="absolute bottom-[100px] mt-4 left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
-              >
-                VISITEZ NOS MAGASIN
-              </Link>
-            </div>
-          </div>
-          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]">
-            <img
-              className="w-full h-full object-cover"
-              src={picture3}
-              alt="Description 3"
-            />
-            <div className="absolute top-4 sm:top-6 lg:top-20 right-4 sm:right-6 lg:right-20 bg-[#1E4347] bg-opacity-85 text-white p-4 sm:p-6 lg:p-8 h-auto w-[90%] sm:w-[80%] lg:w-[400px] flex flex-col items-center justify-center">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center">
-                Jusqu'à -10% sur nos meubles de salon
-              </h2>
-              <span className="mt-2 text-sm sm:text-base md:text-lg">
-                du 22/08/24 au 02/09/24
-              </span>
-              <Link
-                to="/products/interieur"
-                className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
-              >
-                VISITEZ NOS MAGASIN
-              </Link>
-            </div>
-          </div>
-          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]">
-            <img
-              className="w-full h-full object-cover"
-              src={picture4}
-              alt="Description 4"
-            />
-            <div className="absolute top-4 sm:top-6 lg:top-20 right-4 sm:right-6 lg:right-20 bg-[#1E4347] bg-opacity-85 text-white p-4 sm:p-6 lg:p-8 h-auto w-[90%] sm:w-[80%] lg:w-[400px] flex flex-col items-center justify-center">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center">
-                Jusqu'à -10% sur nos dressings
-              </h2>
-              <span className="mt-2 text-sm sm:text-base md:text-lg">
-                du 22/08/24 au 02/09/24
-              </span>
-              <Link
-                to="/products/interieur"
-                className="absolute bottom-[100px] left-8 underline bg-red-600 p-4 text-white  hover:bg-red-700 rounded-md no-underline"
-              >
-                VISITEZ NOS MAGASIN
-              </Link>
-            </div>
-          </div>
+          ))}
         </Slider>
       </div>
 
@@ -223,7 +196,7 @@ export default function IndoorFurniture() {
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Cuisine
                 </h3>
-                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Personnalisez vos meubles de cuisine avec des matériaux variés
                   comme le bois, le métal, ou le verre. Choisissez parmi une
                   large palette de couleurs pour correspondre à votre style.
@@ -269,7 +242,7 @@ export default function IndoorFurniture() {
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Dressing
                 </h3>
-                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Personnalisez vos meubles de dressing avec des finitions en
                   bois, métal ou mélaminé. Choisissez les couleurs qui
                   s'harmonisent avec votre espace.
@@ -292,7 +265,7 @@ export default function IndoorFurniture() {
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Salle de Bain
                 </h3>
-                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Offrez-vous des meubles de salle de bain personnalisés en
                   céramique, marbre, ou résine. Choisissez des couleurs et
                   finitions qui correspondent à votre style.
@@ -303,7 +276,6 @@ export default function IndoorFurniture() {
                 >
                   Explorer
                 </Link>
-
               </div>
             </div>
           </div>
