@@ -18,7 +18,7 @@ function Profile() {
   const [profile, setProfile] = useState<ApiResponse | null>(null);
   const [orders, setOrders] = useState<any[]>([]); // Nouvel état pour les commandes
   const [error, setError] = useState<string | null>(null);
-  const [showPersonalInfo, setShowPersonalInfo] = useState(false);
+  const [showPersonalInfo, setShowPersonalInfo] = useState(true);
   const [showOrders, setShowOrders] = useState(false);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
@@ -46,23 +46,6 @@ function Profile() {
     fetchProfile();
   }, [authToken, id]);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        if (authToken) {
-          const data = await getOrders(authToken);
-          setOrders(data.orders);
-        }
-      } catch (err) {
-        setError("Erreur lors de la récupération des commandes");
-        console.error("Erreur:", err);
-      }
-    };
-
-    if (showOrders) {
-      fetchOrders();
-    }
-  }, [authToken, showOrders]);
 
   const handleEditClick = (field: string) => {
     setEditingField(field);
@@ -114,7 +97,7 @@ function Profile() {
     } else if (section === "orders") {
       setShowOrders(true);
       setShowPersonalInfo(false);
-      // console.log(profile)
+      console.log(profile.data.commandes)
       setOrders(profile?.data.commandes)
     }
   };
@@ -139,13 +122,12 @@ function Profile() {
             <ul className="flex flex-col sm:flex-row sm:space-x-16 space-y-4 sm:space-y-0">
               <li className="flex flex-col items-center">
                 <UserRoundCog className="mb-2" />
-                <a
-                  href="#profile"
+                <div
                   className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
                   onClick={() => handleSectionClick("personalInfo")}
                 >
                   Mes informations personnelles
-                </a>
+                </div>
               </li>
               <li className="flex flex-col items-center">
                 <ListOrdered className="mb-2" />
@@ -193,25 +175,21 @@ function Profile() {
                         value: user.lastname,
                       },
                       { label: "Email", field: "email", value: user.email },
-                      {
-                        label: "Mot de passe",
-                        field: "password",
-                        value: user.password,
-                      },
+
                       {
                         label: "Numéro de téléphone",
                         field: "phone",
-                        // value: user_complements.phone,
+                        value: user.user_complements[0].phone,
                       },
                       {
                         label: "Adresse",
                         field: "address",
-                        // value: user_complements.address,
+                        value: user.user_complements[0].adresse,
                       },
                       {
                         label: "Code postal",
                         field: "zip_code",
-                        // value: user_complements.zip_code,
+                        value: user.user_complements[0].zipcode,
                       },
                     ].map(({ label, field, value }) => (
                       <tr
@@ -295,45 +273,26 @@ function Profile() {
             <div className="orders">
               <h2 className="text-xl font-bold mb-4 sm:mb-6">Mes commandes</h2>
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-                  <thead>
-                    <tr className="border-t-2 border-t-[#639D87]">
-                      <th className="p-2 sm:p-4 text-center">ID</th>
-                      <th className="p-2 sm:p-4 text-center">Articles</th>
-                      <th className="p-2 sm:p-4 text-center">Date</th>
-                      <th className="p-2 sm:p-4 text-center">Total</th>
-                      <th className="p-2 sm:p-4 text-center">Statut</th>
-                      <th className="p-2 sm:p-4 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map((order) => (
-                      <tr
-                        key={order.id}
-                        className="border-b border-gray-200 hover:bg-gray-50 transition duration-300"
-                      >
-                        <td className="p-2 sm:p-4 text-center">{order.id}</td>
-                        <td className="p-2 sm:p-4 text-center">
-                          {order.items.join(", ")}
-                        </td>
-                        <td className="p-2 sm:p-4 text-center">
-                          {new Date(order.date).toLocaleDateString()}
-                        </td>
-                        <td className="p-2 sm:p-4 text-center">
-                          {order.total} €
-                        </td>
-                        <td className="p-2 sm:p-4 text-center">
-                          {order.status}
-                        </td>
-                        <td className="p-2 sm:p-4 text-center">
-                          <button className="p-2 rounded-full hover:bg-[#639D87] transition duration-300 focus:outline-none">
-                            <Download className="text-[#639D87] hover:text-white" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+
+                {orders.map((order: any) => (
+                  <div className="border-slate-300 border m-2">
+                    <p>{order.id}</p>
+                    <p>{order.order_date}</p>
+                    <p>{order.status}</p>
+                    <div>
+                      {order.products.map((product: any) => (
+                        <div>
+
+                          <p>{product.title} - {product.price}</p>
+                          <p>reduction - {product.reduction}</p>
+                        </div>
+
+                      ))}
+                    </div>
+                  </div>
+
+
+                ))}
               </div>
             </div>
           )}
