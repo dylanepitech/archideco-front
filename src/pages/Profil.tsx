@@ -257,7 +257,7 @@ function Profile() {
                     >
                       <div className="flex justify-between mb-2">
                         <p className="font-semibold text-lg">
-                          ID de commande:{" "}
+                          Numero de commande:{" "}
                           <span className="font-normal text-gray-600">
                             {order.id}
                           </span>
@@ -285,13 +285,35 @@ function Profile() {
                             className="border-t border-gray-200 pt-2 mt-2"
                           >
                             <p className="text-gray-800">
-                              {product.title} - {product.price}
+                              {product.title} -{" "}
+                              {parseFloat(product.price).toFixed(2)} €
                             </p>
                             <p className="text-gray-600">
-                              Réduction: {product.reduction}%
+                              Réduction: {product.reduction || 0}%
                             </p>
                           </div>
                         ))}
+
+                        {/* Calcul du total des prix */}
+                        <div className="border-t border-gray-300 pt-2 mt-2">
+                          <p className="font-semibold text-gray-800">
+                            Total:{" "}
+                            {order.products
+                              .reduce((total: number, product: any) => {
+                                // Assurer que le prix est un nombre valide
+                                const price = parseFloat(product.price) || 0;
+                                // Assurer que la réduction est un nombre valide
+                                const reduction =
+                                  parseFloat(product.reduction) || 0;
+                                // Calcul du prix après réduction
+                                const priceAfterReduction =
+                                  price * (1 - reduction / 100);
+                                return total + priceAfterReduction;
+                              }, 0)
+                              .toFixed(2)}{" "}
+                            €
+                          </p>
+                        </div>
                       </div>
                       <div className="mt-4 flex justify-end">
                         <button
