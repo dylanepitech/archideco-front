@@ -14,6 +14,7 @@ type Client = {
     roles: string;
     id: number;
     code_promo?:any;
+    commande:any;
 };
 
 const statusOptions = [
@@ -66,6 +67,7 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
                     email: user.email,
                     activity: user.is_actif,
                     id: user.id,
+                    commandes:user.commandes,
                     date: user.updated_at.date,
                     complements: user.user_complements,
                     code_promo: user.code_promo,
