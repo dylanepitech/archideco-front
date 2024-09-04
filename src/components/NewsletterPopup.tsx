@@ -53,7 +53,7 @@ const NewsletterPopup = () => {
                 validate ? "text-red-500 font-semiboldj" : ""
               }`}
             >
-              {validate ? "Merci !" : "Suivez la tendance !"}
+              {validate ? "Merci ! (Pensez à vérifier vos spams !)" : "Suivez la tendance !"}
             </h2>
             <p
               className={`text-base text-gray-700 mb-6 ${
