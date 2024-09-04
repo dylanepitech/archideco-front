@@ -95,8 +95,7 @@ const CartPage: React.FC = () => {
   const handlePromoCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (authToken) {
-
-      const response:any = await VerifyCodePromo(promoCode, authToken);
+      const response: any = await VerifyCodePromo(promoCode, authToken);
       if (response > 0) {
         setPromotion(response);
         localStorage.setItem("codePromo", `${promoCode}|${response}`);
@@ -317,7 +316,7 @@ const CartPage: React.FC = () => {
                     <div className="flex justify-between mb-2">
                       <span>
                         {" "}
-                        <span className="font-semibold">
+                        <span className="font-semibold text-green-emerald">
                           Code promotionel :
                         </span>{" "}
                         {promoCode}
