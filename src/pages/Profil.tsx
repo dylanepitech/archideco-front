@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../hooks/AuthContext";
-import { getMe, getUser, updateUser } from "../Requests/UserCrudRequests";
+import { getMe, getUser, deleteUser } from "../Requests/UserCrudRequests";
 import { ApiResponse } from "../Types/userCrud";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { UserRoundCog, ListOrdered, SquarePen, Download } from "lucide-react";
+import { UserRoundCog, ListOrdered, Download } from "lucide-react";
 
 function Profile() {
   const { authToken } = useContext(AuthContext);
@@ -14,8 +14,6 @@ function Profile() {
   const [error, setError] = useState<string | null>(null);
   const [showPersonalInfo, setShowPersonalInfo] = useState(true);
   const [showOrders, setShowOrders] = useState(false);
-  const [editingField, setEditingField] = useState<string | null>(null);
-  const [formData, setFormData] = useState<any>({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -24,11 +22,11 @@ function Profile() {
     const fetchProfile = async () => {
       try {
         if (authToken) {
-          const data: any = id
+          const data: ApiResponse = id
             ? await getUser(authToken, Number(id))
             : await getMe(authToken);
           setProfile(data);
-          setFormData(data.data);
+          setOrders(data.data.commandes || []); // Initialize orders with current profile data
         }
       } catch (err) {
         setError("Erreur lors de la récupération du profil");
@@ -39,33 +37,18 @@ function Profile() {
     fetchProfile();
   }, [authToken, id]);
 
-  const handleEditClick = (field: string) => {
-    setEditingField(field);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSaveClick = async () => {
+  const handleDeleteAccount = async () => {
     try {
-      if (authToken) {
-        await updateUser(authToken, formData);
-        setProfile({ ...profile, data: formData });
-        setEditingField(null);
+      if (authToken && profile) {
+        await deleteUser(authToken, profile.data.id);
+        console.log("Account deleted");
+        setShowDeletePopup(false);
+        navigate("/login");
       }
     } catch (err) {
-      setError("Erreur lors de la mise à jour du profil");
+      setError("Erreur lors de la suppression du compte");
       console.error("Erreur:", err);
     }
-  };
-
-  const handleDeleteAccount = () => {
-    console.log("Account deleted");
-    setShowDeletePopup(false);
   };
 
   const handleSectionClick = (section: "personalInfo" | "orders") => {
@@ -80,8 +63,6 @@ function Profile() {
   };
 
   const handleDownloadInvoice = (orderId: number) => {
-    // Implémentez la logique pour télécharger ou afficher la facture
-    // Par exemple, vous pouvez rediriger vers une URL de facture
     window.open(`/invoices/${orderId}`, "_blank");
   };
 
@@ -100,7 +81,7 @@ function Profile() {
       <Navbar />
 
       <div className="bg-[#1E4347] text-white py-4 sm:py-8 shadow-md">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <nav className="flex flex-wrap justify-center">
             <ul className="flex flex-col sm:flex-row sm:space-x-16 space-y-4 sm:space-y-0">
               <li className="flex flex-col items-center">
@@ -127,94 +108,58 @@ function Profile() {
       </div>
 
       <main className="flex flex-1 justify-center items-center p-4 sm:p-8 bg-white shadow-inner">
-        <div className="max-w-3xl w-full">
+        <div className="max-w-2xl w-full">
           {showPersonalInfo && (
-            <>
-              <h2 className="text-xl font-bold mb-4 sm:mb-6">
+            <div className="bg-white shadow-md rounded-lg overflow-hidden p-4 sm:p-6 mb-8">
+              <h2 className="text-xl font-bold mb-2">
                 Mes informations personnelles
               </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-                  <tbody className="border-t-2 border-t-[#639D87]">
-                    {[
-                      {
-                        label: "Nom",
-                        field: "firstname",
-                        value: user.firstname,
-                      },
-                      {
-                        label: "Prénom",
-                        field: "lastname",
-                        value: user.lastname,
-                      },
-                      { label: "Email", field: "email", value: user.email },
-                      {
-                        label: "Numéro de téléphone",
-                        field: "phone",
-                        value: user.user_complements[0].phone,
-                      },
-                      {
-                        label: "Adresse",
-                        field: "address",
-                        value: user.user_complements[0].adresse,
-                      },
-                      {
-                        label: "Code postal",
-                        field: "zip_code",
-                        value: user.user_complements[0].zipcode,
-                      },
-                    ].map(({ label, field, value }) => (
-                      <tr
-                        key={field}
-                        className="border-b border-gray-200 hover:bg-gray-50 transition duration-300"
-                      >
-                        <td className="p-2 sm:p-4 font-semibold text-gray-700">
-                          {label}:
-                        </td>
-                        <td className="p-2 sm:p-4 text-gray-800">
-                          {editingField === field ? (
-                            <input
-                              type="text"
-                              name={field}
-                              value={formData[field]}
-                              onChange={handleInputChange}
-                              className="w-full p-2 border rounded"
-                            />
-                          ) : (
-                            value
-                          )}
-                        </td>
-                        <td className="p-2 sm:p-4">
-                          {editingField === field ? (
-                            <button
-                              onClick={handleSaveClick}
-                              className="p-2 rounded-full hover:bg-[#639D87] hover:text-white transition duration-300 focus:outline-none"
-                            >
-                              Sauvegarder
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => handleEditClick(field)}
-                              className="p-2 rounded-full hover:bg-[#639D87] transition duration-300 focus:outline-none"
-                            >
-                              <SquarePen className="text-[#639D87] hover:text-white" />
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="space-y-4">
+                {[
+                  {
+                    label: "Nom",
+                    value: user.firstname,
+                  },
+                  {
+                    label: "Prénom",
+                    value: user.lastname,
+                  },
+                  { label: "Email", value: user.email },
+                  {
+                    label: "Numéro de téléphone",
+                    value: user.user_complements[0]?.phone || "",
+                  },
+                  {
+                    label: "Adresse",
+                    value: user.user_complements[0]?.adresse || "",
+                  },
+                  {
+                    label: "Code postal",
+                    value: user.user_complements[0]?.zipcode || "",
+                  },
+                ].map(({ label, value }) => (
+                  <div
+                    key={label}
+                    className="border border-gray-300 rounded-lg p-4 shadow-sm"
+                  >
+                    <div className="flex justify-between">
+                      <span className="font-semibold text-gray-700">
+                        {label}:
+                      </span>
+                      <span className="text-gray-800">{value}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-center pt-8 sm:pt-12">
+              <div className="flex justify-center pt-6">
                 <button
-                  className="bg-red-700 p-2 sm:p-[10px] rounded-xl text-white hover:bg-red-800"
+                  className="bg-red-700 px-4 py-2 rounded-xl text-white hover:bg-red-800"
                   onClick={() => setShowDeletePopup(true)}
                 >
                   Supprimer mon compte
                 </button>
               </div>
-            </>
+            </div>
           )}
 
           {showDeletePopup && (
@@ -257,13 +202,16 @@ function Profile() {
                     >
                       <div className="flex justify-between mb-2">
                         <p className="font-semibold text-lg">
-                          ID de commande:{" "}
+                          Numero de commande:{" "}
                           <span className="font-normal text-gray-600">
                             {order.id}
                           </span>
                         </p>
                         <p className="text-gray-600">
-                          Date de commande: {order.order_date}
+                          Date de commande:{" "}
+                          {new Date(order.order_date).toLocaleDateString(
+                            "fr-FR"
+                          )}
                         </p>
                       </div>
                       <p className="text-gray-700 mb-2">
@@ -285,13 +233,32 @@ function Profile() {
                             className="border-t border-gray-200 pt-2 mt-2"
                           >
                             <p className="text-gray-800">
-                              {product.title} - {product.price}
+                              {product.title} -{" "}
+                              {parseFloat(product.price).toFixed(2)} €
                             </p>
                             <p className="text-gray-600">
-                              Réduction: {product.reduction}%
+                              Réduction: {product.reduction || 0}%
                             </p>
                           </div>
                         ))}
+
+                        {/* Calcul du total des prix */}
+                        <div className="border-t border-gray-300 pt-2 mt-2">
+                          <p className="font-semibold text-gray-800">
+                            Total:{" "}
+                            {order.products
+                              .reduce((total: number, product: any) => {
+                                const price = parseFloat(product.price) || 0;
+                                const reduction =
+                                  parseFloat(product.reduction) || 0;
+                                const priceAfterReduction =
+                                  price * (1 - reduction / 100);
+                                return total + priceAfterReduction;
+                              }, 0)
+                              .toFixed(2)}{" "}
+                            €
+                          </p>
+                        </div>
                       </div>
                       <div className="mt-4 flex justify-end">
                         <button
