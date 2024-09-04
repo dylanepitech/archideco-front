@@ -5,16 +5,10 @@ import { ApiResponse } from "../Types/userCrud";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import {
-  UserRoundCog,
-  ListOrdered,
-  LogOut,
-  SquarePen,
-  Download,
-} from "lucide-react";
+import { UserRoundCog, ListOrdered, SquarePen, Download } from "lucide-react";
 
 function Profile() {
-  const { authToken, logout } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
   const [profile, setProfile] = useState<ApiResponse | null>(null);
   const [orders, setOrders] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +17,6 @@ function Profile() {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [formData, setFormData] = useState<any>({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const [showLogoutForm, setShowLogoutForm] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -73,20 +66,6 @@ function Profile() {
   const handleDeleteAccount = () => {
     console.log("Account deleted");
     setShowDeletePopup(false);
-  };
-
-  const handleLogoutClick = () => {
-    setShowLogoutForm(true);
-  };
-
-  const handleLogoutSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Erreur lors de la déconnexion:", error);
-    }
   };
 
   const handleSectionClick = (section: "personalInfo" | "orders") => {
@@ -141,16 +120,6 @@ function Profile() {
                 >
                   Mes commandes
                 </div>
-              </li>
-              <li className="flex flex-col items-center">
-                <LogOut className="mb-2" />
-                <a
-                  href="#logout"
-                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white cursor-pointer"
-                  onClick={handleLogoutClick}
-                >
-                  Déconnexion
-                </a>
               </li>
             </ul>
           </nav>
@@ -341,33 +310,6 @@ function Profile() {
           )}
         </div>
       </main>
-
-      {showLogoutForm && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
-            <form onSubmit={handleLogoutSubmit}>
-              <p className="mb-4 text-lg">
-                Voulez-vous vraiment vous déconnecter?
-              </p>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="bg-gray-300 px-4 py-2 rounded mr-2 hover:bg-gray-400"
-                  onClick={() => setShowLogoutForm(false)}
-                >
-                  Annuler
-                </button>
-                <button
-                  type="submit"
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                >
-                  Déconnexion
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </div>
