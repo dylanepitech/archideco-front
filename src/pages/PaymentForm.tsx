@@ -239,7 +239,9 @@ const PaymentForm: React.FC = () => {
       }
 
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
-      // navigate("/thankyou");
+      setTimeout(() => {
+        navigate("/thankyou");
+      }, 3000);
     } catch (error) {
       // Gérer l'erreur si l'appel de l'API échoue
       console.error("Erreur lors de la création de la commande:", error);
