@@ -367,11 +367,6 @@ export default function Profile({
   return (
     <div className="container mx-auto p-8">
       <div className="flex flex-col items-center bg-gray-100 p-8 rounded-lg shadow-lg">
-        <img
-          className="w-32 h-32 rounded-full border-4 border-primary shadow-lg"
-          src="https://placehold.co/128x128"
-          alt="User profile picture"
-        />
         <h2 className="mt-4 text-2xl font-bold text-gray-800">
           {client.client}
         </h2>

@@ -46,6 +46,29 @@ export const getUser = async (
   }
 };
 
+export const getUserInformationForCart = async (
+  token: string
+): Promise<ApiResponse | string> => {
+  try {
+    const response = await axios.get<ApiResponse>(
+      `${localhost}/api/getmyinformation`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response.data.message || "Une erreur est survenue";
+    } else {
+      return "Une erreur est survenue";
+    }
+  }
+};
+
 export const getAllUser = async (
   token: string
 ): Promise<ApiResponse | string> => {
