@@ -284,7 +284,7 @@ export default function Produits() {
     <div>
 
       <div className="flex justify-center p-4 text-white">
-        <div
+        {/* <div
           className={`px-4 py-2 rounded-tl-md rounded-bl-md ${
             selectedOnglet === "Categories"
               ? "bg-red-500"
@@ -303,7 +303,7 @@ export default function Produits() {
           onClick={() => setSelectedOnglet("Produits")}
         >
           Produits
-        </div>
+        </div> */}
       </div>
 
       {selectedOnglet === "Categories" ? (
@@ -405,8 +405,8 @@ export default function Produits() {
         </div>
       ) : (
 
-        <div className="p-6 my-4 bg-card text-card-foreground rounded-lg shadow-md">
-          <h1 className="flex justify-center text-xl text-teal-500 font-bold p-4">Gestion des sous categories</h1>
+        <div className="p-6 bg-card text-card-foreground rounded-lg shadow-md">
+          <h1 className="flex justify-center text-xl text-teal-500 font-bold p-4">Gestion des produits</h1>
           <div className="flex flex-col md:flex-row mb-4 space-y-4 md:space-y-0 md:space-x-4">
             <div className="flex items-center space-x-4">
               <Search className="text-gray-700" />
