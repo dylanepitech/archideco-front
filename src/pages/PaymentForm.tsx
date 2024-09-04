@@ -7,7 +7,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { AuthContext } from "../hooks/AuthContext";
-import { getMyCart } from "../Requests/CartRequest";
+import { deleteCart, getMyCart } from "../Requests/CartRequest";
 import { getAllProducts } from "../Requests/ProductsRequest";
 import Logo from "../assets/LogoArchideco.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import { createOrder } from "../Requests/OrderRequest";
 import { getUserInformationForCart } from "../Requests/UserCrudRequests";
 import axios from "axios";
+import { deleteCodePromo } from "../Requests/ReductionRequest";
 
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
@@ -164,7 +165,7 @@ const PaymentForm: React.FC = () => {
         return;
       }
 
-      const response = await fetch("/api/users/complements", {
+      const response = await fetch(`${localhost}/api/users/complements`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -186,7 +187,7 @@ const PaymentForm: React.FC = () => {
         return;
       }
 
-      const paymentResponse = await fetch("/api/process-payment", {
+      const paymentResponse = await fetch(`${localhost}/api/process-payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -233,17 +234,18 @@ const PaymentForm: React.FC = () => {
         const field = {
           productIds: prodIds,
         };
-
         const data = await createOrder(authToken, field);
-        console.log(data);
       }
 
+      const deleteCarte = await deleteCart(authToken);
+      const deletePromo = await deleteCodePromo(authToken, Promocode);
+      localStorage.removeItem("codePromo");
+      navigate("/thankyou");
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
       setTimeout(() => {
         navigate("/thankyou");
       }, 3000);
     } catch (error) {
-      // Gérer l'erreur si l'appel de l'API échoue
       console.error("Erreur lors de la création de la commande:", error);
     }
   }

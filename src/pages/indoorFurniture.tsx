@@ -172,7 +172,6 @@ export default function IndoorFurniture() {
           ))}
         </Slider>
       </div>
-
       <div className="w-full bg-gray-100 mt-6 py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">
