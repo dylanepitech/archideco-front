@@ -16,7 +16,7 @@ import {
 function Profile() {
   const { authToken, logout } = useContext(AuthContext);
   const [profile, setProfile] = useState<ApiResponse | null>(null);
-  const [orders, setOrders] = useState<any[]>([]); // Nouvel état pour les commandes
+  const [orders, setOrders] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [showPersonalInfo, setShowPersonalInfo] = useState(true);
   const [showOrders, setShowOrders] = useState(false);
@@ -45,7 +45,6 @@ function Profile() {
 
     fetchProfile();
   }, [authToken, id]);
-
 
   const handleEditClick = (field: string) => {
     setEditingField(field);
@@ -97,9 +96,14 @@ function Profile() {
     } else if (section === "orders") {
       setShowOrders(true);
       setShowPersonalInfo(false);
-      console.log(profile.data.commandes)
-      setOrders(profile?.data.commandes)
+      setOrders(profile?.data.commandes || []);
     }
+  };
+
+  const handleDownloadInvoice = (orderId: number) => {
+    // Implémentez la logique pour télécharger ou afficher la facture
+    // Par exemple, vous pouvez rediriger vers une URL de facture
+    window.open(`/invoices/${orderId}`, "_blank");
   };
 
   if (error) {
@@ -123,7 +127,7 @@ function Profile() {
               <li className="flex flex-col items-center">
                 <UserRoundCog className="mb-2" />
                 <div
-                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
+                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white cursor-pointer"
                   onClick={() => handleSectionClick("personalInfo")}
                 >
                   Mes informations personnelles
@@ -132,7 +136,7 @@ function Profile() {
               <li className="flex flex-col items-center">
                 <ListOrdered className="mb-2" />
                 <div
-                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
+                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white cursor-pointer"
                   onClick={() => handleSectionClick("orders")}
                 >
                   Mes commandes
@@ -142,7 +146,7 @@ function Profile() {
                 <LogOut className="mb-2" />
                 <a
                   href="#logout"
-                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white"
+                  className="font-bold transition-colors duration-300 border-b-2 border-transparent hover:border-white cursor-pointer"
                   onClick={handleLogoutClick}
                 >
                   Déconnexion
@@ -175,7 +179,6 @@ function Profile() {
                         value: user.lastname,
                       },
                       { label: "Email", field: "email", value: user.email },
-
                       {
                         label: "Numéro de téléphone",
                         field: "phone",
@@ -270,30 +273,70 @@ function Profile() {
           )}
 
           {showOrders && (
-            <div className="orders">
+            <div className="bg-white shadow-md rounded-lg overflow-hidden p-4">
               <h2 className="text-xl font-bold mb-4 sm:mb-6">Mes commandes</h2>
-              <div className="overflow-x-auto">
-
-                {orders.map((order: any) => (
-                  <div className="border-slate-300 border m-2">
-                    <p>{order.id}</p>
-                    <p>{order.order_date}</p>
-                    <p>{order.status}</p>
-                    <div>
-                      {order.products.map((product: any) => (
-                        <div>
-
-                          <p>{product.title} - {product.price}</p>
-                          <p>reduction - {product.reduction}</p>
-                        </div>
-
-                      ))}
+              {orders.length === 0 ? (
+                <p className="text-gray-500 text-center">
+                  Aucune commande trouvée.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  {orders.map((order: any) => (
+                    <div
+                      key={order.id}
+                      className="border border-gray-300 rounded-lg mb-4 p-4 shadow-sm"
+                    >
+                      <div className="flex justify-between mb-2">
+                        <p className="font-semibold text-lg">
+                          ID de commande:{" "}
+                          <span className="font-normal text-gray-600">
+                            {order.id}
+                          </span>
+                        </p>
+                        <p className="text-gray-600">
+                          Date de commande: {order.order_date}
+                        </p>
+                      </div>
+                      <p className="text-gray-700 mb-2">
+                        Status:{" "}
+                        <span
+                          className={`font-semibold ${
+                            order.status === "Livrée"
+                              ? "text-green-600"
+                              : "text-yellow-600"
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                      </p>
+                      <div className="border-t border-gray-200 pt-2 mt-2">
+                        {order.products.map((product: any) => (
+                          <div
+                            key={product.title}
+                            className="border-t border-gray-200 pt-2 mt-2"
+                          >
+                            <p className="text-gray-800">
+                              {product.title} - {product.price}
+                            </p>
+                            <p className="text-gray-600">
+                              Réduction: {product.reduction}%
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-4 flex justify-end">
+                        <button
+                          onClick={() => handleDownloadInvoice(order.id)}
+                          className="bg-[#639D87] text-white px-4 py-2 rounded-lg hover:bg-[#1E4347] flex items-center"
+                        >
+                          <Download className="mr-2" />
+                          Télécharger la facture
+                        </button>
+                      </div>
                     </div>
-                  </div>
-
-
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
