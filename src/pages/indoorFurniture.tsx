@@ -199,7 +199,6 @@ export default function IndoorFurniture() {
           </div>
         </Slider>
       </div>
-
       <div className="w-full bg-gray-100 mt-6 py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">
@@ -223,7 +222,7 @@ export default function IndoorFurniture() {
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Cuisine
                 </h3>
-                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Personnalisez vos meubles de cuisine avec des matériaux variés
                   comme le bois, le métal, ou le verre. Choisissez parmi une
                   large palette de couleurs pour correspondre à votre style.
@@ -269,7 +268,7 @@ export default function IndoorFurniture() {
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Dressing
                 </h3>
-                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Personnalisez vos meubles de dressing avec des finitions en
                   bois, métal ou mélaminé. Choisissez les couleurs qui
                   s'harmonisent avec votre espace.
@@ -292,7 +291,7 @@ export default function IndoorFurniture() {
                 <h3 className="text-2xl text-white font-semibold mb-4">
                   Salle de Bain
                 </h3>
-                 <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
+                <p className="text-white mb-4 line-clamp-4 hover:line-clamp-none">
                   Offrez-vous des meubles de salle de bain personnalisés en
                   céramique, marbre, ou résine. Choisissez des couleurs et
                   finitions qui correspondent à votre style.
@@ -303,7 +302,6 @@ export default function IndoorFurniture() {
                 >
                   Explorer
                 </Link>
-
               </div>
             </div>
           </div>

@@ -233,13 +233,11 @@ const PaymentForm: React.FC = () => {
         const field = {
           productIds: prodIds,
         };
-
         const data = await createOrder(authToken, field);
-        console.log(data);
       }
 
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
-      // navigate("/thankyou");
+      navigate("/thankyou");
     } catch (error) {
       // Gérer l'erreur si l'appel de l'API échoue
       console.error("Erreur lors de la création de la commande:", error);
