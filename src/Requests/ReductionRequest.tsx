@@ -179,3 +179,28 @@ export const deleteReduction = async (
     }
   }
 };
+
+export const deleteCodePromo = async (
+  token: string,
+  codePromo: string
+): Promise<ApiResponse | string> => {
+  try {
+    const response = await axios.post<ApiResponse>(
+      `${localhost}/api/deleteCodePromo`,
+      { codePromo },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      return error.response.data.message || "Une erreur est survenue";
+    } else {
+      return "Une erreur est survenue";
+    }
+  }
+};
