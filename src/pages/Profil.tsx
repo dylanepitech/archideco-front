@@ -263,7 +263,10 @@ function Profile() {
                           </span>
                         </p>
                         <p className="text-gray-600">
-                          Date de commande: {order.order_date}
+                          Date de commande:{" "}
+                          {new Date(order.order_date).toLocaleDateString(
+                            "fr-FR"
+                          )}
                         </p>
                       </div>
                       <p className="text-gray-700 mb-2">
