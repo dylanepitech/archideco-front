@@ -14,6 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { localhost } from "../constants/Localhost";
 import Footer from "../components/Footer";
 import { createOrder } from "../Requests/OrderRequest";
+import { getUserInformationForCart } from "../Requests/UserCrudRequests";
+import axios from "axios";
 
 const stripePromise = loadStripe(
   "pk_test_51PqAVT06SlE6eckHoKpYCjZX0Yp7teJVJVYO3yvIKMaA9VkdfDrxiungDsUWctkdKw0FVojleTLtToPUQEE8aRgd00wh6UQpAI"
@@ -40,6 +42,46 @@ const PaymentForm: React.FC = () => {
     if (authToken) {
       fetchCartItems();
     }
+
+    const getUserinformation = async () => {
+      const userInformationComplement = await getUserInformationForCart(
+        authToken
+      );
+      setAdresse(userInformationComplement.adresse);
+      setFirstname(userInformationComplement.firstname);
+      setName(userInformationComplement.lastname);
+      setPhone(userInformationComplement.phone);
+      setZipCode(userInformationComplement.postCode);
+    };
+    getUserinformation();
+
+    const userposition = async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+
+            const response = await axios.get(
+              `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+            );
+            const data = await response.data();
+
+            const city =
+              data.address.city || data.address.town || data.address.village;
+            setCountry(city);
+            console.log(city);
+          },
+          (error) => {
+            console.error("Erreur de géolocalisation:", error);
+          }
+        );
+      } else {
+        console.error(
+          "La géolocalisation n'est pas supportée par ce navigateur."
+        );
+      }
+    };
+    userposition();
     const retrievePromoCodeAndValue = () => {
       const codePromoData = localStorage.getItem("codePromo");
 
@@ -122,21 +164,18 @@ const PaymentForm: React.FC = () => {
         return;
       }
 
-      const response = await fetch(
-        "/api/users/complements",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            zip_code: zipCode,
-            adresse,
-            phone,
-          }),
-        }
-      );
+      const response = await fetch("/api/users/complements", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          zip_code: zipCode,
+          adresse,
+          phone,
+        }),
+      });
 
       const data = await response.json();
 
@@ -147,22 +186,19 @@ const PaymentForm: React.FC = () => {
         return;
       }
 
-      const paymentResponse = await fetch(
-        "/api/process-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            payment_method_id: paymentMethod.id,
-            zip_code: zipCode,
-            adresse,
-            phone,
-            amount: Math.round(total * 100), // Convertir en centimes
-          }),
-        }
-      );
+      const paymentResponse = await fetch("/api/process-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          payment_method_id: paymentMethod.id,
+          zip_code: zipCode,
+          adresse,
+          phone,
+          amount: Math.round(total * 100), // Convertir en centimes
+        }),
+      });
 
       const paymentData = await paymentResponse.json();
 
@@ -191,16 +227,15 @@ const PaymentForm: React.FC = () => {
     try {
       // Appeler l'API pour créer la commande et attendre la réponse
       if (authToken) {
-        const prodIds = cartItems.map((produit:any) => produit.id);
+        const prodIds = cartItems.map((produit: any) => produit.id);
         console.log(prodIds);
 
         const field = {
-          "productIds":prodIds
-        }
+          productIds: prodIds,
+        };
 
         const data = await createOrder(authToken, field);
         console.log(data);
-
       }
 
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
@@ -221,40 +256,12 @@ const PaymentForm: React.FC = () => {
               <img src={Logo} alt="Logo" height={100} width={100} />
             </Link>
           </div>
-          {cartItems.map((item, index) => {
-            const priceInt = parseFloat(
-              item.price.replace("€", "").replace(",", ".")
-            );
-            const reducedPrice =
-              item.reduction > 0 ? priceInt - item.reduction : priceInt;
-
-            return (
-              <div
-                key={index}
-                className="mb-2 flex justify-between  rounded-lg p-4  "
-              >
-                <span>{item.title}</span>
-                <span>
-                  {item.reduction > 0 ? (
-                    <>
-                      <span className="line-through text-gray-500 mr-2">
-                        {priceInt.toFixed(2)}€
-                      </span>
-                      <span className="text-red-600 font-bold">
-                        {reducedPrice.toFixed(2)}€
-                      </span>
-                    </>
-                  ) : (
-                    <span>{priceInt.toFixed(2)}€</span>
-                  )}
-                </span>
-              </div>
-            );
-          })}
 
           {Promocode && valuePromoCode !== null ? (
             <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mt-4">
-              <h3 className="text-lg font-semibold mb-2">Code Promo</h3>
+              <h3 className="text-lg font-semibold mb-2 text-green-emerald">
+                Code Promo
+              </h3>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-700 font-medium">Code :</span>
                 <span className="text-gray-900 font-bold">{Promocode}</span>
@@ -508,7 +515,18 @@ const PaymentForm: React.FC = () => {
             onClick={(e: any) => handlesuccess(e)}
             className="w-full mt-4 border border-gray-300 text-white font-bold px-6 py-2 rounded bg-[#639d87]"
           >
-            Payer {total.toFixed(2)} €
+            Payer{" "}
+            {cartItems
+              .reduce((acc, item) => {
+                const priceInt = parseFloat(
+                  item.price.replace("€", "").replace(",", ".")
+                );
+                const reducedPrice =
+                  item.reduction > 0 ? priceInt - item.reduction : priceInt;
+                return acc + reducedPrice;
+              }, 0)
+              .toFixed(2) - valuePromoCode}{" "}
+            €
           </button>
         </form>
       </div>

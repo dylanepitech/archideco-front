@@ -43,6 +43,7 @@ export default function Profile({
   const [wishlists, setWishlists] = useState<any | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cart, setCart] = useState<any | null>(null);
+  const [order, setOrder] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [value, setValue] = useState("");
@@ -231,6 +232,33 @@ export default function Profile({
     );
   };
 
+  const infoCommande = () => {
+    console.log(client.commandes)
+    return (
+      <div>
+        {client.commandes.map((order: any, index: number) => (
+          <div key={index} className="border border-slate-300 m-2 p-2">
+
+            <p><strong>Commande ID:</strong> {order.id}</p>
+            <p><strong>Statut:</strong> {order.status}</p>
+            <p><strong>Date:</strong> {order.order_date.date}</p>
+            <div>
+              {order.products.map((product: any) => (
+                <div>
+
+                  <p>{product.title} - {product.price}</p>
+                  <p>reduction - {product.reduction}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+
   const infoCodePromo = () => {
     console.log(client.code_promo);
     return (
@@ -350,11 +378,15 @@ export default function Profile({
           <div className="text-gray-500">Contenu du panier du client</div>
         );
       case "Commandes":
-        return (
-          <div className="text-gray-500">
-            Historique des commandes du client
-          </div>
-        );
+        return client.commandes ?
+          (
+            infoCommande()
+          )
+          : (
+            <div className="text-gray-500">
+              Historique des commandes du client
+            </div>
+          );
       case "Facture":
         return <div className="text-gray-500">Factures du client</div>;
       case "Code Promo":
@@ -367,11 +399,6 @@ export default function Profile({
   return (
     <div className="container mx-auto p-8">
       <div className="flex flex-col items-center bg-gray-100 p-8 rounded-lg shadow-lg">
-        <img
-          className="w-32 h-32 rounded-full border-4 border-primary shadow-lg"
-          src="https://placehold.co/128x128"
-          alt="User profile picture"
-        />
         <h2 className="mt-4 text-2xl font-bold text-gray-800">
           {client.client}
         </h2>
@@ -388,9 +415,8 @@ export default function Profile({
           ].map((tab) => (
             <span
               key={tab}
-              className={`cursor-pointer text-lg ${
-                activeTab === tab ? "text-primary" : "text-gray-600"
-              }`}
+              className={`cursor-pointer text-lg ${activeTab === tab ? "text-primary" : "text-gray-600"
+                }`}
               onClick={() => setActiveTab(tab)}
             >
               {tab}
