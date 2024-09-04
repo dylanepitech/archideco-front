@@ -220,14 +220,10 @@ export default function ShowUser({ user, title, onUserDeleted }: { user: any, ti
                             {currentClients.map((item: Client) => (
                                 <tr key={item.id} className="hover:bg-muted/20">
                                     <td
-                                        className="py-2 px-4 border-b flex items-center cursor-pointer"
+                                        className="py-2 px-4 border-b  cursor-pointer"
                                         onClick={() => setSelectedClient(item)}
                                     >
-                                        <img
-                                            className="w-8 h-8 rounded-full mr-2"
-                                            src="https://via.placeholder.com/150"
-                                            alt="Client Avatar"
-                                        />
+                                     
                                         {item.client}
                                     </td>
                                     <td className="py-2 px-4 border-b">{item.email}</td>
