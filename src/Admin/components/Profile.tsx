@@ -5,7 +5,7 @@ import { getAllProducts } from "../../Requests/ProductsRequest";
 import { getCart } from "../../Requests/CartRequest";
 import { Link } from "react-router-dom";
 import { createPromo } from "../../Requests/ReductionRequest";
-
+import { X } from "lucide-react"
 interface WishlistItem {
   id: number;
   title: string;
@@ -48,6 +48,13 @@ export default function Profile({
   const [code, setCode] = useState("");
   const [value, setValue] = useState("");
   const [expireAt, setExpireAt] = useState("");
+  const [promoCodes, setPromoCodes] = useState(client.code_promo);
+
+  const handleRemovePromo = (id: number) => {
+
+    const updatedPromoCodes = promoCodes.filter((promo: any) => promo.id !== id);
+    setPromoCodes(updatedPromoCodes);
+  };
 
   useEffect(() => {
     fetchCart();
@@ -260,7 +267,8 @@ export default function Profile({
 
 
   const infoCodePromo = () => {
-    console.log(client.code_promo);
+    console.log(client.code_promo)
+
     return (
       <div className="flex flex-col">
         <h2 className="font-semibold flex justify-center text-lg text-teal-500 p-4">
@@ -314,11 +322,18 @@ export default function Profile({
             Code promo de {client.client}
           </h2>
           <div className="flex w-full gap-2">
-            {client.code_promo.map((promo: any) => (
+            {promoCodes.map((promo: any) => (
               <div
                 key={promo.id}
-                className="flex flex-col  bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300"
+                className="relative flex flex-col  bg-white p-4 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300"
               >
+                <div className="flex justify-end my-2">
+                  <div className="bg-red-500 w-3 flex justify-center rounded-sm text-white h-3">
+                    <X className="text-sm h-3 "
+                      onClick={() => handleRemovePromo(promo.id)}
+                    />
+                  </div>
+                </div>
                 <p className="flex gap-2  font-semibold mb-2">
                   <span className="flex text-teal-500 font-semibold">
                     Code:{" "}
@@ -335,7 +350,7 @@ export default function Profile({
                   <span className="flex gap-1 text-teal-500 font-semibold">
                     Du:
                   </span>
-                  {new Date(promo.created_at).toLocaleDateString("fr-FR", {
+                  {new Date(promo.created_at.date).toLocaleDateString("fr-FR", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -343,7 +358,7 @@ export default function Profile({
                   <span className="flex gap-1 text-teal-500 font-semibold">
                     Au:
                   </span>
-                  {new Date(promo.expire_at).toLocaleDateString("fr-FR", {
+                  {new Date(promo.expire_at.date).toLocaleDateString("fr-FR", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",

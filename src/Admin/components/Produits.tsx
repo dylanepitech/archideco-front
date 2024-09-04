@@ -56,7 +56,7 @@ export default function Produits() {
           console.error(data)
         } else {
           setSouscategories(data.data)
-          console.log(data.data)
+          // console.log(data.data)
         }
 
       }
