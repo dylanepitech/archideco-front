@@ -240,7 +240,6 @@ const PaymentForm: React.FC = () => {
       const deleteCarte = await deleteCart(authToken);
       const deletePromo = await deleteCodePromo(authToken, Promocode);
       localStorage.removeItem("codePromo");
-      navigate("/thankyou");
       // Après avoir reçu la réponse et effectué toutes les opérations nécessaires, naviguer
       setTimeout(() => {
         navigate("/thankyou");

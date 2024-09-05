@@ -5,7 +5,7 @@ import { getAllProducts } from "../../Requests/ProductsRequest";
 import { getCart } from "../../Requests/CartRequest";
 import { Link } from "react-router-dom";
 import { createPromo } from "../../Requests/ReductionRequest";
-import { X } from "lucide-react"
+import { X } from "lucide-react";
 interface WishlistItem {
   id: number;
   title: string;
@@ -51,8 +51,9 @@ export default function Profile({
   const [promoCodes, setPromoCodes] = useState(client.code_promo);
 
   const handleRemovePromo = (id: number) => {
-
-    const updatedPromoCodes = promoCodes.filter((promo: any) => promo.id !== id);
+    const updatedPromoCodes = promoCodes.filter(
+      (promo: any) => promo.id !== id
+    );
     setPromoCodes(updatedPromoCodes);
   };
 
@@ -240,34 +241,38 @@ export default function Profile({
   };
 
   const infoCommande = () => {
-    console.log(client.commandes)
+    console.log(client.commandes);
     return (
       <div>
         {client.commandes.map((order: any, index: number) => (
           <div key={index} className="border border-slate-300 m-2 p-2">
-
-            <p><strong>Commande ID:</strong> {order.id}</p>
-            <p><strong>Statut:</strong> {order.status}</p>
-            <p><strong>Date:</strong> {order.order_date.date}</p>
+            <p>
+              <strong>Commande ID:</strong> {order.id}
+            </p>
+            <p>
+              <strong>Statut:</strong> {order.status}
+            </p>
+            <p>
+              <strong>Date:</strong> {order.order_date.date}
+            </p>
             <div>
               {order.products.map((product: any) => (
                 <div>
-
-                  <p>{product.title} - {product.price}</p>
+                  <p>
+                    {product.title} - {product.price}
+                  </p>
                   <p>reduction - {product.reduction}</p>
                 </div>
               ))}
             </div>
-
           </div>
         ))}
       </div>
     );
   };
 
-
   const infoCodePromo = () => {
-    console.log(client.code_promo)
+    console.log(client.code_promo);
 
     return (
       <div className="flex flex-col">
@@ -329,7 +334,8 @@ export default function Profile({
               >
                 <div className="flex justify-end my-2">
                   <div className="bg-red-500 w-3 flex justify-center rounded-sm text-white h-3">
-                    <X className="text-sm h-3 "
+                    <X
+                      className="text-sm h-3 "
                       onClick={() => handleRemovePromo(promo.id)}
                     />
                   </div>
@@ -393,15 +399,13 @@ export default function Profile({
           <div className="text-gray-500">Contenu du panier du client</div>
         );
       case "Commandes":
-        return client.commandes ?
-          (
-            infoCommande()
-          )
-          : (
-            <div className="text-gray-500">
-              Historique des commandes du client
-            </div>
-          );
+        return client.commandes ? (
+          infoCommande()
+        ) : (
+          <div className="text-gray-500">
+            Historique des commandes du client
+          </div>
+        );
       case "Facture":
         return <div className="text-gray-500">Factures du client</div>;
       case "Code Promo":
@@ -425,13 +429,14 @@ export default function Profile({
             "Envies",
             "Panier",
             "Commandes",
-            "Facture",
+            // "Facture",
             "Code Promo",
           ].map((tab) => (
             <span
               key={tab}
-              className={`cursor-pointer text-lg ${activeTab === tab ? "text-primary" : "text-gray-600"
-                }`}
+              className={`cursor-pointer text-lg ${
+                activeTab === tab ? "text-primary" : "text-gray-600"
+              }`}
               onClick={() => setActiveTab(tab)}
             >
               {tab}
