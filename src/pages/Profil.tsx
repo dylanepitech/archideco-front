@@ -51,6 +51,10 @@ function Profile() {
     fetchProfile();
   }, [authToken, id]);
 
+  const handleclickpdf = () => {
+    setOpenPdf(false);
+  };
+
   const handleDeleteAccount = async () => {
     try {
       if (authToken && profile) {
@@ -302,20 +306,35 @@ function Profile() {
               )}
             </div>
           )}
-          {openPDF && (
-            <PDFViewer width="100%" height="600">
-              <CreatePDF orderJSON={orderId} user={profile.data} />
-            </PDFViewer>
-          )}
         </div>
       </main>
+      {openPDF && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center"
+          onClick={handleclickpdf} // Gestionnaire de clic pour fermer
+        >
+          <div
+            className="w-[80%] h-[90%] bg-white p-4 relative"
+            onClick={(e) => e.stopPropagation()} // Empêche de fermer en cliquant sur le PDF lui-même
+          >
+            <button
+              className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded"
+              onClick={handleclickpdf} // Bouton de fermeture
+            >
+              Fermer
+            </button>
+            <PDFViewer width="100%" height="100%">
+              <CreatePDF orderJSON={orderId} user={profile.data} />
+            </PDFViewer>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
   );
 }
 
-// Styles pour le PDF
 const styles = StyleSheet.create({
   page: {
     padding: 30,
