@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../hooks/AuthContext";
 import { getMe, getUser, deleteUser } from "../Requests/UserCrudRequests";
 import { ApiResponse } from "../Types/userCrud";
@@ -6,6 +6,18 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { UserRoundCog, ListOrdered, Download } from "lucide-react";
+import Logo from "../../public/archideco.png";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  PDFViewer,
+  Image,
+} from "@react-pdf/renderer";
+import { getOrderPDF } from "../Requests/UserComplementRequest";
+import { log } from "console";
 
 function Profile() {
   const { authToken } = useContext(AuthContext);
@@ -16,6 +28,8 @@ function Profile() {
   const [showOrders, setShowOrders] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const { id } = useParams();
+  const [openPDF, setOpenPdf] = useState(false);
+  const [orderId, setOrderId] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +55,6 @@ function Profile() {
     try {
       if (authToken && profile) {
         await deleteUser(authToken, profile.data.id);
-        console.log("Account deleted");
         setShowDeletePopup(false);
         navigate("/login");
       }
@@ -62,9 +75,23 @@ function Profile() {
     }
   };
 
-  const handleDownloadInvoice = (orderId: number) => {
-    window.open(`/invoices/${orderId}`, "_blank");
+  const handleDownloadInvoice = async (orderId: number) => {
+    try {
+      const data = await getOrderPDF(authToken, orderId);
+      setOrderId(data);
+      setTimeout(() => {
+        setOpenPdf(true);
+      }, 1000);
+    } catch (error) {
+      console.error("Failed to fetch order data:", error);
+    }
   };
+
+  useEffect(() => {
+    if (orderId.length > 0) {
+      console.log(orderId[0]);
+    }
+  }, [orderId]);
 
   if (error) {
     return <div className="text-red-500 p-4">Erreur: {error}</div>;
@@ -275,6 +302,11 @@ function Profile() {
               )}
             </div>
           )}
+          {openPDF && (
+            <PDFViewer width="100%" height="600">
+              <CreatePDF orderJSON={orderId} user={profile.data} />
+            </PDFViewer>
+          )}
         </div>
       </main>
 
@@ -282,5 +314,165 @@ function Profile() {
     </div>
   );
 }
+
+// Styles pour le PDF
+const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+    fontSize: 12,
+    backgroundColor: "#f5f5f5", // Fond légèrement gris
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  headerLogo: {
+    width: 100,
+    height: 40,
+    marginRight: 20,
+  },
+  header: {
+    fontSize: 20,
+    textTransform: "uppercase",
+    color: "#1E4347", // Vert foncé
+    flex: 1,
+  },
+  date: {
+    fontSize: 12,
+    color: "#1E4347",
+    textAlign: "right",
+  },
+  buyerInfo: {
+    marginBottom: 20,
+    padding: 10,
+    backgroundColor: "#ffffff", // Fond blanc pour la section
+    borderRadius: 5,
+    border: "1px solid #dcdcdc", // Bordure grise
+  },
+  buyerInfoTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#1E4347",
+  },
+  productsTable: {
+    marginBottom: 20,
+  },
+  tableHeader: {
+    flexDirection: "row",
+    borderBottomWidth: 2,
+    borderBottomColor: "#1E4347", // Ligne de séparation verte
+    paddingBottom: 10,
+    backgroundColor: "#e0f2f1", // Fond vert clair pour l'en-tête
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "#dcdcdc",
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  tableCol: {
+    width: "33.33%",
+    padding: 5,
+  },
+  storeInfo: {
+    marginTop: 20,
+    fontSize: 12,
+    color: "#1E4347",
+  },
+  footer: {
+    marginTop: 30,
+    fontSize: 10,
+    textAlign: "center",
+    color: "#888888",
+  },
+});
+
+const CreatePDF = ({ orderJSON, user }: { orderJSON: any[]; user: any }) => {
+  console.log("Received orderJSON in CreatePDF:", orderJSON);
+
+  const seller = {
+    name: "Archideco Marseille",
+    email: "Archidecomarseille@gmail.com",
+    phone: "0602030405",
+    adresse1: "112 Trav. de la Serviane, 13012 Marseille",
+    adresse2: "152 Rue Paradis 13012 Marseille",
+    adresse3: "270 Av. de Fontfrège, 13420 Gémenos",
+    siteweb: "Archideco-marseille.fr",
+    siret: "123456789",
+  };
+
+  const orderDate = orderJSON[0]["orderDate"] || "Date non disponible";
+  const orderHour = orderJSON[0]["orderHour"] || "Heure non disponible";
+  const orderStatus = orderJSON[0]["orderStatus"] || "Heure non disponible";
+
+  return (
+    <Document>
+      <Page style={styles.page}>
+        <View style={styles.headerContainer}>
+          <Image
+            src={Logo} // Remplacez par l'URL de votre logo
+            style={styles.headerLogo}
+          />
+          <View style={{ flex: 1, padding: "3px" }}>
+            <Text style={styles.header}>Facture</Text>
+            <Text style={styles.date}>
+              Date de commande : le {orderDate} à {orderHour}
+            </Text>
+            <Text style={styles.date}>
+              Status de la commande : {orderStatus}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.buyerInfo}>
+          <Text style={styles.buyerInfoTitle}>Informations d'achat</Text>
+          <Text>
+            Nom: {user.firstname || ""} {user.lastname || ""}
+          </Text>
+          <Text>Email: {user.email || ""}</Text>
+          <Text>Téléphone: {user["user_complements"][0]?.phone || ""}</Text>
+        </View>
+
+        <View style={styles.productsTable}>
+          <View style={styles.tableHeader}>
+            <Text style={styles.tableCol}>Produit</Text>
+            <Text style={styles.tableCol}>Prix</Text>
+            <Text style={styles.tableCol}>Réduction</Text>
+          </View>
+          {orderJSON.length > 0 ? (
+            orderJSON.map((item: any, key: number) => (
+              <View style={styles.tableRow} key={key}>
+                <Text style={styles.tableCol}>{item.title}</Text>
+                <Text style={styles.tableCol}>
+                  {parseFloat(item.price.replace(" €", "")).toFixed(2)} €
+                </Text>
+                <Text style={styles.tableCol}>{item.reduction || 0}%</Text>
+              </View>
+            ))
+          ) : (
+            <Text>Aucun produit à afficher.</Text>
+          )}
+        </View>
+
+        <Text style={styles.storeInfo}>
+          Merci pour votre achat chez {seller.name || "notre magasin"}.
+        </Text>
+
+        <View style={styles.footer}>
+          <Text>{seller.adresse1}</Text>
+          <Text>{seller.adresse2}</Text>
+          <Text>{seller.adresse3}</Text>
+          <Text>Téléphone: {seller.phone}</Text>
+          <Text>Email: {seller.email}</Text>
+          <Text>SIRET: {seller.siret}</Text>
+          <Text>Site web: {seller.siteweb}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 export default Profile;
