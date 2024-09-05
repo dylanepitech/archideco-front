@@ -8,6 +8,14 @@ import LivingRoom from "../assets/purete.png";
 import Lounge from "../assets/casual-black.png";
 import Frigo from "../assets/frigo.png";
 import Footer from "../components/Footer";
+import {
+  Document,
+  Text,
+  StyleSheet,
+  Page,
+  View,
+  PDFViewer,
+} from "@react-pdf/renderer";
 
 import {
   Lightbulb,
@@ -264,6 +272,7 @@ export default function Home() {
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );

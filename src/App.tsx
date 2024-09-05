@@ -26,6 +26,7 @@ import Dashboard from "./Admin/Dashboard";
 import IndoorFurniture from "./pages/indoorFurniture";
 import ThankYouPage from "./pages/ThankYouPage";
 import PaymentFailure from "./pages/PaymentFailure";
+import { PDFViewer } from "@react-pdf/renderer";
 
 const AppRoutes: React.FC = () => {
   const { isLoading } = useContext(AuthContext);
@@ -74,8 +75,8 @@ const AppRoutes: React.FC = () => {
 
         {/* Route administrateur */}
         <Route element={<ProtectedAdminRoute />}>
-          <Route path="/admin/dashboard" element={<Dashboard/>} />
-          <Route path="/admin" element={<Dashboard/>} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<Dashboard />} />
         </Route>
       </Routes>
     </ChakraProvider>
