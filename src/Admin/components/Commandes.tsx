@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../hooks/AuthContext';
 import { Loader, Truck, CheckCircle, XCircle } from 'lucide-react';
 import Card from './Card';
 import Chart from './Chart';
+import { deleteUser, getAllUser } from '../../Requests/UserCrudRequests';
 
-const initialData = [
-  { client: 'Dylan le Bourin Oui', email: 'cdy@gmail.com', status: 'Traitement', date: '2024-08-22', id: 1 },
-  { client: 'Santan 13', email: 'sant@gmail.com', status: 'Livraison', date: '2024-08-21', id: 2 },
-  { client: 'Abou', email: 'lechauve@gmail.com', status: 'Terminé', date: '2024-08-21', id: 3 },
-  { client: 'Cdy', email: 'lechinois@gmail.com', status: 'Echec', date: '2024-08-20', id: 4 }
-];
+// const initialData = [
+//   { client: 'Dylan le Bourin Oui', email: 'cdy@gmail.com', status: 'Traitement', date: '2024-08-22', id: 1 },
+//   { client: 'Santan 13', email: 'sant@gmail.com', status: 'Livraison', date: '2024-08-21', id: 2 },
+//   { client: 'Abou', email: 'lechauve@gmail.com', status: 'Terminé', date: '2024-08-21', id: 3 },
+//   { client: 'Cdy', email: 'lechinois@gmail.com', status: 'Echec', date: '2024-08-20', id: 4 }
+// ];
+
+
 
 const statusOptions = [
   { value: '', label: 'Tous les statuts' },
-  { value: 'Traitement', label: 'Traitement' },
+  { value: 'traitement', label: 'traitement' },
   { value: 'Livraison', label: 'Livraison' },
   { value: 'Terminé', label: 'Terminé' },
   { value: 'Echec', label: 'Echec' }
 ];
 
 const statusIcons: any = {
-  Traitement: <Loader className="w-4 h-4 text-slate-500 mr-2" />,
+  traitement: <Loader className="w-4 h-4 text-slate-500 mr-2" />,
   Livraison: <Truck className="w-4 h-4 text-blue-500 mr-2" />,
   Terminé: <CheckCircle className="w-4 h-4 text-green-500 mr-2" />,
   Echec: <XCircle className="w-4 h-4 text-red-500 mr-2" />
@@ -29,8 +33,83 @@ export default function Commandes() {
   const [searchName, setSearchName] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [searchStatus, setSearchStatus] = useState('');
+  const [initialData, setInitialData] = useState([])
+  const [nbClient, setNbClient] = useState(0)
+  const [nbCmd, setNbCmd] = useState(0)
+  const [nbVente, setNbVente] = useState(0)
+  const { authToken } = useContext(AuthContext);
 
-  const filteredData = initialData.filter(item => {
+  useEffect(() => {
+    if (authToken) {
+
+      fetchAllUser();
+    }
+  }, [authToken]);
+
+  const fetchAllUser = async () => {
+    try {
+      if (authToken) {
+        const data: any = await getAllUser(authToken);
+
+        if (typeof data === 'string') {
+
+          console.log(data);
+        } else {
+
+          const users: any = data.data
+            .filter((user: any) => user.commandes.length > 0)
+            .flatMap((user: any) =>
+              user.commandes.map((commande: any) => ({
+                client: `${user.firstname} ${user.lastname}`,
+                email: user.email,
+                status: commande.status,
+                id: user.id,
+                commande_id: commande.id,
+                products: commande.products,
+                date: new Date(commande.order_date.date).toLocaleDateString('fr-FR'),
+
+              }))
+            );
+
+          let donne: any = data.data.filter((user: any) => user.commandes.length > 0)
+          setNbClient(donne.length)
+          setNbCmd(users.length)
+
+          console.log(users)
+
+          const cleanPrice = (priceStr: string) => {
+          
+            return parseFloat(priceStr.replace(/[^\d.,]/g, '').replace(',', '.'));
+          };
+
+          const totalPrice = users.reduce((totalUserPrice:any, user:any) => {
+          
+            if (Array.isArray(user.products)) {
+              const userTotal = user.products.reduce((totalProductPrice:any, product:any) => {
+               
+                const price = cleanPrice(product.price);
+                const reduction = product.reduction || 0;
+              
+                const priceAfterReduction = price - (price * (reduction / 100));
+                return totalProductPrice + priceAfterReduction;
+              }, 0);
+              return totalUserPrice + userTotal;
+            }
+            return totalUserPrice;
+          }, 0);
+
+          console.log(`Total Price after reduction for all users: ${totalPrice.toFixed(2)} €`);
+          setNbVente(totalPrice.toFixed(2))
+          setInitialData(users);
+        }
+
+      }
+    } catch (error) {
+      console.log('Erreur lors de la récupération des utilisateurs:', error);
+    }
+  };
+
+  const filteredData = initialData.filter((item:any) => {
     const matchesNameOrEmail = item.client.toLowerCase().includes(searchName.toLowerCase()) ||
       item.email.toLowerCase().includes(searchName.toLowerCase());
     const matchesDate = searchDate ? item.date === searchDate : true;
@@ -42,9 +121,9 @@ export default function Commandes() {
   return (
     <div className='h-full flex-1 p-4 '>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card src="https://openui.fly.dev/openui/24x24.svg?text=📈" chiffre="15,000 €" text="Ventes de la semaine" style="bg-gradient-to-r from-pink-400 to-pink-600" />
-        <Card src="https://openui.fly.dev/openui/24x24.svg?text=📦" chiffre="45,634" text="Commande de la semaine" style="bg-gradient-to-r from-blue-400 to-blue-700" />
-        <Card src="https://openui.fly.dev/openui/24x24.svg?text=📈" chiffre="95,741" text="Total des clients" style="bg-gradient-to-r from-green-400 to-green-600" />
+        <Card src="https://openui.fly.dev/openui/24x24.svg?text=📈" chiffre={`${nbVente} €`} text="Ventes de la semaine" style="bg-gradient-to-r from-pink-400 to-pink-600" />
+        <Card src="https://openui.fly.dev/openui/24x24.svg?text=📦" chiffre={`${nbCmd}`} text="Commande de la semaine" style="bg-gradient-to-r from-blue-400 to-blue-700" />
+        <Card src="https://openui.fly.dev/openui/24x24.svg?text=📈" chiffre={`${nbClient}`} text="Total des clients" style="bg-gradient-to-r from-green-400 to-green-600" />
       </div>
       <div className="p-6 my-4 bg-card text-card-foreground rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Commandes de la semaine</h2>
@@ -83,10 +162,10 @@ export default function Commandes() {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map(item => (
-              <tr key={item.id} className="hover:bg-muted/20">
-                <td className="py-2 px-4 border-b flex items-center">
-                  <img className="w-8 h-8 rounded-full mr-2" src="https://s.france24.com/media/display/bdcd987c-7a7c-11ee-a7f3-005056bfb2b6/9f162e5d5b3fcba4f574bc62aed2f608b6a4d40b.jpg" alt="Client Avatar" />
+            {filteredData.map((item:any) => (
+              <tr key={item?.id} className="hover:bg-muted/20">
+                <td className="py-2 px-4 border-b">
+                
                   {item.client}
                 </td>
                 <td className="py-2 px-4 border-b">{item.email}</td>

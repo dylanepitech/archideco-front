@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../hooks/AuthContext';
 import { BadgeCheck, BadgeX } from 'lucide-react';
 import Profile from './Profile';
 import { deleteUser, getAllUser } from '../../Requests/UserCrudRequests';
-import { AuthContext } from '../../hooks/AuthContext';
 import ShowUser from './ShowUser';
 
 
